@@ -1,0 +1,55 @@
+
+ . Hackety Hack .
+ . for Mac OS X, Windows XP/Vista, and Linux .
+
+ Hackety Hack is a programming starter kit. It's an editor
+ with helpful coding tools and built-in messaging (so you can
+ pass scripts to friends easily.)
+
+ . Building Hackety Hack .
+
+ If you are an advanced user (familiar with C and Ruby,) you
+ may enjoy helping out with H-ety H.
+
+ With Shoes installed, you can checkout the source code and
+ start things up like so:
+
+   $ git clone git@github.com:why/hacketyhack.git 
+   $ cd hacketyhack
+   $ shoes h-ety-h.rb
+
+ If you want to build Hackety Hack as a standalone app
+ with the installer for your platform:
+
+   $ git clone git@github.com:why/hacketyhack.git 
+   $ git clone git@github.com:why/shoes.git 
+   $ cd shoes
+   $ rake APP=../hacketyhack VIDEO=1
+   $ rake APP=../hacketyhack installer
+
+ There is no installer for Linux, bear in mind.
+
+ . Acknowledgements .
+
+ Beneath my wings are many winds.
+ 
+ :: Yukihiro Matsumoto, whose Ruby language
+    is the heart of Hackety Hack. I adore
+    this language. Ruby's shared lib and stdlib
+    are included under the terms of the Ruby
+    license.
+
+ :: Sharon Rosner for the Sequel lib
+    (http://sequel.rubyforge.org)
+    I use a fork from an old version.
+
+ :: Jamis Buck for the Syntax lib.
+    (http://syntax.rubyforge.org)
+    Live syntax highlighting.
+
+ :: Alex Brem for help on bloopsaphone.
+    He just started hacking away. I like that!
+
+ :: Numerous font authors whose free
+    offerings are included. I need to
+    assemble a list...
