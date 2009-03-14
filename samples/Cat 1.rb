@@ -1,0 +1,2 @@
+# A cat stamp.
+cat

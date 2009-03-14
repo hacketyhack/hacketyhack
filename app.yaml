@@ -1,0 +1,13 @@
+name: Hackety Hack
+version: 1
+release: Material
+icons:
+  win32: platform/msw/App.ico
+  osx:   platform/mac/App.icns
+  gtk:   platform/nix/app.png
+dmg:
+  ds_store: platform/mac/dmg_ds_store
+  background: static/hacketyhack-dmg.jpg
+run: app/h-ety-h.rb
+clone: git checkout-index --prefix=dist/app/ -a
+ignore: [samples]
