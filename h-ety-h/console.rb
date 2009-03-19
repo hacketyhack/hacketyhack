@@ -377,7 +377,7 @@ module HH::Lessons
             "surrounded by curly braces."
           para "Let's try another block: ", prompt('5.times { print "Odelay!" }')
         end
-        @match = [/\{.+\}/m, nil, /\AOdelay!Od/]
+        @match = [/\{.+\}/m, (3..9), /\AOdelay!Od/]
       end
     when 5
       case page
