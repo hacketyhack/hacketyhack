@@ -361,7 +361,7 @@ module HH::Lessons
             "Let's keep score with this hash:\n", prompt("ratings = Hash.new {0}")
           para "Then, okay, now let's count up your reviews. Just stay with me. ",
             "Type:\n", prompt("books.values.each { |rate| ratings[rate] += 1 }")
-          para em("(The straight line in the code is the pipe character, ",
+          para em("(The straight line in the code is the pipe character,\n"+
             "probably located right above the Enter key on your keyboard.)")
         end
         @match = [/\{.+\}/m, Array]
