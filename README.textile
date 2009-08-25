@@ -22,14 +22,14 @@ h2. Building Hackety Hack
  start things up like so:
 
 bq.   $ git clone git://github.com/steveklabnik/hacketyhack.git 
-bq.   $ cd hacketyhack
-bq.   $ shoes h-ety-h.rb
+   $ cd hacketyhack
+   $ shoes h-ety-h.rb
 
  If you need to install Shoes, just run this first:
 
 bq.   $ git clone git://github.com/whymirror/shoes.git
-bq.   $ cd shoes
-bq.   $ rake
+   $ cd shoes
+   $ rake
 
  Shoes will be built and put in the dist directory.
 
@@ -37,10 +37,10 @@ bq.   $ rake
  with the installer for your platform:
 
 bq.   $ git clone git://github.com/steveklabnik/hacketyhack.git 
-bq.   $ git clone git://github.com/whymirror/shoes.git 
-bq.   $ cd shoes
-bq.   $ rake APP=../hacketyhack VIDEO=1
-bq.   $ rake APP=../hacketyhack installer
+   $ git clone git://github.com/whymirror/shoes.git 
+   $ cd shoes
+   $ rake APP=../hacketyhack VIDEO=1
+   $ rake APP=../hacketyhack installer
 
  There is no installer for Linux, bear in mind.
 
