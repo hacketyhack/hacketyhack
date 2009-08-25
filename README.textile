@@ -1,12 +1,20 @@
 
- . Hackety Hack .
- . for Mac OS X, Windows XP/Vista, and Linux .
+h1. Hackety Hack
+h2. for Mac OS X, Windows XP/Vista, and Linux
 
  Hackety Hack is a programming starter kit. It's an editor
  with helpful coding tools and built-in messaging (so you can
  pass scripts to friends easily.)
 
- . Building Hackety Hack .
+h2. Oh So Fashionable Beta
+
+ Hackety Hack is not quite ready yet. Lots of things aren't quite working, 
+ but we're trying. Rome wasn't built in a day...
+
+ We have a "Lighthouse":http://hacketyhack.lighthouseapp.com/ account. We'd love
+ to get some bug reports.
+
+h2. Building Hackety Hack
 
  If you are an advanced user (familiar with C and Ruby,) you
  may enjoy helping out with H-ety H.
@@ -14,24 +22,36 @@
  With Shoes installed, you can checkout the source code and
  start things up like so:
 
-   $ git clone git@github.com:why/hacketyhack.git 
+   $ git clone git://github.com/steveklabnik/hacketyhack.git 
    $ cd hacketyhack
    $ shoes h-ety-h.rb
+
+ If you need to install Shoes, just run this first:
+
+   $ git clone git://github.com/whymirror/shoes.git
+   $ cd shoes
+   $ rake
+
+ Shoes will be built and put in the dist directory.
 
  If you want to build Hackety Hack as a standalone app
  with the installer for your platform:
 
-   $ git clone git@github.com:why/hacketyhack.git 
-   $ git clone git@github.com:why/shoes.git 
+   $ git clone git://github.com/steveklabnik/hacketyhack.git 
+   $ git clone git://github.com/whymirror/shoes.git 
    $ cd shoes
    $ rake APP=../hacketyhack VIDEO=1
    $ rake APP=../hacketyhack installer
 
  There is no installer for Linux, bear in mind.
 
- . Acknowledgements .
+h2. Acknowledgements
 
  Beneath my wings are many winds.
+
+ :: _why, who was quite the lucky stiff. Without his work and
+    vision, Hackety Hack would have never been born. Hopefully
+    he'll be proud of how his child lives out its life...
  
  :: Yukihiro Matsumoto, whose Ruby language
     is the heart of Hackety Hack. I adore
