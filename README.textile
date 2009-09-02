@@ -18,6 +18,9 @@ h2. Building Hackety Hack
  If you are an advanced user (familiar with C and Ruby,) you
  may enjoy helping out with H-ety H.
 
+ If you're on Ubuntu, you will need to install the following packages before building shoes:
+bq. libgtk2.0-dev libgif-dev libportaudio-dev libvlc-dev portaudio19-dev
+
  With Shoes installed, you can checkout the source code and
  start things up like so:
 
