@@ -30,7 +30,7 @@ bq.   $ git clone git://github.com/steveklabnik/hacketyhack.git
 
  If you need to install Shoes, just run this first:
 
-bq.   $ git clone git://github.com/whymirror/shoes.git
+bq.   $ git clone git://github.com/shoes/shoes.git
    $ cd shoes
    $ rake
 
@@ -40,7 +40,7 @@ bq.   $ git clone git://github.com/whymirror/shoes.git
  with the installer for your platform:
 
 bq.   $ git clone git://github.com/steveklabnik/hacketyhack.git 
-   $ git clone git://github.com/whymirror/shoes.git 
+   $ git clone git://github.com/shoes/shoes.git 
    $ cd shoes
    $ rake APP=../hacketyhack VIDEO=1
    $ rake APP=../hacketyhack installer
