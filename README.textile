@@ -13,6 +13,9 @@ h2. Oh So Fashionable Beta
  We have a "Lighthouse":http://hacketyhack.lighthouseapp.com/ account. We'd love
  to get some bug reports.
 
+ Currently working: programs run, Try Ruby works.
+ Currently not: website integration stuff and sharing of your programs.
+
 h2. Building Hackety Hack
 
  If you are an advanced user (familiar with C and Ruby,) you
@@ -26,7 +29,7 @@ bq. libgtk2.0-dev libgif-dev libportaudio-dev libvlc-dev portaudio19-dev
 
 bq.   $ git clone git://github.com/steveklabnik/hacketyhack.git 
    $ cd hacketyhack
-   $ shoes h-ety-h.rb
+   $ ./h-ety-h.rb
 
  If you need to install Shoes, just run this first:
 
