@@ -1,3 +1,5 @@
+#!/usr/bin/env shoes
+
 require 'h-ety-h/boot'
 require 'h-ety-h/home'
 require 'h-ety-h/prefs'
