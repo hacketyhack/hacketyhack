@@ -123,9 +123,6 @@ module HH::Home
           hometab "Lessons", "#936" do
             @homepane.clear { home_lessons }
           end
-          hometab "Tables", "#799" do
-            @homepane.clear { home_tables }
-          end
         end
       end
       stack do
