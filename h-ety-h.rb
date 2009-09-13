@@ -34,16 +34,6 @@ window :title => "Hackety Hack", :width => 500, :height => 580 do
     @action.clear { editor(name) }
   end
 
-  def load_tour
-    @action.clear do
-      background "#{HH::STATIC}/art-and-code-collage.png"
-      stack :margin_left => 60, :margin => 20 do
-        subtitle "THE TOUR IS CANCELLED", :stroke => black, :fill => "#FF0", :weight => "bold"
-        para "This is a pre-release copy of Hackety Hack for the ART & CODE symposium.", :stroke => black, :fill => "#FF0"
-      end
-    end
-  end
-
   stack :top => 0, :left => 0, :width => 40, :height => 1.0 do
     @tip = stack :top => 0, :left => 0, :width => 120, :margin => 4, :hidden => true do
       background "#F7A", :curve => 6
@@ -61,26 +51,23 @@ window :title => "Hackety Hack", :width => 500, :height => 580 do
     end
     sidetab "#{HH::STATIC}/tab-new.png", 32, "NEW" do
       load_editor
-    end
-    sidetab "#{HH::STATIC}/tab-tour.png", 64, "TOUR" do
-      load_tour
-    end
-    sidetab "#{HH::STATIC}/tab-try.png", 96, "TRY RUBY!" do
+    end    
+    sidetab "#{HH::STATIC}/tab-try.png", 64, "TRY RUBY!" do
       unless respond_to? :console
         require 'h-ety-h/console'
         extend HH::Console
       end
       @action.clear { console }
     end
-    sidetab "#{HH::STATIC}/tab-help.png", 128, "HELP" do
+    sidetab "#{HH::STATIC}/tab-help.png", 96, "HELP" do
       Shoes.show_manual
     end
-    sidetab "#{HH::STATIC}/tab-cheat.png", 160, "CHEAT" do
+    sidetab "#{HH::STATIC}/tab-cheat.png", 128, "CHEAT" do
       dialog :title => "Hackety Hack - Cheat Sheet", :width => 496 do
         image "#{HH::STATIC}/hhcheat.png"
       end
     end
-    sidetab "#{HH::STATIC}/tab-hand.png", 192, "ABOUT" do
+    sidetab "#{HH::STATIC}/tab-hand.png", 160, "ABOUT" do
       about =
         app.slot.stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
           background black(0.8)
