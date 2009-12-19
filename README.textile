@@ -24,6 +24,15 @@ h2. Building Hackety Hack
  If you're on Ubuntu, you will need to install the following packages before building shoes:
 bq. libgtk2.0-dev libgif-dev libportaudio-dev libvlc-dev portaudio19-dev
 
+	To get it working on Arch Linux, I had to install these packages:
+bq. portaudio 19_20071207-2 libidn gtk2 giflib vlc
+
+	And roll back shoes to this commit:
+
+	cea39a8bf9a5b7057b1824a9fab868d1f8609d69
+
+	And then it worked. This will hopefully be resolved in the near future.
+
  With Shoes installed, you can checkout the source code and
  start things up like so:
 
