@@ -1,4 +1,3 @@
-require 'ftools'
 require 'hpricot'
 
 module ::HH end

@@ -28,7 +28,7 @@ else
 end
 
 HH::DOWNLOADS = File.join(HH::USER, 'Downloads')
-File.makedirs(HH::DOWNLOADS)
+FileUtils.makedirs(HH::DOWNLOADS)
 HH::DB = HH::Sequel::SQLite::Database.new(:database => File.join(HH::USER, "+TABLES"))
 HH::DB.extend HH::DbMixin
 HH::DB.init

@@ -21,10 +21,10 @@ module HH::Sequel
     
     def self.on_delete_action(action)
       case action
-      when :restrict: RESTRICT
-      when :cascade: CASCADE
-      when :set_null: SET_NULL
-      when :set_default: SET_DEFAULT
+      when restrict then RESTRICT
+      when cascade then CASCADE
+      when set_null then SET_NULL
+      when set_default then SET_DEFAULT
       else NO_ACTION
       end
     end

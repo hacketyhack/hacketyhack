@@ -40,7 +40,7 @@ module HH::Sequel
     # overriden in database adapters.
     def literal(v)
       case v
-      when String: "'%s'" % v
+      when String then "'%s'" % v
       else v.to_s
       end
     end

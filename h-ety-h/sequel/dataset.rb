@@ -73,13 +73,13 @@ module HH::Sequel
     # Converts a field list into a comma seperated string of field names.
     def field_list(fields)
       case fields
-      when Array:
+      when Array then
         if fields.empty?
           WILDCARD
         else
           fields.map {|i| field_name(i)}.join(COMMA_SEPARATOR)
         end
-      when Symbol:
+      when Symbol then
         fields.to_field_name
       else
         fields
@@ -89,7 +89,7 @@ module HH::Sequel
     # Converts an array of sources into a comma separated list.
     def source_list(source)
       case source
-      when Array: source.join(COMMA_SEPARATOR)
+      when Array then source.join(COMMA_SEPARATOR)
       else source
       end 
     end
@@ -111,9 +111,9 @@ module HH::Sequel
     # Formats a where clause.
     def where_list(where)
       case where
-      when Hash:
+      when Hash then
         where.map {|kv| where_equal_condition(kv[0], kv[1])}.join(AND_SEPARATOR)
-      when Array:
+      when Array then
         fmt = where.shift
         fmt.gsub('?') {|i| literal(where.shift)}
       else
