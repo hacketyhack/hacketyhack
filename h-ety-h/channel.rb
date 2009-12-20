@@ -1,7 +1,7 @@
 require 'h-ety-h/yaml'
 
 def Channel(name)
-  Hacker('_why').channel(name)
+  Hacker('username'=> '_why').channel(name)
 end
 
 class Channel
@@ -60,7 +60,7 @@ class Channel
     attr_reader :said, :hacker, :at, :id
     def initialize(opts = {})
       @said = opts['said']
-      @hacker = Hacker(opts['hacker'])
+      @hacker = Hacker(opts['hacker'])#, 'chunky_bacon')
       @at = opts['at']
       @id = opts['id']
     end

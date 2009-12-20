@@ -94,7 +94,7 @@ module HH::Prefs
         @content = loading_stack :margin => 10
         HH.user.get_from_inbox(msg) do |msg|
           @content.replace do
-            msg['content'].split(/\n{2,}/).each do |line|
+            msg['text'].split(/\n{2,}/).each do |line|
               para line.strip
             end
             if msg['script_name']
@@ -129,7 +129,7 @@ module HH::Prefs
       else
         para "Let's set up Hackety Hack to use on the Internet okay? ",
           "Be sure you have an account from ",
-          link("hacketyhack.net", :click => "http://hacketyhack.net"), "."
+          link("hackety-hack.com", :click => "http://hackety-hack.com"), "."
       end
 
       @prefpane =
@@ -140,10 +140,13 @@ module HH::Prefs
 
           para "Your password", :size => 10, :margin => 2, :stroke => "#352"
           @pass = edit_line HH::PREFS['password'], :width => 1.0, :secret => true
+          para "Your secret key", :size => 10, :margin => 2, :stroke => "#352"
+          @key = edit_line HH::PREFS['key'], :width => 1.0, :secret => true
 
           button "Save", :margin_top => 10 do
             HH::PREFS['username'] = @user.text
             HH::PREFS['password'] = @pass.text
+						HH::PREFS['key'] = @key.text
             HH.save_prefs
             @action.clear { prefs }
           end
@@ -155,10 +158,10 @@ module HH::Prefs
         start = page * 5
         HH.user.get_inbox do |box|
           @mailtable.replace do
-            box[page * 5, 5].each do |msg|
+            box['messages'][page * 5, 5].each do |msg|
               icon = msg['read'] ? "tab-email.png" : "icon-email.png"
               stack :margin_left => 8, :margin_top => 4 do
-                britelink icon, msg['subject'], msg['at'], "#C66" do
+                britelink icon, msg['subject'], msg['created_at'], "#C66" do
                   @action.clear { open_message msg }
                 end
                 para "from #{msg['from']}", :stroke => "#777", :size => 9,

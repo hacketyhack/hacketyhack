@@ -110,11 +110,10 @@ window :title => "Hackety Hack", :width => 500, :height => 580 do
     every 20 do
       if HH.user and @notice.hidden == true
         HH.user.get_inbox_count do |c|
-          case c[:new] when 1..20
-            @noticeN.text = "#{c[:new]} new"
-            @notice.show
-            @mailcheck.stop
-          end
+					count = c['messages'].length
+					@noticeN.text = "#{count} messages."
+					@notice.show
+					@mailcheck.stop
         end
       end
     end

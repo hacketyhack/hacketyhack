@@ -214,7 +214,7 @@ module HH
     def user
       return if PREFS['username'].blank?
       unless @user and @user.name == PREFS['username']
-        @user = Hacker(PREFS['username'])
+        @user = Hacker(PREFS)
       end
       @user
     end
