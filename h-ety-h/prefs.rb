@@ -62,8 +62,8 @@ module HH::Prefs
             code += "\n\n--- #{@attach.text}.rb\n"
             code += HH.get_script(@attach.text)[:script]
           end
-          HH.user.put_in_outbox(:who => @user.text, :subject => @subj.text,
-                                :content => code) do |msg|
+          HH.user.put_in_outbox(:recipient_username => @user.text, :subject => @subj.text,
+                                :text => code) do |msg|
             case msg when Hash
               @action.clear { prefs }
             else
