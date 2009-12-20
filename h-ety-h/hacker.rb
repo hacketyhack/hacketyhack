@@ -55,4 +55,9 @@ class Hacker
     http('GET', '/programs.yaml', :who => @name, :api_key => @key, &blk)
 	end
 
+	def send_to_the_cloud name, code
+		url = "/users/" + @name + "/programs/" + name
+		http('GET', url, {:text => code, :api_key => @key}) {|u| true }
+	end
+
 end
