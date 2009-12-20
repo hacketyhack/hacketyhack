@@ -158,7 +158,8 @@ module HH::Prefs
         start = page * 5
         HH.user.get_inbox do |box|
           @mailtable.replace do
-            box['messages'][page * 5, 5].each do |msg|
+						box = box['messages']
+            box[page * 5, 5].each do |msg|
               icon = msg['read'] ? "tab-email.png" : "icon-email.png"
               stack :margin_left => 8, :margin_top => 4 do
                 britelink icon, msg['subject'], msg['created_at'], "#C66" do
