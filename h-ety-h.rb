@@ -106,7 +106,7 @@ window :title => "Hackety Hack", :width => 500, :height => 580 do
       :align => "center"
   end
 
-  @poll =
+  @mailcheck =
     every 20 do
       if HH.user
 				HH.user.update_programs do |programs|
