@@ -120,9 +120,6 @@ module HH::Home
           hometab "Programs", "#555", true do
             @homepane.clear { home_scripts }
           end
-          hometab "Lessons", "#936" do
-            @homepane.clear { home_lessons }
-          end
         end
       end
       stack do
