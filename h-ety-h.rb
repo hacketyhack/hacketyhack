@@ -101,7 +101,7 @@ window :title => "Hackety Hack", :width => 500, :height => 580 do
       line_to 0, 0
     end
     background black(0.6), :curve => 6, :left => 24, :width => 136
-    para "You have ", @noticeN = strong("0 new"), " messages",
+    para "You have ", @noticeN = strong("0 new"), " messages.",
       :stroke => "#FFF", :margin => 6, :size => 11, :margin_left => 24,
       :align => "center"
   end
@@ -110,10 +110,12 @@ window :title => "Hackety Hack", :width => 500, :height => 580 do
     every 20 do
       if HH.user and @notice.hidden == true
         HH.user.get_inbox_count do |c|
-					count = c['messages'].length
-					@noticeN.text = "#{count} messages."
-					@notice.show
-					@mailcheck.stop
+					count = c['messages'].select{|m| m['read'] == false}.length
+					if(count > 0)
+						@noticeN.text = "#{count} new"
+						@notice.show
+						@mailcheck.stop
+					end
         end
       end
     end

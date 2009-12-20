@@ -38,6 +38,7 @@ class Hacker
       end
       yield msg
     end
+    http('GET', "/messages/#{msg['id']}/mark_read", :api_key => @key) { |b| true }
   end
   def put_in_outbox msg, &blk
     http('POST', '/messages', msg, &blk)
