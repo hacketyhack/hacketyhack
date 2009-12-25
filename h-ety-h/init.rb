@@ -1,5 +1,5 @@
-HH::NET = "hackety-hack.com"
-HH::REST = "http://hackety-hack.com"
+HH::NET = "hacketyhack.heroku.com"
+HH::REST = "http://hacketyhack.heroku.com"
 HH::HOME = Dir.pwd
 HH::STATIC = Dir.pwd + "/static"
 HH::FONTS = HH::HOME + "/fonts"
