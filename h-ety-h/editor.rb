@@ -66,6 +66,7 @@ module HH::Editor
         self.position = second.position
         self.string = second.string + self.string
         self
+        d
       else
         nil
       end
@@ -230,7 +231,15 @@ module HH::Editor
 
       case k
       when String
-        handle_text_insertion(k)
+        if k == "\n"
+          # handle indentation
+          ind = indentation_size
+          handle_text_insertion(k)
+          handle_text_insertion(" " * ind) if ind > 0
+        else
+          # usual case
+          handle_text_insertion(k)
+        end
       when :backspace, :shift_backspace, :control_backspace
         if @t.cursor > 0 and @t.marker.nil?
           @t.marker = @t.cursor - 1 # make highlight length at least 1
@@ -369,6 +378,20 @@ module HH::Editor
     onkey(nil)
   end
 
+  # find the indentation level at the current cursor or marker
+  # whatever occurs first
+  # the result is the number of spaces
+  def indentation_size
+    # TODO marker
+    pos = @str.rindex("\n", @t.cursor-1) + 1
+
+    ind_size = 0
+    while @str[pos, 1] == ' '
+      ind_size += 1
+      pos += 1
+    end
+    ind_size
+  end
 
   # called when the user wants to insert text
   def handle_text_insertion str
