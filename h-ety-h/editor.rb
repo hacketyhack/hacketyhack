@@ -2,6 +2,88 @@ require 'h-ety-h/artist'
 require 'h-ety-h/markup'
 
 module HH::Editor
+  # common code between InsertionAction and DeletionAction
+  class InsertionDeletionAction
+    # action to insert/delete str to text at position pos
+    def initialize pos, str, text
+      @position, @string, @text = pos, str, text
+    end
+    def insert
+      @text.insert(@position, @string)
+    end
+    def delete
+      @text[@position, @string.size] = ""
+    end
+  end
+
+  class InsertionAction < InsertionDeletionAction
+    def run
+      insert
+    end
+    def undo
+      delete
+    end
+  end
+
+  class DeletionAction < InsertionDeletionAction
+    def run
+      delete
+    end
+    def undo
+      insert
+    end
+  end
+
+  class UndoRedo
+    def initialize text, &hook
+      @text = text  # reference of the original text
+      @action_stack = [] # array of actions
+      @stack_position = 0;
+      @last_position = nil
+      @hook = hook
+    end
+
+    # _act was added for consistency with redo_act
+    def undo_act
+      return if @stack_position == 0
+      @stack_position -= 1;
+      @action_stack[@stack_position].undo;
+      @hook.call
+    end
+
+    # _act was added because redo is a keyword
+    def redo_act
+      return if @stack_position == @action_stack.size
+      @action_stack[@stack_position].run
+      @stack_position += 1;
+      @hook.call
+    end
+
+    def new_action action
+      # all redos get removed
+      @action_stack[@stack_position..-1] = action
+      @stack_position += 1;
+    end
+
+    def add_text str, pos
+      new_action InsertionAction.new(pos, str, @text)
+  #    if @char == "\n"
+  #      return
+  #    end
+  #    if @last_position and @last_position = pos-1
+  #
+  #    end
+    end
+
+    def remove_text pos, length=1
+      str = @text[pos, length]
+      new_action DeletionAction.new(pos, str, @text)
+    end
+  end
+
+end # module HH::Editor
+
+module HH::Editor
   include HH::Markup
   include HH::Artist
   include HH::Dingbat
@@ -10,6 +92,7 @@ module HH::Editor
   def editor(script = {})
     @str = script[:script] || ""
     name = script[:name] || "A New Program"
+    @undo_redo = UndoRedo.new(@str) {update_text}
     @editor =
       stack :margin_left => 50, :margin_top => 22, :width => 1.0, :height => 92 do
         @sname = subtitle name, :font => "Lacuna Regular", :size => 22,
@@ -121,7 +204,10 @@ module HH::Editor
 
       case k
       when String
-        @str[*@t.highlight] = k
+        pos, len = @t.highlight;
+        @undo_redo.remove_text(pos, len) if len > 0
+        @undo_redo.add_text(k, pos)
+        @str[pos, len] = k
         @t.cursor = :marker
         @t.cursor += k.length
       when :backspace, :shift_backspace, :control_backspace
@@ -164,7 +250,7 @@ module HH::Editor
           @str.slice!(*sel)
           @t.cursor = :marker
         end
-      when :control_c, :alt_c, :control_insert
+      when :control_c, :alt_c, :control_insertadd_characte
         if @t.marker
           self.clipboard = @str[*@t.highlight]
         end
@@ -173,6 +259,10 @@ module HH::Editor
         @str[*@t.highlight] = clip
         @t.cursor = :marker
         @t.cursor += clip.length
+      when :control_z
+        @undo_redo.undo_act
+      when :control_y
+        @undo_redo.redo_act
       when :shift_home, :home
         nl = @str.rindex("\n", @t.cursor - 1) || -1
         @t.cursor = nl + 1
@@ -210,9 +300,17 @@ module HH::Editor
         @copy_button.hide
         @save_button.show
       end
+
+      update_text
+    end
+
+    def update_text
       @t.replace *highlight(@str)
       @ln.replace [*1..(@str.count("\n")+1)].join("\n")
     end
+
+
+
 
     spaces = [?\t, ?\s, ?\n]
 
