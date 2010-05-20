@@ -6,6 +6,7 @@ module HH::Editor
   # on_insert_text and on_delete_text should be called before any subclass
   # can be used
   class InsertionDeletionCommand
+
     def self.on_insert_text &block
       @@insert_text = block
     end
@@ -23,21 +24,57 @@ module HH::Editor
     def delete
       @@delete_text.call(@position, @string.size)
     end
+
+  protected
+  attr_accessor  :position, :string
   end
 
   class InsertionCommand < InsertionDeletionCommand
     alias execute insert
     alias unexecute delete
+
+    # returns nil if not mergeble
+    def merge_with second
+      if second.class != self.class
+        nil
+      elsif second.position != self.position + self.string.size
+        nil
+      elsif second.string == "\n"
+        nil # newlines always start a new command
+      else
+        self.string += second.string
+        self
+      end
+    end
   end
 
   class DeletionCommand < InsertionDeletionCommand
     alias execute delete
     alias unexecute insert
+
+    def merge_with second
+      if second.class != self.class
+        nil
+      elsif second.string == "\n"
+        nil
+      elsif second.position == self.position + self.string.size
+        # probably the delete key
+        self.string += second.string
+        self
+      elsif self.position == second.position + second.string.size
+        # probably the backspace key
+        self.position = second.position
+        self.string = second.string + self.string
+        self
+      else
+        nil
+      end
+    end
   end
 
   class UndoRedo
     def initialize
-      @action_stack = [] # array of actions
+      @command_stack = [] # array of actions
       @stack_position = 0;
       @last_position = nil
     end
@@ -46,20 +83,25 @@ module HH::Editor
     def undo_command
       return if @stack_position == 0
       @stack_position -= 1;
-      @action_stack[@stack_position].unexecute;
+      @command_stack[@stack_position].unexecute;
     end
 
     # _act was added because redo is a keyword
     def redo_command
-      return if @stack_position == @action_stack.size
-      @action_stack[@stack_position].execute
+      return if @stack_position == @command_stack.size
+      @command_stack[@stack_position].execute
       @stack_position += 1;
     end
 
-    def new_action action
+    def add_command cmd
       # all redos get removed
-      @action_stack[@stack_position..-1] = action
-      @stack_position += 1;
+      @command_stack[@stack_position..-1] = nil
+      last = @command_stack.last
+      if last.nil? or not last.merge_with(cmd)
+        # create new command
+        @command_stack[@stack_position] = cmd
+        @stack_position += 1
+      end
     end
   end
 
@@ -333,7 +375,7 @@ module HH::Editor
       pos, len = @t.highlight;
       handle_text_deletion(pos, len) if len > 0
 
-      @undo_redo.new_action InsertionCommand.new(pos, str)
+      @undo_redo.add_command InsertionCommand.new(pos, str)
       insert_text(pos, str)
   end
 
@@ -341,7 +383,7 @@ module HH::Editor
   def handle_text_deletion pos, len
     str = @str[pos, len]
     return if str.empty? # happens if len == 0 or pos to big
-    @undo_redo.new_action DeletionCommand.new(pos, str)
+    @undo_redo.add_command DeletionCommand.new(pos, str)
     delete_text(pos, len)
   end
 
