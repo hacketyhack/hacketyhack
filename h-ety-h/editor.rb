@@ -26,21 +26,13 @@ module HH::Editor
   end
 
   class InsertionCommand < InsertionDeletionCommand
-    def execute
-      insert
-    end
-    def unexecute
-      delete
-    end
+    alias execute insert
+    alias unexecute delete
   end
 
   class DeletionCommand < InsertionDeletionCommand
-    def execute
-      delete
-    end
-    def unexecute
-      insert
-    end
+    alias execute delete
+    alias unexecute insert
   end
 
   class UndoRedo
