@@ -51,14 +51,14 @@ module HH::Editor
     end
 
     # _act was added for consistency with redo_act
-    def undo_act
+    def undo_command
       return if @stack_position == 0
       @stack_position -= 1;
       @action_stack[@stack_position].unexecute;
     end
 
     # _act was added because redo is a keyword
-    def redo_act
+    def redo_command
       return if @stack_position == @action_stack.size
       @action_stack[@stack_position].execute
       @stack_position += 1;
@@ -68,21 +68,6 @@ module HH::Editor
       # all redos get removed
       @action_stack[@stack_position..-1] = action
       @stack_position += 1;
-    end
-
-    def add_text str, pos
-      new_action InsertionCommand.new(pos, str)
-  #    if @char == "\n"
-  #      return
-  #    end
-  #    if @last_position and @last_position = pos-1
-  #
-  #    end
-    end
-
-    def remove_text pos, length=1
-      str = @text[pos, length]
-      new_action DeletionCommand.new(pos, str)
     end
   end
 
@@ -211,26 +196,19 @@ module HH::Editor
 
       case k
       when String
-        pos, len = @t.highlight;
-        @undo_redo.remove_text(pos, len) if len > 0
-        @undo_redo.add_text(k, pos)
-        @str[pos, len] = k
-        @t.cursor = :marker
-        @t.cursor += k.length
+        handle_text_insertion(k)
       when :backspace, :shift_backspace, :control_backspace
         if @t.cursor > 0 and @t.marker.nil?
-          @t.marker = @t.cursor - 1
+          @t.marker = @t.cursor - 1 # make highlight length at least 1
         end
         sel = @t.highlight
         if sel[0] > 0 or sel[1] > 0
-          @str.slice!(*sel)
-          @t.cursor = :marker
+          handle_text_deletion(*sel)
         end
       when :delete
         sel = @t.highlight
         sel[1] = 1 if sel[1] == 0
-        @str.slice!(*sel)
-        @t.cursor = :marker
+        handle_text_deletion(*sel)
       when :tab
         case @compmode
         when :art
@@ -240,9 +218,7 @@ module HH::Editor
         when :sound
           foley { |code| onkey(code) }
         else
-          @str[*@t.highlight] = "  "
-          @t.cursor = :marker
-          @t.cursor += 2
+          on_insert_text(@t.cursor, "  ")
         end
       when :alt_q
         @action.clear { home }
@@ -251,25 +227,24 @@ module HH::Editor
         @t.cursor = @str.length
       when :control_x, :alt_x
         if @t.marker
-          self.clipboard = @str[*@t.highlight]
           sel = @t.highlight
-          sel[1] = 1 if sel[1] == 0
-          @str.slice!(*sel)
-          @t.cursor = :marker
+          self.clipboard = @str[*sel]
+          if sel[1] == 0
+            sel[1] = 1
+            raise "why did this happen??"
+          end
+          handle_text_deletion(*sel)
         end
       when :control_c, :alt_c, :control_insertadd_characte
         if @t.marker
           self.clipboard = @str[*@t.highlight]
         end
       when :control_v, :alt_v, :shift_insert
-        clip = self.clipboard
-        @str[*@t.highlight] = clip
-        @t.cursor = :marker
-        @t.cursor += clip.length
+        handle_text_insertion(self.clipboard)
       when :control_z
-        @undo_redo.undo_act
+        @undo_redo.undo_command
       when :control_y
-        @undo_redo.redo_act
+        @undo_redo.redo_command
       when :shift_home, :home
         nl = @str.rindex("\n", @t.cursor - 1) || -1
         @t.cursor = nl + 1
@@ -360,15 +335,35 @@ module HH::Editor
     onkey(nil)
   end
 
+
+  # called when the user wants to insert text
+  def handle_text_insertion str
+      pos, len = @t.highlight;
+      handle_text_deletion(pos, len) if len > 0
+
+      @undo_redo.new_action InsertionCommand.new(pos, str)
+      insert_text(pos, str)
+  end
+
+  # called when the user wants to delete text
+  def handle_text_deletion pos, len
+    str = @str[pos, len]
+    return if str.empty? # happens if len == 0 or pos to big
+    @undo_redo.new_action DeletionCommand.new(pos, str)
+    delete_text(pos, len)
+  end
+
   def insert_text pos, text
     @str.insert(pos, text)
     @t.cursor = pos + text.size
+    @t.cursor = :marker # XXX ???
     update_text
   end
 
   def delete_text pos, len
-    @str[pos, len] = ""
+    @str[pos, len] = "" # TODO use slice?
     @t.cursor = pos
+    @t.cursor = :marker
     update_text
   end
 end
