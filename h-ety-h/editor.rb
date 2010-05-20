@@ -3,60 +3,65 @@ require 'h-ety-h/markup'
 
 module HH::Editor
   # common code between InsertionAction and DeletionAction
-  class InsertionDeletionAction
+  # on_insert_text and on_delete_text should be called before any subclass
+  # can be used
+  class InsertionDeletionCommand
+    def self.on_insert_text &block
+      @@insert_text = block
+    end
+    def self.on_delete_text &block
+      @@delete_text = block
+    end
+
     # action to insert/delete str to text at position pos
-    def initialize pos, str, text
-      @position, @string, @text = pos, str, text
+    def initialize pos, str
+      @position, @string = pos, str
     end
     def insert
-      @text.insert(@position, @string)
+      @@insert_text.call(@position, @string)
     end
     def delete
-      @text[@position, @string.size] = ""
+      @@delete_text.call(@position, @string.size)
     end
   end
 
-  class InsertionAction < InsertionDeletionAction
-    def run
+  class InsertionCommand < InsertionDeletionCommand
+    def execute
       insert
     end
-    def undo
+    def unexecute
       delete
     end
   end
 
-  class DeletionAction < InsertionDeletionAction
-    def run
+  class DeletionCommand < InsertionDeletionCommand
+    def execute
       delete
     end
-    def undo
+    def unexecute
       insert
     end
   end
 
   class UndoRedo
-    def initialize text, &hook
-      @text = text  # reference of the original text
+    def initialize
       @action_stack = [] # array of actions
       @stack_position = 0;
       @last_position = nil
-      @hook = hook
     end
 
     # _act was added for consistency with redo_act
     def undo_act
       return if @stack_position == 0
       @stack_position -= 1;
-      @action_stack[@stack_position].undo;
-      @hook.call
+      @action_stack[@stack_position].unexecute;
     end
 
     # _act was added because redo is a keyword
     def redo_act
       return if @stack_position == @action_stack.size
-      @action_stack[@stack_position].run
+      @action_stack[@stack_position].execute
       @stack_position += 1;
-      @hook.call
     end
 
     def new_action action
@@ -66,7 +71,7 @@ module HH::Editor
     end
 
     def add_text str, pos
-      new_action InsertionAction.new(pos, str, @text)
+      new_action InsertionCommand.new(pos, str)
   #    if @char == "\n"
   #      return
   #    end
@@ -77,7 +82,7 @@ module HH::Editor
 
     def remove_text pos, length=1
       str = @text[pos, length]
-      new_action DeletionAction.new(pos, str, @text)
+      new_action DeletionCommand.new(pos, str)
     end
   end
 
@@ -92,7 +97,9 @@ module HH::Editor
   def editor(script = {})
     @str = script[:script] || ""
     name = script[:name] || "A New Program"
-    @undo_redo = UndoRedo.new(@str) {update_text}
+    @undo_redo = UndoRedo.new
+    InsertionDeletionCommand.on_insert_text {|pos, str|  insert_text(pos, str)}
+    InsertionDeletionCommand.on_delete_text {|pos, len|  delete_text(pos, len)}
     @editor =
       stack :margin_left => 50, :margin_top => 22, :width => 1.0, :height => 92 do
         @sname = subtitle name, :font => "Lacuna Regular", :size => 22,
@@ -309,9 +316,6 @@ module HH::Editor
       @ln.replace [*1..(@str.count("\n")+1)].join("\n")
     end
 
-
-
-
     spaces = [?\t, ?\s, ?\n]
 
     keypress do |k|
@@ -354,5 +358,17 @@ module HH::Editor
     end
 
     onkey(nil)
+  end
+
+  def insert_text pos, text
+    @str.insert(pos, text)
+    @t.cursor = pos + text.size
+    update_text
+  end
+
+  def delete_text pos, len
+    @str[pos, len] = ""
+    @t.cursor = pos
+    update_text
   end
 end
