@@ -57,7 +57,7 @@ module HH::Editor
         nil
       elsif second.string == "\n"
         nil
-      elsif second.position == self.position + self.string.size
+      elsif second.position == self.position
         # probably the delete key
         self.string += second.string
         self
