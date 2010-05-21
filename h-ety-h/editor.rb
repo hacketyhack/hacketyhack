@@ -26,7 +26,7 @@ module HH::Editor
     end
 
   protected
-  attr_accessor  :position, :string
+    attr_accessor  :position, :string
   end
 
   class InsertionCommand < InsertionDeletionCommand
@@ -66,7 +66,6 @@ module HH::Editor
         self.position = second.position
         self.string = second.string + self.string
         self
-        d
       else
         nil
       end
@@ -261,7 +260,7 @@ module HH::Editor
         when :sound
           foley { |code| onkey(code) }
         else
-          on_insert_text(@t.cursor, "  ")
+          handle_text_insertion("  ")
         end
       when :alt_q
         @action.clear { home }
@@ -383,7 +382,10 @@ module HH::Editor
   # the result is the number of spaces
   def indentation_size
     # TODO marker
-    pos = @str.rindex("\n", @t.cursor-1) + 1
+    pos = @str.rindex("\n", @t.cursor-1)
+    return 0 if pos.nil?
+
+    pos += 1
 
     ind_size = 0
     while @str[pos, 1] == ' '
