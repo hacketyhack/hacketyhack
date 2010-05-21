@@ -72,8 +72,9 @@ module HH::Editor
     end
   end
 
-  class UndoRedo
-    def initialize
+  module UndoRedo
+
+    def reset_undo_redo
       @command_stack = [] # array of actions
       @stack_position = 0;
       @last_position = nil
@@ -104,7 +105,6 @@ module HH::Editor
       end
     end
   end
-
 end # module HH::Editor
 
 module HH::Editor
@@ -112,11 +112,13 @@ module HH::Editor
   include HH::Artist
   include HH::Dingbat
   include HH::Foley
+  include UndoRedo
 
   def editor(script = {})
     @str = script[:script] || ""
     name = script[:name] || "A New Program"
-    @undo_redo = UndoRedo.new
+
+    reset_undo_redo
     InsertionDeletionCommand.on_insert_text {|pos, str|  insert_text(pos, str)}
     InsertionDeletionCommand.on_delete_text {|pos, len|  delete_text(pos, len)}
     @editor =
@@ -284,9 +286,9 @@ module HH::Editor
       when :control_v, :alt_v, :shift_insert
         handle_text_insertion(self.clipboard)
       when :control_z
-        @undo_redo.undo_command
+        undo_command
       when :control_y
-        @undo_redo.redo_command
+        redo_command
       when :shift_home, :home
         nl = @str.rindex("\n", @t.cursor - 1) || -1
         @t.cursor = nl + 1
@@ -400,7 +402,7 @@ module HH::Editor
       pos, len = @t.highlight;
       handle_text_deletion(pos, len) if len > 0
 
-      @undo_redo.add_command InsertionCommand.new(pos, str)
+      add_command InsertionCommand.new(pos, str)
       insert_text(pos, str)
   end
 
@@ -408,7 +410,7 @@ module HH::Editor
   def handle_text_deletion pos, len
     str = @str[pos, len]
     return if str.empty? # happens if len == 0 or pos to big
-    @undo_redo.add_command DeletionCommand.new(pos, str)
+    add_command DeletionCommand.new(pos, str)
     delete_text(pos, len)
   end
 
