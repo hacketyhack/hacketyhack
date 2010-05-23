@@ -284,7 +284,7 @@ module HH::Editor
           self.clipboard = @str[*@t.highlight]
         end
       when :control_v, :alt_v, :shift_insert
-        handle_text_insertion(self.clipboard)
+        handle_text_insertion(self.clipboard) if self.clipboard
       when :control_z
         undo_command
       when :control_y
@@ -327,7 +327,7 @@ module HH::Editor
         @save_button.show
       end
 
-      update_text
+      #update_text
     end
 
     def update_text
