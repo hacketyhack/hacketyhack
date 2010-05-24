@@ -21,14 +21,18 @@ module HH::Markup
     # :escape => {:stroke => "#277" }
     :ident => {:stroke => "#A79"},
     :constant => {:stroke => "#630", :weight => "bold"},
-    :class => {:stroke => "#630", :weight => "bold"}
+    :class => {:stroke => "#630", :weight => "bold"},
+    :matching => {:stroke => "#ff0", :weight => "bold"},
   }
 
-  def highlight str, colors = COLORS
-    ary = []
-    TOKENIZER.tokenize(str) do |token|
-      puts "'#{token}' #{token.group}/#{token.instruction}"
-      ary <<
+  def highlight str, pos, colors = COLORS
+    tokens = []
+    TOKENIZER.tokenize(str) {|t| tokens << t}
+
+    res = []
+    tokens.each do |token|
+      #puts "'#{token}' #{token.group}/#{token.instruction}"
+      res <<
         if colors[token.group]
           span(token, colors[token.group])
         elsif colors[:any]
@@ -38,43 +42,47 @@ module HH::Markup
         end
       # puts "#{token} {group: #{token.group}, instruction: #{token.instruction}}"
     end
-    # puts "---"
-    ary
+
+    token_index, matching_index = matching_token(tokens, pos)
+
+    puts token_index if token_index
+    puts matching_index if matching_index
+    puts "---"
+
+    if token_index
+      res[token_index] = span(tokens[token_index], colors[:matching])
+      if matching_index
+        res[matching_index] = span(tokens[matching_index], colors[:matching])
+      end
+    end
+
+    res
   end
 
-  def matching_token(str, pos)
-    curr_pos = 0;
+  def matching_token(tokens, pos)
+    curr_pos = 0
     tokens = []
     token_index = nil
-    start1 = nil
-    end1 = nil
-    start2 = nil
-    end2 = nil
-    TOKENIZER.tokenize(str) do |token|
-      curr_pos += token.size
-      if curr_pos >= curr_pos and token_index.nil?
+    matching_index = nil
+    tokens.each do |t|
+      curr_pos += t.size
+      if token_index.nil? and curr_pos >= pos
         token_index = tokens.size
-        start1 = curr_pos
-        end1 = curr_pos + token.size
+        break
       end
-      tokens << token
     end
     if token_index.nil? then return nil end
 
-    if BRACKATS[token]
-      pos, len = matching_bracket(tokens, token_index, start1)
+    token = tokens[token_index]
+    if BRACKETS.include?(token)
+      matching_index = matching_bracket(tokens, token_index)
     end
 
-    if pos
-      start2 = pos
-      end2 = pos + len
-    end
-
-    [start1, end1, start2, end2]
+    [token_index, matching_index]
   end
 
-  def matching_bracket(tokens, index, pos)
-    token = tokens['index']
+  def matching_bracket(tokens, index)
+    token = tokens[index]
     if (matching = OPEN_BRACKETS[token])
       direction = 1
     elsif (matching = CLOSE_BRACKETS[token])
@@ -88,10 +96,9 @@ module HH::Markup
     while index >= 0 and index < tokens.size
       index += direction
       t = tokens[index]
-      pos += t.size * direction
       if t == matching
         stack_level -= 1
-        return [pos, t.size] if stack_level == 0
+        return index if stack_level == 0
       elsif t == token
         stack_level += 1
       end
