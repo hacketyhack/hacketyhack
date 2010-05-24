@@ -331,7 +331,7 @@ module HH::Editor
     end
 
     def update_text
-      @t.replace *highlight(@str)
+      @t.replace *highlight(@str, @t.cursor)
       @ln.replace [*1..(@str.count("\n")+1)].join("\n")
     end
 
@@ -376,7 +376,8 @@ module HH::Editor
       end
     end
 
-    onkey(nil)
+    #onkey(nil)
+    update_text
   end
 
   # find the indentation level at the current cursor or marker
