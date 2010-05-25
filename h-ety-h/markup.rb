@@ -22,7 +22,7 @@ module HH::Markup
     :ident => {:stroke => "#A79"},
     :constant => {:stroke => "#630", :weight => "bold"},
     :class => {:stroke => "#630", :weight => "bold"},
-    :matching => {:color => "#ff0", :weight => "bold"},
+    :matching => {:stroke => "#ff0", :weight => "bold"},
   }
 
   def highlight str, pos=nil, colors=COLORS
@@ -58,10 +58,6 @@ module HH::Markup
 
     token_index, matching_index = matching_token(tokens, pos)
 
-    puts token_index if token_index
-    puts matching_index if matching_index
-    puts "---"
-
     if token_index
       res[token_index] = span(tokens[token_index], colors[:matching])
       if matching_index
@@ -89,8 +85,9 @@ module HH::Markup
     token = tokens[token_index]
     if BRACKETS.include?(token)
       matching_index = matching_bracket(tokens, token_index)
+    else
+      return nil
     end
-    puts "#{token_index.inspect} : #{matching_index.inspect}";
 
     [token_index, matching_index]
   end
