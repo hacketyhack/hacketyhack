@@ -22,12 +22,21 @@ module HH::Markup
     :ident => {:stroke => "#A79"},
     :constant => {:stroke => "#630", :weight => "bold"},
     :class => {:stroke => "#630", :weight => "bold"},
-    :matching => {:stroke => "#ff0", :weight => "bold"},
+    :matching => {:color => "#ff0", :weight => "bold"},
   }
 
-  def highlight str, pos, colors = COLORS
+  def highlight str, pos=nil, colors=COLORS
     tokens = []
-    TOKENIZER.tokenize(str) {|t| tokens << t}
+    TOKENIZER.tokenize(str) do |t|
+      if t.group == :punct
+        # split punctuation into single characters tokens
+        # TODO: to it in the parser
+        tokens += t.split('').map{|s| HH::Syntax::Token.new(s, :punct)}
+      else
+        # add token as is
+        tokens << t
+      end
+    end
 
     res = []
     tokens.each do |token|
@@ -41,6 +50,10 @@ module HH::Markup
           token
         end
       # puts "#{token} {group: #{token.group}, instruction: #{token.instruction}}"
+    end
+
+    if not pos
+      return res
     end
 
     token_index, matching_index = matching_token(tokens, pos)
@@ -61,22 +74,23 @@ module HH::Markup
 
   def matching_token(tokens, pos)
     curr_pos = 0
-    tokens = []
     token_index = nil
     matching_index = nil
-    tokens.each do |t|
+    tokens.each_with_index do |t, i|
       curr_pos += t.size
       if token_index.nil? and curr_pos >= pos
-        token_index = tokens.size
+        token_index = i
         break
       end
     end
+    #debugger
     if token_index.nil? then return nil end
 
     token = tokens[token_index]
     if BRACKETS.include?(token)
       matching_index = matching_bracket(tokens, token_index)
     end
+    puts "#{token_index.inspect} : #{matching_index.inspect}";
 
     [token_index, matching_index]
   end
