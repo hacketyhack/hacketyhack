@@ -71,7 +71,6 @@ module HH::Markup
   def matching_token(tokens, pos)
     curr_pos = 0
     token_index = nil
-    matching_index = nil
     tokens.each_with_index do |t, i|
       curr_pos += t.size
       if token_index.nil? and curr_pos >= pos
@@ -82,14 +81,29 @@ module HH::Markup
     #debugger
     if token_index.nil? then return nil end
 
-    token = tokens[token_index]
-    if BRACKETS.include?(token)
-      matching_index = matching_bracket(tokens, token_index)
-    else
-      return nil
+    match = matching_token_at_index(tokens, token_index);
+    if match.nil? and curr_pos == pos and token_index < tokens.size-1
+      # try the token before the cursor, instead of the one after
+      #debugger
+      match = matching_token_at_index(tokens, token_index+1)
     end
 
-    [token_index, matching_index]
+    match
+  end
+
+  # tries only one index
+  # may be called twice by matching_token() using the index before and after
+  # the cursor
+  #
+  # returns nil if the token isn't a start or end of anything
+  def matching_token_at_index(tokens, token_index)
+    token = tokens[token_index]
+    if BRACKETS.include?(token)
+      return[token_index, matching_bracket(tokens, token_index)]
+    else
+      # token uninteresting
+      return nil
+    end
   end
 
   def matching_bracket(tokens, index)
