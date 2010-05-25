@@ -327,7 +327,7 @@ module HH::Editor
         @save_button.show
       end
 
-      #update_text
+      update_text
     end
 
     def update_text
@@ -419,13 +419,13 @@ module HH::Editor
     @str.insert(pos, text)
     @t.cursor = pos + text.size
     @t.cursor = :marker # XXX ???
-    update_text
+    #update_text
   end
 
   def delete_text pos, len
     @str[pos, len] = "" # TODO use slice?
     @t.cursor = pos
     @t.cursor = :marker
-    update_text
+    #update_text
   end
 end
