@@ -87,10 +87,15 @@ module HH::Markup
     if match.nil? and curr_pos == pos and token_index < tokens.size-1
       # try the token before the cursor, instead of the one after
       #debugger
-      match = matching_token(tokens, token_index+1)
+      token_index += 1
+      match = matching_token_at_index(tokens, token_index)
     end
 
-    match
+    if match
+      [token_index, match]
+    else
+      nil
+    end
   end
 
 
@@ -141,9 +146,13 @@ module HH::Markup
 #  end
 
 
-  def matching_token(tokens, index)
+  def matching_token_at_index(tokens, index)
     token = tokens[index]
     starts, ends, direction = matching_tokens(token)
+    puts "#{starts.inspect}, #{ends.inspect}, #{direction.inspect}"
+    if starts.nil?
+      return
+    end
 
     stack_level = 1
     while index >= 0 and index < tokens.size
