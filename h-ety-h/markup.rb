@@ -99,53 +99,6 @@ module HH::Markup
   end
 
 
-  # tries only one index
-  # may be called twice by matching_token() using the index before and after
-  # the cursor
-  #
-  # returns nil if the token isn't a start or end of anything
-#  def matching_token_at_index(tokens, token_index)
-#    token = tokens[token_index]
-#    if BRACKETS.include?(token)
-#      return[token_index, matching_bracket(tokens, token_index)]
-#    elsif (OPEN_BLOCK + ['end']).include?(token)
-#      return [token_index, matching_block(tokens, token_index)]
-#    else
-#      # token uninteresting
-#      return nil
-#    end
-#  end
-#
-#
-#  def matching_bracket(tokens, index)
-#    token = tokens[index]
-#    if (matching = OPEN_BRACKETS[token])
-#      direction = 1
-#    elsif (matching = CLOSE_BRACKETS[token])
-#      direction = -1
-#    else
-#      # something strange happened..
-#      raise "internal error: unknown bracket"
-#    end
-#
-#    return matching_token(tokens, index, [matching], direction)
-#  end
-#
-#
-#  def matching_block(tokens, index)
-#    token = tokens[index]
-#    if (token == 'end')
-#      direction = -1
-#      matching_tokens = OPEN_BLOCK;
-#    else
-#      direction = 1
-#      matching_tokens = ['end']
-#    end
-#
-#    return matching_token(tokens, index, [matching_tokens], direction)
-#  end
-
-
   def matching_token_at_index(tokens, index)
     token = tokens[index]
     starts, ends, direction = matching_tokens(token)
