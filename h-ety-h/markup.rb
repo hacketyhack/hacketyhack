@@ -25,6 +25,7 @@ module HH::Markup
     :matching => {:stroke => "#ff0", :weight => "bold"},
   }
 
+  
   def highlight str, pos=nil, colors=COLORS
     tokens = []
     TOKENIZER.tokenize(str) do |t|
@@ -68,6 +69,7 @@ module HH::Markup
     res
   end
 
+
   def matching_token(tokens, pos)
     curr_pos = 0
     token_index = nil
@@ -85,51 +87,102 @@ module HH::Markup
     if match.nil? and curr_pos == pos and token_index < tokens.size-1
       # try the token before the cursor, instead of the one after
       #debugger
-      match = matching_token_at_index(tokens, token_index+1)
+      match = matching_token(tokens, token_index+1)
     end
 
     match
   end
+
 
   # tries only one index
   # may be called twice by matching_token() using the index before and after
   # the cursor
   #
   # returns nil if the token isn't a start or end of anything
-  def matching_token_at_index(tokens, token_index)
-    token = tokens[token_index]
-    if BRACKETS.include?(token)
-      return[token_index, matching_bracket(tokens, token_index)]
-    else
-      # token uninteresting
-      return nil
-    end
-  end
+#  def matching_token_at_index(tokens, token_index)
+#    token = tokens[token_index]
+#    if BRACKETS.include?(token)
+#      return[token_index, matching_bracket(tokens, token_index)]
+#    elsif (OPEN_BLOCK + ['end']).include?(token)
+#      return [token_index, matching_block(tokens, token_index)]
+#    else
+#      # token uninteresting
+#      return nil
+#    end
+#  end
+#
+#
+#  def matching_bracket(tokens, index)
+#    token = tokens[index]
+#    if (matching = OPEN_BRACKETS[token])
+#      direction = 1
+#    elsif (matching = CLOSE_BRACKETS[token])
+#      direction = -1
+#    else
+#      # something strange happened..
+#      raise "internal error: unknown bracket"
+#    end
+#
+#    return matching_token(tokens, index, [matching], direction)
+#  end
+#
+#
+#  def matching_block(tokens, index)
+#    token = tokens[index]
+#    if (token == 'end')
+#      direction = -1
+#      matching_tokens = OPEN_BLOCK;
+#    else
+#      direction = 1
+#      matching_tokens = ['end']
+#    end
+#
+#    return matching_token(tokens, index, [matching_tokens], direction)
+#  end
 
-  def matching_bracket(tokens, index)
+
+  def matching_token(tokens, index)
     token = tokens[index]
-    if (matching = OPEN_BRACKETS[token])
-      direction = 1
-    elsif (matching = CLOSE_BRACKETS[token])
-      direction = -1
-    else
-      # something strange happened..
-      raise "internal error: unknown bracket"
-    end
+    starts, ends, direction = matching_tokens(token)
 
     stack_level = 1
     while index >= 0 and index < tokens.size
       index += direction
       t = tokens[index]
-      if t == matching
+      if ends.include?(t)
         stack_level -= 1
         return index if stack_level == 0
-      elsif t == token
+      elsif starts.include?(t)
         stack_level += 1
       end
     end
+    # no matching token found
     return nil
   end
+
+  # returns an array of tokens matching and the direction
+  def matching_tokens(token)
+    starts = [token]
+    if OPEN_BRACKETS[token]
+      direction = 1
+      ends = [OPEN_BRACKETS[token]]
+    elsif CLOSE_BRACKETS[token]
+      direction = -1
+      ends = [CLOSE_BRACKETS[token]]
+    elsif OPEN_BLOCK.include?(token)
+      direction = 1
+      ends = ['end']
+      starts = OPEN_BLOCK
+    elsif token == 'end'
+      direction = -1
+      ends = OPEN_BLOCK
+    else
+      return nil
+    end
+
+    [starts, ends, direction]
+  end
+
 
   OPEN_BRACKETS = {
     '{' => '}',
@@ -149,6 +202,16 @@ module HH::Markup
 
   BRACKETS = CLOSE_BRACKETS.keys + OPEN_BRACKETS.keys
 
+  OPEN_BLOCK = [
+    'def',
+    'class',
+    'module',
+    'do',
+    'if',
+    'unless',
+    'while',
+    'begin'
+  ]
 #  MATCH_CLOSES = {
 #    ['do', :keyword] => ['end'],
 #    ['class', :keyword] => ['end'],
