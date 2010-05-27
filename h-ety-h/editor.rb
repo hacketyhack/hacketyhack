@@ -179,6 +179,7 @@ module HH::Editor
               @t.marker = nil
               @t.cursor = c
             end
+            update_text
           end
           leave { self.cursor = :arrow }
         end
