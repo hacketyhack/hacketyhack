@@ -110,7 +110,8 @@ private
     stack_level = 1
     while index >= 0 and index < tokens.size
       index += direction
-      t = tokens[index]
+      # TODO separate space in the tokenizer
+      t = tokens[index].gsub(/\s/, '')
       if ends.include?(t)
         stack_level -= 1 if not as_modifier?(tokens, index)
         return index if stack_level == 0
@@ -124,7 +125,8 @@ private
 
   # returns an array of tokens matching and the direction
   def matching_tokens(tokens, index)
-    token = tokens[index]
+    # TODO separate space in the tokenizer
+    token = tokens[index].gsub(/\s/, '')
     starts = [token]
     if OPEN_BRACKETS[token]
       direction = 1
