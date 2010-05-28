@@ -66,10 +66,11 @@ module HH::Markup
       end
     end
 
+    puts tokens.inspect
     res
   end
 
-
+private
   def matching_token(tokens, pos)
     curr_pos = 0
     token_index = nil
@@ -100,11 +101,10 @@ module HH::Markup
 
 
   def matching_token_at_index(tokens, index)
-    token = tokens[index]
-    starts, ends, direction = matching_tokens(token)
+    starts, ends, direction = matching_tokens(tokens, index)
     puts "#{starts.inspect}, #{ends.inspect}, #{direction.inspect}"
     if starts.nil?
-      return
+      return nil
     end
 
     stack_level = 1
@@ -112,7 +112,7 @@ module HH::Markup
       index += direction
       t = tokens[index]
       if ends.include?(t)
-        stack_level -= 1
+        stack_level -= 1 if not as_modifier?(tokens, index)
         return index if stack_level == 0
       elsif starts.include?(t)
         stack_level += 1
@@ -123,7 +123,8 @@ module HH::Markup
   end
 
   # returns an array of tokens matching and the direction
-  def matching_tokens(token)
+  def matching_tokens(tokens, index)
+    token = tokens[index]
     starts = [token]
     if OPEN_BRACKETS[token]
       direction = 1
@@ -132,6 +133,9 @@ module HH::Markup
       direction = -1
       ends = [CLOSE_BRACKETS[token]]
     elsif OPEN_BLOCK.include?(token)
+      if as_modifier?(tokens, index)
+        return nil
+      end
       direction = 1
       ends = ['end']
       starts = OPEN_BLOCK
@@ -143,6 +147,34 @@ module HH::Markup
     end
 
     [starts, ends, direction]
+  end
+
+  def as_modifier?(tokens, index)
+    if not MODIFIERS.include? tokens[index]
+      return false
+    end
+    
+    index -= 1
+    # find last index before the token that is no space
+    index -= 1 while index >= 0 and tokens[index] =~ /\A[ \t]*\Z/
+
+    if index < 0
+      # first character of the string
+      false
+    elsif tokens[index] =~ /\n[ \t]*\Z/
+      # first token of the line
+      false
+    elsif tokens[index].group == :punct
+      # preceded by a punctuation token on the same line
+      i = tokens[index].rindex(/\S/)
+      punc = tokens[index][i, 1]
+      # true if the preceeding statement was terminating
+      puts "last was: #{punc}"
+      not NON_TERMINATING.include?(punc)
+    else
+      # preceded by a non punctuation token on the same line
+      true
+    end
   end
 
 
@@ -172,17 +204,12 @@ module HH::Markup
     'if',
     'unless',
     'while',
-    'begin'
+    'until',
+    'begin',
+    'for'
   ]
-#  MATCH_CLOSES = {
-#    ['do', :keyword] => ['end'],
-#    ['class', :keyword] => ['end'],
-#    ['module', :keyword] => ['end'],
-#    ['def', :keyword] => ['end'],
-#    ['if', :keyword] => ['end'],
-#    ['{', :punct] => ['}'],
-#    ['[', :punct] => [']'],
-#    ['(', :punct] => [')']
-#  }
 
+  MODIFIERS = %w[if unless while until]
+
+  NON_TERMINATING = %w{+ - * / , . = ~ < > ( [}
 end
