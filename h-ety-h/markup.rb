@@ -51,7 +51,7 @@ module HH::Markup
         end
     end
 
-    if not pos
+    if pos.nil? or pos < 0
       return res
     end
 
