@@ -41,7 +41,6 @@ module HH::Markup
 
     res = []
     tokens.each do |token|
-      #puts "'#{token}' #{token.group}/#{token.instruction}"
       res <<
         if colors[token.group]
           span(token, colors[token.group])
@@ -50,7 +49,6 @@ module HH::Markup
         else
           token
         end
-      # puts "#{token} {group: #{token.group}, instruction: #{token.instruction}}"
     end
 
     if not pos
@@ -66,7 +64,6 @@ module HH::Markup
       end
     end
 
-    puts tokens.inspect
     res
   end
 
@@ -87,7 +84,6 @@ private
     match = matching_token_at_index(tokens, token_index);
     if match.nil? and curr_pos == pos and token_index < tokens.size-1
       # try the token before the cursor, instead of the one after
-      #debugger
       token_index += 1
       match = matching_token_at_index(tokens, token_index)
     end
@@ -102,7 +98,6 @@ private
 
   def matching_token_at_index(tokens, index)
     starts, ends, direction = matching_tokens(tokens, index)
-    puts "#{starts.inspect}, #{ends.inspect}, #{direction.inspect}"
     if starts.nil?
       return nil
     end
@@ -171,7 +166,6 @@ private
       i = tokens[index].rindex(/\S/)
       punc = tokens[index][i, 1]
       # true if the preceeding statement was terminating
-      puts "last was: #{punc}"
       not NON_TERMINATING.include?(punc)
     else
       # preceded by a non punctuation token on the same line
