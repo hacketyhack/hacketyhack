@@ -529,13 +529,15 @@ module HH::Console
     :symbol => {:stroke => "#9DF3C6"},
     :string => {:stroke => "#C9F5A5"},
     :number => {:stroke => "#C9F5A5"},
-    :any => {:stroke => "#FFF"}
+    :any => {:stroke => "#FFF"},
+    :matching => {:stroke => "#f00", :weight => "bold"},
   }
 
   include HH::Markup
 
   def syntax(cmd)
-    highlight cmd, COLORS
+    cursor_pos = cmd ? cmd.size-1 : nil
+    highlight cmd, cursor_pos, COLORS
   end
 
   def console
