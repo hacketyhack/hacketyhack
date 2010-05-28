@@ -103,8 +103,8 @@ private
     end
 
     stack_level = 1
+    index += direction
     while index >= 0 and index < tokens.size
-      index += direction
       # TODO separate space in the tokenizer
       t = tokens[index].gsub(/\s/, '')
       if ends.include?(t)
@@ -113,6 +113,7 @@ private
       elsif starts.include?(t)
         stack_level += 1
       end
+      index += direction
     end
     # no matching token found
     return nil
