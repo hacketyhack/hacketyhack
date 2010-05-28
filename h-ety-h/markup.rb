@@ -78,7 +78,6 @@ private
         break
       end
     end
-    #debugger
     if token_index.nil? then return nil end
 
     match = matching_token_at_index(tokens, token_index);
@@ -107,10 +106,10 @@ private
     while index >= 0 and index < tokens.size
       # TODO separate space in the tokenizer
       t = tokens[index].gsub(/\s/, '')
-      if ends.include?(t)
-        stack_level -= 1 if not as_modifier?(tokens, index)
+      if ends.include?(t) and not as_modifier?(tokens, index)
+        stack_level -= 1
         return index if stack_level == 0
-      elsif starts.include?(t)
+      elsif starts.include?(t) and not as_modifier?(tokens, index)
         stack_level += 1
       end
       index += direction
@@ -148,13 +147,14 @@ private
   end
 
   def as_modifier?(tokens, index)
-    if not MODIFIERS.include? tokens[index]
+
+    if not MODIFIERS.include? tokens[index].gsub(/\s/, '')
       return false
     end
     
     index -= 1
     # find last index before the token that is no space
-    index -= 1 while index >= 0 and tokens[index] =~ /\A[ \t]*\Z/
+    index -= 1 while index >= 0 and tokens[index] =~ /\A[ \t]*\z/
 
     if index < 0
       # first character of the string
