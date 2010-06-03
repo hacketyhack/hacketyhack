@@ -443,8 +443,8 @@ class HH::IRB < RubyLex
     super()
     set_input(StringIO.new)
     @binding = HH.anonymous_binding
-    @index = 0
     @history = []
+    reset_history
 
     @main = eval("self", @binding)
     @main.extend HH::Lessons
@@ -453,29 +453,34 @@ class HH::IRB < RubyLex
   end
 
   def back_history cmd
-    @cmd = cmd
-    if @index < @history.length
+    if @index < @tmp_history.length-1
+      @tmp_history[@index] = cmd
       @index += 1
-      @history[@index - 1]
+      @tmp_history[@index]
+    else
+      cmd
     end
   end
 
-  def next_history
+  def next_history cmd
     if @index > 0
+      @tmp_history[@index] = cmd
       @index -= 1
-      if @index == 0
-        @cmd
-      else
-        @history[@index - 1]
-      end
+      @tmp_history[@index]
+    else
+      cmd
     end
+  end
+
+  def reset_history
+    @index = 0
+    @tmp_history = [nil] + @history
   end
 
   def run(str)
     obj = nil
     @io << str
     @io.rewind
-    @index = 0
     unless l = lex
       raise Empty if @line == ''
     else
@@ -511,12 +516,14 @@ class HH::IRB < RubyLex
     [output, obj]
   rescue Object => e
     case e when Empty, Continue
+      # do nothing
     else
       @main.check(@line, nil, e.friendly)
       @line = ""
     end
     raise e
   ensure
+    reset_history
     set_input(StringIO.new)
   end
 end
@@ -536,7 +543,11 @@ module HH::Console
   include HH::Markup
 
   def syntax(cmd)
-    cursor_pos = cmd ? cmd.size-1 : nil
+    if cmd.nil?
+      error "cmd is nil #{__FILE__}:#{__LINE__}"
+      return []
+    end
+    cursor_pos = cmd.size-1
     highlight cmd, cursor_pos, COLORS
   end
 
@@ -621,7 +632,7 @@ module HH::Console
       when :up
         @cmd = @irb.back_history @cmd
       when :down
-        @cmd = @irb.next_history
+        @cmd = @irb.next_history @cmd
       when :tab
         @cmd += "  "
       when :alt_q
