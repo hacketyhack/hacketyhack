@@ -1,6 +1,7 @@
 require 'irb/ruby-lex'
 require 'stringio'
 require 'h-ety-h/markup'
+require 'h-ety-h/completion'
 
 module HH::Lessons
   attr_accessor :lesson, :started, :bookmark
@@ -528,6 +529,10 @@ class HH::IRB < RubyLex
   end
 end
 
+
+
+
+
 module HH::Console
   CURSOR = ">>"
   COLORS = {
@@ -634,7 +639,13 @@ module HH::Console
       when :down
         @cmd = @irb.next_history @cmd
       when :tab
-        @cmd += "  "
+        options = InputCompletor.complete(@cmd, @binding)
+        if options.size == 1
+          @cmd = options.first
+        elsif options.size > 1
+          @str += [syntax(@cmd), "\n"]
+          @str << options[0..10].join(' ') << " [...]\n#{CURSOR} ";
+        end
       when :alt_q
         quit
       when :alt_c
@@ -650,4 +661,6 @@ module HH::Console
       @say.text = msg
     end
   end
+
+
 end
