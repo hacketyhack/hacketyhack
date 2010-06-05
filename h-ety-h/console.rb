@@ -661,7 +661,9 @@ module HH::Console
     elsif options.size > 1
       # display options
       @str += [syntax(@cmd), "\n"]
-      @str << options[0..15].join(' ') << " [...]\n#{CURSOR} ";
+      @str << options[0...15].join(' ')
+      @str << " [...]" if options.size > 15
+      @str << "\n#{CURSOR} "
     end
   end
 
