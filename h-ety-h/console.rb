@@ -654,8 +654,18 @@ module HH::Console
 
   def autocomplete
     last = @cmd.split(/[^\w\.\d:]+/).last
-    last = "" if last.nil?
-    options = HH::InputCompletor.complete(last, @binding).sort
+    last = '' if last.nil?
+    # special case for strings and regular expressions
+    # check last character
+    last_char = @cmd[-last.size-1, 1]
+    if last_char == '"'
+      last = 'a' + last
+    elsif last_char == '/'
+      last = '/a/' + last
+    end
+    STDOUT << last << "\n"
+    options = HH::InputCompletor.complete(last, @binding)
+    options = options.select{|x| x}#.sort
     if options.size == 1
       # autocomplete
       @cmd[-last.size..-1] = options.first
