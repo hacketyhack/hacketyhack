@@ -652,29 +652,39 @@ module HH::Console
     end
   end
 
+  # number of autocompletion possibilieties shown
+  COMPLETION_N = 15
+
   def autocomplete
     last = @cmd.split(/[^\w\.\d:]+/).last
     last = '' if last.nil?
     # special case for strings and regular expressions
     # check last character
     last_char = @cmd[-last.size-1, 1]
-    if last_char == '"'
-      last = 'a' + last
-    elsif last_char == '/'
-      last = '/a/' + last
+    if last_char == '"' or last_char == '/'
+      # find first index of " or /
+      i = @cmd.rindex(last_char, -last.size-2)
+      # include string/regexp
+      last = @cmd[i..-1] if i
     end
-    STDOUT << last << "\n"
+    #STDOUT << last << "\n"
     options = HH::InputCompletor.complete(last, @binding)
     options = options.select{|x| x}#.sort
-    if options.size == 1
-      # autocomplete
-      @cmd[-last.size..-1] = options.first
-    elsif options.size > 1
+    completion = options.first
+    options.each do |o|
+      while o[0, completion.size] != completion
+        # remove last char
+        completion[-1] = ''
+      end
+    end
+
+    @cmd[-last.size..-1] = completion
+    if options.size > 1
       # display options
       @str += [syntax(@cmd), "\n"]
-      @str << options[0...15].join(' ')
+      @str << options[0...COMPLETION_N].join(' ')
       size = options.size
-      @str << " [showing 15 of #{size}]" if size > 15
+      @str << " [#{COMPLETION_N} of #{size}]" if size > COMPLETION_N
       @str << "\n#{CURSOR} "
     end
   end
