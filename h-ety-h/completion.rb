@@ -1,6 +1,6 @@
 # from the irb source code
 
-module InputCompletor
+module HH::InputCompletor
 
   ReservedWords = [
     "BEGIN", "END",
@@ -23,9 +23,7 @@ module InputCompletor
   ]
 
   def self.complete input, bind
-
     #      puts "input: #{input}"
-
     case input
     when /^(\/[^\/]*\/)\.([^.]*)$/
       # Regexp
@@ -149,7 +147,7 @@ module InputCompletor
         candidates.sort!
         candidates.uniq!
       end
-      select_message(receiver, message, candidates)
+      select_message(receiver, message, candidates).select{|x| x}
 
     when /^\.([^.]*)$/
       # unknown(maybe String)

@@ -639,13 +639,7 @@ module HH::Console
       when :down
         @cmd = @irb.next_history @cmd
       when :tab
-        options = InputCompletor.complete(@cmd, @binding)
-        if options.size == 1
-          @cmd = options.first
-        elsif options.size > 1
-          @str += [syntax(@cmd), "\n"]
-          @str << options[0..10].join(' ') << " [...]\n#{CURSOR} ";
-        end
+        autocomplete
       when :alt_q
         quit
       when :alt_c
@@ -656,11 +650,23 @@ module HH::Console
       @console.replace *(@str + syntax(@cmd))
       @scroll.scroll_top = @scroll.scroll_max
     end
+  end
 
-    def say msg
-      @say.text = msg
+  def autocomplete
+    last = @cmd.split(/[^\w\.\d:]+/).last
+    options = HH::InputCompletor.complete(last, @binding).sort
+    if options.size == 1
+      # autocomplete
+      @cmd[-last.size..-1] = options.first
+    elsif options.size > 1
+      # display options
+      @str += [syntax(@cmd), "\n"]
+      @str << options[0..15].join(' ') << " [...]\n#{CURSOR} ";
     end
   end
 
+  def say msg
+    @say.text = msg
+  end
 
 end
