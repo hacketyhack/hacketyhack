@@ -654,6 +654,7 @@ module HH::Console
 
   def autocomplete
     last = @cmd.split(/[^\w\.\d:]+/).last
+    last = "" if last.nil?
     options = HH::InputCompletor.complete(last, @binding).sort
     if options.size == 1
       # autocomplete
@@ -662,7 +663,8 @@ module HH::Console
       # display options
       @str += [syntax(@cmd), "\n"]
       @str << options[0...15].join(' ')
-      @str << " [...]" if options.size > 15
+      size = options.size
+      @str << " [showing 15 of #{size}]" if size > 15
       @str << "\n#{CURSOR} "
     end
   end
