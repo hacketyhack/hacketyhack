@@ -500,7 +500,16 @@ class HH::IRB < RubyLex
       end
     end
     unless @line.empty?
-      obj = eval @line, @binding, "(irb)", @line_no
+      begin
+        obj = eval @line, @binding, "(irb)", @line_no
+      rescue Exception => e
+        STDOUT << e.class << " " << (e.class == SyntaxError) << "\n"
+        if e.says =~ /unexpected \$end/
+          raise Continue
+        else
+          raise e
+        end
+      end
     end
     $stdout.rewind
     output = $stdout.read
