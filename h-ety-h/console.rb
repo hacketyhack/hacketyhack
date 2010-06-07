@@ -665,8 +665,12 @@ module HH::Console
   COMPLETION_N = 15
 
   def autocomplete
-    last = @cmd.split(/[^\w\.\d:]+/).last
-    last = '' if last.nil?
+    index = @cmd.rindex(/[^\w\.\d:]/)
+    if index
+      last = @cmd[index+1..-1]
+    else
+      last = @cmd
+    end
     # special case for strings and regular expressions
     # check last character
     last_char = @cmd[-last.size-1, 1]
@@ -687,7 +691,7 @@ module HH::Console
       end
     end
 
-    @cmd[-last.size..-1] = completion if completion
+    @cmd[-last.size..-1] = completion if completion and last.size > 0
     if options.size > 1
       # display options
       @str += [syntax(@cmd), "\n"]
