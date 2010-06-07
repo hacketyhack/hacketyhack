@@ -687,7 +687,7 @@ module HH::Console
       end
     end
 
-    @cmd[-last.size..-1] = completion
+    @cmd[-last.size..-1] = completion if completion
     if options.size > 1
       # display options
       @str += [syntax(@cmd), "\n"]
