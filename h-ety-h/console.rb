@@ -544,6 +544,7 @@ end
 
 module HH::Console
   CURSOR = ">>"
+  CONTINUE = ".."
   COLORS = {
     :comment => {:stroke => "#887"},
     :keyword => {:stroke => "#FCF90F"},
@@ -615,6 +616,7 @@ module HH::Console
       case k
       when "\n"
         begin
+          @continue = false
           @say.show
           out, obj = @irb.run(@cmd)
           @str += [syntax(@cmd), "\n"]
@@ -629,7 +631,8 @@ module HH::Console
           @str << "\n#{CURSOR} "
           @cmd = ""
         rescue HH::IRB::Continue
-          @str += [syntax(@cmd), "\n.. "]
+          @continue = true
+          @str += [syntax(@cmd), "\n#{CONTINUE} "]
           @cmd = ""
         rescue Object => e
           @str += [syntax(@cmd), "\n", 
@@ -698,7 +701,11 @@ module HH::Console
       @str << options[0...COMPLETION_N].join(' ')
       size = options.size
       @str << " [#{COMPLETION_N} of #{size}]" if size > COMPLETION_N
-      @str << "\n#{CURSOR} "
+      if @continue
+        @str << "\n#{CONTINUE} "
+      else
+        @str << "\n#{CURSOR} "
+      end
     end
   end
 
