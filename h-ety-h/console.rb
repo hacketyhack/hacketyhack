@@ -616,7 +616,7 @@ module HH::Console
       case k
       when "\n"
         begin
-          @continue = false
+          @multiline = false
           @say.show
           out, obj = @irb.run(@cmd)
           @str += [syntax(@cmd), "\n"]
@@ -631,7 +631,7 @@ module HH::Console
           @str << "\n#{CURSOR} "
           @cmd = ""
         rescue HH::IRB::Continue
-          @continue = true
+          @multiline = true
           @str += [syntax(@cmd), "\n#{CONTINUE} "]
           @cmd = ""
         rescue Object => e
@@ -701,7 +701,7 @@ module HH::Console
       @str << options[0...COMPLETION_N].join(' ')
       size = options.size
       @str << " [#{COMPLETION_N} of #{size}]" if size > COMPLETION_N
-      if @continue
+      if @multiline
         @str << "\n#{CONTINUE} "
       else
         @str << "\n#{CURSOR} "
