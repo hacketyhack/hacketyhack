@@ -1,10 +1,19 @@
 class Shoes
-  def add_turtle_methods
-    @heading = 180*Turtle::DEG
-    @x = 200.0
-    @y = 200.0
-    @pen_down = true
+  def add_turtle_methods args={}
+    @width = args[:width] || 400
+    @height = args[:height] || 400
 
+    def self.set_defaults
+      @heading = 180*Turtle::DEG
+      @x = @width/2
+      @y = @height/2
+      @pen_down = true
+    end
+
+    def self.reset
+      set_defaults
+      clear
+    end
     def self.forward len=100
       x = len*Math.sin(@heading) + @x
       y = len*Math.cos(@heading) + @y
@@ -65,10 +74,13 @@ class Shoes
     end
 
     alias pencolor stroke
+    alias pensize strokewidth
 
     # already in shoes:
     # clear
     # background
+
+    set_defaults
   end
 end
 
@@ -87,6 +99,7 @@ Turtle.start do
   # barbwire
   background yellow
   pencolor brown
+  pensize 2
   go 30, 200
   setheading 180
   1000.times do
