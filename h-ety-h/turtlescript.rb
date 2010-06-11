@@ -14,43 +14,61 @@ class Shoes
       end
       @x, @y = x, y
     end
-
     # adds singleton methods
     def self.backward len=100
       forward(-len)
     end
-
     def self.turnleft angle=90
       @heading += angle*Turtle::DEG
       @heading %= 2*PI
     end
-
     def self.turnright angle=90
       turnleft(-angle)
     end
-
-    def self.direction dir=180
+    def self.setheading dir=180
       dir += 180
       @heading = dir*Turtle::DEG
     end
-
-    def self.go x, y
-      @x, @y = x, y
-    end
-
-    def self.center
-      go(200, 200)
-    end
-
     def self.penup
       @pen_down = false
     end
-
     def self.pendown
       @pen_down = true
     end
+    def self.isdown?
+      return @pen_down
+    end
+    def self.go x, y
+      @x, @y = x, y
+    end
+    def self.center
+      go(200, 200)
+    end
+    def self.setx x
+      @x = x
+    end
+    def self.sety y
+      @y = y
+    end
+    def self.getx
+      @x
+    end
+    def self.gety
+      @y
+    end
+    def self.getposition
+      [@x, @y]
+    end
+
+    def self.getheading
+      @heading
+    end
 
     alias pencolor stroke
+
+    # already in shoes:
+    # clear
+    # background
   end
 end
 
@@ -67,13 +85,13 @@ end
 
 Turtle.start do
   # barbwire
-  background red
-  pencolor white
-  go 0, 200
-  direction 180
-  800.times do
+  background yellow
+  pencolor brown
+  go 30, 200
+  setheading 180
+  1000.times do
     forward 20
-    turnleft(rand(10))
+    turnleft rand(10)
     backward 10
   end
 end
