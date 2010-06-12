@@ -7,10 +7,12 @@ class Shoes::Turtle < Shoes::Widget
   def initialize
     @width = WIDTH
     @height = WIDTH
+    style width => @width, :height => @height
     @heading = 180*DEG
     @x = @width / 2
     @y = @height / 2
     @pendown = true
+    @speed = 10
   end
 
   def reset
@@ -87,10 +89,14 @@ end
 
 module Turtle
   def self.start opts={}, &blk
-    opts[:width] ||= Shoes::Turtle::WIDTH
-    opts[:height] ||= Shoes::Turtle::HEIGHT
+    opts[:width] ||= Shoes::Turtle::WIDTH+20
+    opts[:height] ||= Shoes::Turtle::HEIGHT+20
+    opts[:align] = 'center'
     Shoes.app opts do
-      turtle.instance_eval &blk
+      stack :width => Shoes::Turtle::WIDTH, :height => Shoes::Turtle::HEIGHT,
+        :left => 10, :top => 10 do
+        turtle.instance_eval &blk
+      end
     end
 
   end
