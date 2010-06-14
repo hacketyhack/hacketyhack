@@ -1,3 +1,5 @@
+require 'thread'
+
 class Shoes::Turtle < Shoes::Widget
   WIDTH = 400
   HEIGHT = 400
@@ -13,6 +15,7 @@ class Shoes::Turtle < Shoes::Widget
     @y = @height / 2
     @pendown = true
     @speed = 10
+    @queue = Queue.new
   end
 
   def reset
@@ -20,6 +23,7 @@ class Shoes::Turtle < Shoes::Widget
     clear
   end
   def forward len=100
+    start_step
     x = len*sin(@heading) + @x
     y = len*cos(@heading) + @y
     if @pendown
@@ -79,26 +83,52 @@ class Shoes::Turtle < Shoes::Widget
     @heading
   end
 
+  def step
+    puts "step"
+    @queue.enq nil
+  end
+
+  def play
+    puts "play"
+  end
+
   alias pencolor stroke
   alias pensize strokewidth
 
   # already in shoes:
   # clear
   # background
+
+  private
+  def start_step
+    @queue.deq
+  end
 end
 
 module Turtle
   def self.start opts={}, &blk
     opts[:width] ||= Shoes::Turtle::WIDTH+20
-    opts[:height] ||= Shoes::Turtle::HEIGHT+20
+    opts[:height] ||= Shoes::Turtle::HEIGHT+100
     opts[:align] = 'center'
     Shoes.app opts do
-      stack :width => Shoes::Turtle::WIDTH, :height => Shoes::Turtle::HEIGHT,
-        :left => 10, :top => 10 do
-        turtle.instance_eval &blk
+      flow do
+        t = nil
+        stack :right => 10, :left => 10, :top => 10,
+          :height => Shoes::Turtle::HEIGHT do
+          t = turtle
+          para
+        end
+        flow do
+          button "step" do
+            t.step
+          end
+          button "play" do
+            t.play
+          end
+        end
+        Thread.new {t.instance_eval &blk}
       end
     end
-
   end
 end
 
