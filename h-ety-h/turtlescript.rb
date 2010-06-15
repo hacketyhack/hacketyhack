@@ -23,7 +23,7 @@ class Shoes::Turtle < Shoes::Widget
     clear
   end
   def forward len=100
-    start_step
+    is_step
     x = len*sin(@heading) + @x
     y = len*cos(@heading) + @y
     if @pendown
@@ -84,50 +84,73 @@ class Shoes::Turtle < Shoes::Widget
   end
 
   def step
-    puts "step"
+    #puts "step"
     @queue.enq nil
   end
 
   def play
-    puts "play"
+    #puts "play"
   end
 
-  alias pencolor stroke
-  alias pensize strokewidth
+  def pencolor *args
+    is_step
+    stroke *args
+  end
 
-  # already in shoes:
-  # clear
-  # background
+  def pensize *args
+    is_step
+    strokewidth *args
+  end
+
+  alias clear_orig clear
+  alias background_orig background
+
+  def clear *args
+    in_step
+    clear_orig *args
+  end
+  def background *args
+    is_step
+    background_orig *args
+  end
 
   private
-  def start_step
+  def is_step
+    display
+    #this_method caller[0][/`([^']*)'/, 1] end
     @queue.deq
+  end
+
+  def display
+    puts caller[1..3].join("\n")
   end
 end
 
 module Turtle
   def self.start opts={}, &blk
-    opts[:width] ||= Shoes::Turtle::WIDTH+20
-    opts[:height] ||= Shoes::Turtle::HEIGHT+100
+    w = opts[:width] || Shoes::Turtle::WIDTH
+    h = opts[:height] || Shoes::Turtle::HEIGHT
+    opts[:width] = w+20
+    opts[:height] = h+100
     opts[:align] = 'center'
     Shoes.app opts do
-      flow do
-        t = nil
-        stack :right => 10, :left => 10, :top => 10,
-          :height => Shoes::Turtle::HEIGHT do
+      t = nil
+      stack :height => h + 20 do
+        background gray
+        stack :top => 10, :left => 10, :width => w, :height => h do
+          background white
           t = turtle
-          para
         end
-        flow do
-          button "step" do
-            t.step
-          end
-          button "play" do
-            t.play
-          end
-        end
-        Thread.new {t.instance_eval &blk}
       end
+      flow do
+        button "step" do
+          t.step
+        end
+        button "play" do
+          t.play
+        end
+      end
+      Thread.new {t.instance_eval &blk}
     end
   end
 end
