@@ -1,12 +1,17 @@
 require 'thread'
 
 class Shoes::Turtle < Shoes::Widget
+  # default values
   WIDTH = 400
   HEIGHT = 400
+  SPEED = 4 # power of two
+  
   include Math
   DEG = PI / 180.0
 
+  # para with the next command written on it
   attr_writer :next_command
+  attr_accessor :speed # powers of two
 
   def initialize
     @width = WIDTH
@@ -16,7 +21,8 @@ class Shoes::Turtle < Shoes::Widget
     @x = @width / 2
     @y = @height / 2
     @pendown = true
-    @speed = 10
+    @speed = SPEED
+    @paused = true
     @queue = Queue.new
   end
 
@@ -95,8 +101,17 @@ class Shoes::Turtle < Shoes::Widget
     @queue.enq nil
   end
 
-  def play
-    #puts "play"
+  def toggle_pause
+    @paused = !@paused
+    if !@paused
+      step
+    end
+  end
+
+  def draw_all
+    @paused = false
+    @speed = nil
+    step
   end
 
   def pencolor *args
@@ -123,9 +138,17 @@ class Shoes::Turtle < Shoes::Widget
 
   private
   def is_step
-    display
-    #this_method caller[0][/`([^']*)'/, 1] end
-    @queue.deq
+    display if @speed
+    if @paused
+      # wait for step
+      @queue.deq
+    elsif not @speed.nil?
+      sleep 1.0/@speed
+      if @paused # if it got paused in the meantime
+        @queue.deq
+      end
+    end
+    # if not paused and speed is nil continue (fastest)
   end
 
   def display
@@ -159,7 +182,7 @@ module Turtle
         end
       end
       flow do
-        stack :width => 0.7 do
+        stack do
           flow do
             para "next command: "
             t.next_command = para '???', :font => 'Liberation Mono'
@@ -171,16 +194,21 @@ module Turtle
       end
       flow do
         button "slower" do
-
+          t.speed /= 2 if t.speed > 2
         end
-        button "play/pause" do
-          t.play
+        @toggle_pause = button "play" do
+          paused = t.toggle_pause
+          if paused
+            #@toggle_pause.text.replace('play')
+          else
+            #@toggle_pause.text.replace('pause')
+          end
         end
         button "faster" do
-
+          t.speed *= 2
         end
         button "go to end", :right => '-0px' do
-
+          t.draw_all
         end
       end
       Thread.new {t.instance_eval &blk}
