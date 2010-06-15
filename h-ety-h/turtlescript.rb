@@ -6,6 +6,8 @@ class Shoes::Turtle < Shoes::Widget
   include Math
   DEG = PI / 180.0
 
+  attr_writer :next_command
+
   def initialize
     @width = WIDTH
     @height = WIDTH
@@ -37,6 +39,7 @@ class Shoes::Turtle < Shoes::Widget
     forward(-len)
   end
   def turnleft angle=90
+    is_step
     @heading += angle*DEG
     @heading %= 2*PI
   end
@@ -44,6 +47,7 @@ class Shoes::Turtle < Shoes::Widget
     turnleft(-angle)
   end
   def setheading direction=180
+    is_step
     direction += 180
     direction %= 360
     @heading = direction*DEG
@@ -52,21 +56,25 @@ class Shoes::Turtle < Shoes::Widget
     @pendown = false
   end
   def pendown
+    is_step
     @pendown = true
   end
   def isdown?
     return @pendown
   end
   def go x, y
+    is_step
     @x, @y = x, y
   end
   def center
     go(200, 200)
   end
   def setx x
+    is_step
     @x = x
   end
   def sety y
+    is_step
     @y = y
   end
   def getx
@@ -84,7 +92,6 @@ class Shoes::Turtle < Shoes::Widget
   end
 
   def step
-    #puts "step"
     @queue.enq nil
   end
 
@@ -122,7 +129,16 @@ class Shoes::Turtle < Shoes::Widget
   end
 
   def display
-    puts caller[1..3].join("\n")
+    method = nil
+    1.upto 4 do |i|
+      m = caller[i][/`([^']*)'/, 1]
+      if m.nil?
+        break
+      else
+        method = m
+      end
+    end
+    @next_command.replace(method)
   end
 end
 
@@ -143,11 +159,28 @@ module Turtle
         end
       end
       flow do
-        button "step" do
+        stack :width => 0.7 do
+          flow do
+            para "next command: "
+            t.next_command = para '???', :font => 'Liberation Mono'
+          end
+        end
+        button "execute", :right => '-0px' do
           t.step
         end
-        button "play" do
+      end
+      flow do
+        button "slower" do
+
+        end
+        button "play/pause" do
           t.play
+        end
+        button "faster" do
+
+        end
+        button "go to end", :right => '-0px' do
+
         end
       end
       Thread.new {t.instance_eval &blk}
