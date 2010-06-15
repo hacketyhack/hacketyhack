@@ -2,7 +2,7 @@ require 'h-ety-h/boot'
 
 Turtle.start do
   # barbwire
-  #background yellow
+  background yellow
   pencolor brown
   pensize 2
   go 30, 200

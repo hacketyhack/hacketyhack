@@ -140,15 +140,14 @@ class Shoes::Turtle < Shoes::Widget
   def background *args
     is_step
     background_orig *args
+    move_turtle_to_top
   end
 
   private
-
   def update_position x, y
     @x, @y = x, y
     @image.move(x.round - 16, y.round - 16)
     @image.show
-    p @image.style
   end
 
 
@@ -158,6 +157,14 @@ class Shoes::Turtle < Shoes::Widget
     diff = (angle_in_degrees - @turtle_angle).round
     @turtle_angle += diff
     @image.rotate(diff)
+    @image.hide
+    @image.show
+  end
+
+  def move_turtle_to_top
+    s = @image.style
+    @image = image "#{HH::STATIC}/turtle.png"
+    @image.style s
   end
 
   def is_step
@@ -220,7 +227,7 @@ module Turtle
         button "slower" do
           t.speed /= 2 if t.speed > 2
         end
-        @toggle_pause = button "play" do
+        @toggle_pause = button "play/pause" do
           paused = t.toggle_pause
           if paused
             #@toggle_pause.text.replace('play')
