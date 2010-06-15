@@ -17,13 +17,16 @@ class Shoes::Turtle < Shoes::Widget
     @width = WIDTH
     @height = WIDTH
     style width => @width, :height => @height
-    @heading = 180*DEG
-    @x = @width / 2
-    @y = @height / 2
+    @heading = 180*DEG # interal heading is rotated by 180 w.r.t user heading
     @pendown = true
     @speed = SPEED
     @paused = true
     @queue = Queue.new
+    @image = image "#{HH::STATIC}/turtle.png"
+    @image.transform :center
+    @turtle_angle = 180
+    update_position(@width/2, @height / 2)
+    update_turtle_heading
   end
 
   def reset
@@ -38,7 +41,7 @@ class Shoes::Turtle < Shoes::Widget
       l = [@x, @y, x, y]
       line(*l)
     end
-    @x, @y = x, y
+    update_position(x, y)
   end
   # adds singleton methods
   def backward len=100
@@ -48,6 +51,7 @@ class Shoes::Turtle < Shoes::Widget
     is_step
     @heading += angle*DEG
     @heading %= 2*PI
+    update_turtle_heading
   end
   def turnright angle=90
     turnleft(-angle)
@@ -57,6 +61,7 @@ class Shoes::Turtle < Shoes::Widget
     direction += 180
     direction %= 360
     @heading = direction*DEG
+    update_turtle_heading
   end
   def penup
     @pendown = false
@@ -70,18 +75,18 @@ class Shoes::Turtle < Shoes::Widget
   end
   def go x, y
     is_step
-    @x, @y = x, y
+    update_position(x, y)
   end
   def center
     go(200, 200)
   end
   def setx x
     is_step
-    @x = x
+    update_position(x, @y)
   end
   def sety y
     is_step
-    @y = y
+    update_position(@x, y)
   end
   def getx
     @x
@@ -104,6 +109,7 @@ class Shoes::Turtle < Shoes::Widget
   def toggle_pause
     @paused = !@paused
     if !@paused
+      @speed = SPEED if @speed.nil?
       step
     end
   end
@@ -137,18 +143,35 @@ class Shoes::Turtle < Shoes::Widget
   end
 
   private
+
+  def update_position x, y
+    @x, @y = x, y
+    @image.move(x.round - 16, y.round - 16)
+    @image.show
+    p @image.style
+  end
+
+
+  def update_turtle_heading
+    # update turtle image
+    angle_in_degrees = @heading/DEG
+    diff = (angle_in_degrees - @turtle_angle).round
+    @turtle_angle += diff
+    @image.rotate(diff)
+  end
+
   def is_step
-    display if @speed
+    return if @speed.nil? and not @paused
+    display
     if @paused
       # wait for step
       @queue.deq
-    elsif not @speed.nil?
+    else
       sleep 1.0/@speed
       if @paused # if it got paused in the meantime
         @queue.deq
       end
     end
-    # if not paused and speed is nil continue (fastest)
   end
 
   def display
@@ -185,7 +208,8 @@ module Turtle
         stack do
           flow do
             para "next command: "
-            t.next_command = para '???', :font => 'Liberation Mono'
+            @next_command = para 'start', :font => 'Liberation Mono'
+            t.next_command = @next_command
           end
         end
         button "execute", :right => '-0px' do
@@ -211,21 +235,10 @@ module Turtle
           t.draw_all
         end
       end
-      Thread.new {t.instance_eval &blk}
+      Thread.new do
+        t.instance_eval &blk
+        @next_command.replace("end")
+      end
     end
-  end
-end
-
-Turtle.start do
-  # barbwire
-  background yellow
-  pencolor brown
-  pensize 2
-  go 30, 200
-  setheading 180
-  1000.times do
-    forward 20
-    turnleft rand(10)
-    backward 10
   end
 end
