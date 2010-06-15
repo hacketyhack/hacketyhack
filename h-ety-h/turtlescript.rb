@@ -112,6 +112,7 @@ class Shoes::Turtle < Shoes::Widget
       @speed = SPEED if @speed.nil?
       step
     end
+    @paused # return value
   end
 
   def draw_all
@@ -157,8 +158,6 @@ class Shoes::Turtle < Shoes::Widget
     diff = (angle_in_degrees - @turtle_angle).round
     @turtle_angle += diff
     @image.rotate(diff)
-    @image.hide
-    @image.show
   end
 
   def move_turtle_to_top
@@ -219,26 +218,26 @@ module Turtle
             t.next_command = @next_command
           end
         end
-        button "execute", :right => '-0px' do
+        glossb "execute", :color => 'dark', :width => 100, :right => '-0px' do
           t.step
         end
       end
       flow do
-        button "slower" do
+        glossb "slower", :color => 'dark', :width => 100 do
           t.speed /= 2 if t.speed > 2
         end
-        @toggle_pause = button "play/pause" do
+        @toggle_pause = glossb "play", :color => 'dark', :width => 100 do
           paused = t.toggle_pause
           if paused
-            #@toggle_pause.text.replace('play')
+            @toggle_pause.text = 'play'
           else
-            #@toggle_pause.text.replace('pause')
+            @toggle_pause.text = 'pause'
           end
         end
-        button "faster" do
+        glossb "faster", :color => 'dark', :width => 100 do
           t.speed *= 2
         end
-        button "go to end", :right => '-0px' do
+        glossb "go to end", :color => 'dark', :right => '-0px', :width => 100 do
           t.draw_all
         end
       end
