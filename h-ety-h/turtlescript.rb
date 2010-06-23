@@ -29,6 +29,16 @@ class Shoes::Turtle < Shoes::Widget
     update_turtle_heading
   end
 
+  def start blk
+    self.instance_eval &blk
+  end
+
+  def draw blk
+    @paused = false
+    @speed = nil
+    start blk
+  end
+
   def reset
     set_defaults
     clear
@@ -195,12 +205,16 @@ class Shoes::Turtle < Shoes::Widget
 end
 
 module Turtle
+  def self.draw opts={}, &blk
+    opts[:draw] = true
+    start opts, &blk
+  end
+
   def self.start opts={}, &blk
     w = opts[:width] || Shoes::Turtle::WIDTH
     h = opts[:height] || Shoes::Turtle::HEIGHT
     opts[:width] = w+20
     opts[:height] = h+100
-    opts[:align] = 'center'
     Shoes.app opts do
       t = nil
       stack :height => h + 20 do
@@ -221,7 +235,7 @@ module Turtle
         glossb "execute", :color => 'dark', :width => 100, :right => '-0px' do
           t.step
         end
-      end
+      end unless opts[:draw]
       flow do
         glossb "slower", :color => 'dark', :width => 100 do
           t.speed /= 2 if t.speed > 2
@@ -240,10 +254,15 @@ module Turtle
         glossb "go to end", :color => 'dark', :right => '-0px', :width => 100 do
           t.draw_all
         end
-      end
-      Thread.new do
-        t.instance_eval &blk
-        @next_command.replace("end")
+      end unless opts[:draw]
+      if opts[:draw]
+        debugger
+        t.draw blk
+      else
+        Thread.new do
+          t.start blk
+          @next_command.replace("*** END ***")
+        end
       end
     end
   end
