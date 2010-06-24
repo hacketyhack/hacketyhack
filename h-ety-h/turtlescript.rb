@@ -33,10 +33,10 @@ class Shoes::Turtle < Shoes::Widget
     self.instance_eval &blk
   end
 
-  def draw blk
+  def start_draw
     @paused = false
     @speed = nil
-    start blk
+    @image.hide
   end
 
   def reset
@@ -126,8 +126,7 @@ class Shoes::Turtle < Shoes::Widget
   end
 
   def draw_all
-    @paused = false
-    @speed = nil
+    start_draw
     step
   end
 
@@ -157,8 +156,7 @@ class Shoes::Turtle < Shoes::Widget
   private
   def update_position x, y
     @x, @y = x, y
-    @image.move(x.round - 16, y.round - 16)
-    @image.show
+    @image.move(x.round - 16, y.round - 16) unless drawing?
   end
 
 
@@ -167,17 +165,18 @@ class Shoes::Turtle < Shoes::Widget
     angle_in_degrees = @heading/DEG
     diff = (angle_in_degrees - @turtle_angle).round
     @turtle_angle += diff
-    @image.rotate(diff)
+    @image.rotate(diff) unless drawing?
   end
 
   def move_turtle_to_top
+    return if drawing?
     s = @image.style
     @image = image "#{HH::STATIC}/turtle.png"
     @image.style s
   end
 
   def is_step
-    return if @speed.nil? and not @paused
+    return if drawing?
     display
     if @paused
       # wait for step
@@ -202,6 +201,10 @@ class Shoes::Turtle < Shoes::Widget
     end
     @next_command.replace(method)
   end
+
+  def drawing?
+    @speed.nil? and not @paused
+  end
 end
 
 module Turtle
@@ -213,8 +216,9 @@ module Turtle
   def self.start opts={}, &blk
     w = opts[:width] || Shoes::Turtle::WIDTH
     h = opts[:height] || Shoes::Turtle::HEIGHT
-    opts[:width] = w+20
-    opts[:height] = h+100
+    opts[:width] = w + 20
+    opts[:height] = h + ( opts[:draw]? 20 : 100)
+
     Shoes.app opts do
       t = nil
       stack :height => h + 20 do
@@ -255,12 +259,16 @@ module Turtle
           t.draw_all
         end
       end unless opts[:draw]
+      #debugger
       if opts[:draw]
-        debugger
-        t.draw blk
+        Thread.new do
+          t.start_draw
+          sleep 0.1
+          t.instance_eval &blk
+        end
       else
         Thread.new do
-          t.start blk
+          t.instance_eval &blk
           @next_command.replace("*** END ***")
         end
       end
