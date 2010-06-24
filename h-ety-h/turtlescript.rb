@@ -255,7 +255,7 @@ module Turtle
         glossb "faster", :color => 'dark', :width => 100 do
           t.speed *= 2
         end
-        glossb "go to end", :color => 'dark', :right => '-0px', :width => 100 do
+        glossb "draw all", :color => 'dark', :right => '-0px', :width => 100 do
           t.draw_all
         end
       end unless opts[:draw]
