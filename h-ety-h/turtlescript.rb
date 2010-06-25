@@ -1,6 +1,6 @@
 require 'thread'
 
-class Shoes::Turtle < Shoes::Widget
+class Shoes::TurtleCanvas < Shoes::Widget
   # default values
   WIDTH = 400
   HEIGHT = 400
@@ -17,7 +17,7 @@ class Shoes::Turtle < Shoes::Widget
     @width = WIDTH
     @height = WIDTH
     style width => @width, :height => @height
-    @heading = 180*DEG # interal heading is rotated by 180 w.r.t user heading
+    @heading = 180*DEG # internal heading is rotated by 180 w.r.t user heading
     @pendown = true
     @speed = SPEED
     @paused = true
@@ -214,52 +214,22 @@ module Turtle
   end
 
   def self.start opts={}, &blk
-    w = opts[:width] || Shoes::Turtle::WIDTH
-    h = opts[:height] || Shoes::Turtle::HEIGHT
+    w = opts[:width] || Shoes::TurtleCanvas::WIDTH
+    h = opts[:height] || Shoes::TurtleCanvas::HEIGHT
     opts[:width] = w + 20
     opts[:height] = h + ( opts[:draw]? 20 : 100)
 
     Shoes.app opts do
-      t = nil
+      extend Turtle # add methods back (after self changed)
+      @canvas = nil
       stack :height => h + 20 do
         background gray
         stack :top => 10, :left => 10, :width => w, :height => h do
           background white
-          t = turtle
+          @canvas = turtle_canvas
         end
       end
-      flow do
-        stack do
-          flow do
-            para "next command: "
-            @next_command = para 'start', :font => 'Liberation Mono'
-            t.next_command = @next_command
-          end
-        end
-        glossb "execute", :color => 'dark', :width => 100, :right => '-0px' do
-          t.step
-        end
-      end unless opts[:draw]
-      flow do
-        glossb "slower", :color => 'dark', :width => 100 do
-          t.speed /= 2 if t.speed > 2
-        end
-        @toggle_pause = glossb "play", :color => 'dark', :width => 100 do
-          paused = t.toggle_pause
-          if paused
-            @toggle_pause.text = 'play'
-          else
-            @toggle_pause.text = 'pause'
-          end
-        end
-        glossb "faster", :color => 'dark', :width => 100 do
-          t.speed *= 2
-        end
-        glossb "draw all", :color => 'dark', :right => '-0px', :width => 100 do
-          t.draw_all
-        end
-      end unless opts[:draw]
-      #debugger
+      
       if opts[:draw]
         Thread.new do
           t.start_draw
@@ -267,10 +237,47 @@ module Turtle
           t.instance_eval &blk
         end
       else
+        draw_controls
         Thread.new do
-          t.instance_eval &blk
+          @canvas.instance_eval &blk
           @next_command.replace("*** END ***")
         end
+      end
+    end
+  end
+
+  private
+  def draw_controls
+    flow do
+      stack do
+        flow do
+          para "next command: "
+          @next_command = para 'start', :font => 'Liberation Mono'
+          @canvas.next_command = @next_command
+        end
+      end
+      glossb "execute", :color => 'dark', :width => 100, :right => '-0px' do
+        @canvas.step
+      end
+    end
+
+    flow do
+      glossb "slower", :color => 'dark', :width => 100 do
+        @canvas.speed /= 2 if t.speed > 2
+      end
+      @toggle_pause = glossb "play", :color => 'dark', :width => 100 do
+        paused = @canvas.toggle_pause
+        if paused
+          @toggle_pause.text = 'play'
+        else
+          @toggle_pause.text = 'pause'
+        end
+      end
+      glossb "faster", :color => 'dark', :width => 100 do
+        t.speed *= 2
+      end
+      glossb "draw all", :color => 'dark', :right => '-0px', :width => 100 do
+        @canvas.draw_all
       end
     end
   end
