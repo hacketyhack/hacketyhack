@@ -1,63 +1,64 @@
-h1. Hackety Hack
-for Mac OS X, Windows XP/Vista, and Linux
+h1. Hackety Hack (for Mac OS X, Windows, and Linux)
 
  Hackety Hack is a programming starter kit. It's an editor
  with helpful coding tools and built-in messaging (so you can
  pass scripts to friends easily.)
 
-h2. Oh So Fashionable Beta
+h2. We're Currently Backstage
 
- Hackety Hack is not quite ready yet. Lots of things aren't quite working, 
- but we're trying. Rome wasn't built in a day...
+Hackety Hack is currently at version 0.9, which means that it's not 100% ready for the general public yet. It's very useable, just don't get frustrated if some things don't work! We're working really hard on getting ready for version 1.0, which will have all the kinks worked out.
 
- We have a "Lighthouse":http://hacketyhack.lighthouseapp.com/ account. We'd love
- to get some bug reports.
-
- Currently working: programs run, Try Ruby works.
- Currently not: website integration stuff and sharing of your programs.
+On the plus side, it's a great time to help out with a project! No matter if you're a Ruby master, or are just starting out, we'd love to have your help making Hackety great! Check out "this wiki page":http://wiki.github.com/steveklabnik/hacketyhack/contributing-to-hackety-hack if you'd like to learn more.
 
 h2. Building Hackety Hack
 
- If you are an advanced user (familiar with C and Ruby,) you
- may enjoy helping out with H-ety H.
+h3. Shoooes
 
- If you're on Ubuntu, you will need to install the following packages before building shoes:
-bq. libgtk2.0-dev libgif-dev libportaudio-dev libvlc-dev portaudio19-dev
+H-ety H is built on "Shoes":http://github.com/shoes/shoes. So, you gotta get Shoes first. 
 
-	To get it working on Arch Linux, I had to install these packages:
-bq. portaudio 19_20071207-2 libidn gtk2 giflib vlc
+*IMPORTANT NOTE*
 
-	And roll back shoes to this commit:
+bq. Hackety Hack depends on features that are only in the latest version of Shoes, "Policeman." This is the third version of Shoes, there's also "Rasins," which was version 2. If you download Shoes 2, it won't work!
 
-	cea39a8bf9a5b7057b1824a9fab868d1f8609d69
+Now back to your regularly scheduled instructions.
 
-	And then it worked. This will hopefully be resolved in the near future.
+There are two options to getting Shoes: download a pre-built version, or build it yourself! 
 
- With Shoes installed, you can checkout the source code and
- start things up like so:
+h4. Pre-assembled Shoes
 
-bq.   $ git clone git://github.com/steveklabnik/hacketyhack.git 
-   $ cd hacketyhack
+You can try downloading the latest version of Shoes from the "Recent Builds Page":http://wiki.github.com/shoes/shoes/recentbuilds on the Shoes Wiki.
+
+h4. Some-assembly-required Shoes
+
+If you like living on the bleeding edge, or there isn't a Shoes made for your platform, you can check out the "Building Shoes":http://wiki.github.com/shoes/shoes/buildingshoes page to find out how to build Shoes on your platform.
+
+h3. 'Got Shoes Strapped on my Feet
+
+Once you've got yourself a pair of Shoes, you'll want to fork me, then clone your repo:
+
+bq.   $ git clone git@github.com:YOURUSER/hacketyhack.git 
+
+If you've got your 'shoes' environment variable set, you can just run Hackety directly:
+
+bq.   $ cd hacketyhack
    $ ./h-ety-h.rb
 
- If you need to install Shoes, just run this first:
+Otherwise, pick 'h-ety-h.rb' from the "Open an App." menu in Shoes.
 
-bq.   $ git clone git://github.com/shoes/shoes.git
-   $ cd shoes
-   $ rake
+h2. Building an installer
 
- Shoes will be built and put in the dist directory.
+If you want to build Hackety Hack as a standalone app with the installer for your platform, you need to have your own Shoes built. Then, get your directories lined up...
 
- If you want to build Hackety Hack as a standalone app
- with the installer for your platform:
+bq.   $ ls
+    shoes hacketyhack
 
-bq.   $ git clone git://github.com/steveklabnik/hacketyhack.git 
-   $ git clone git://github.com/shoes/shoes.git 
-   $ cd shoes
-   $ rake APP=../hacketyhack VIDEO=1
+And rebuild shoes, while pointing the APP flag at your Hackety directory:
+
+bq.   $ cd shoes
+   $ rake APP=../hacketyhack
    $ rake APP=../hacketyhack installer
 
- There is no installer for Linux, bear in mind.
+That's it!
 
 h2. Acknowledgements
 
@@ -85,5 +86,8 @@ h2. Acknowledgements
     He just started hacking away. I like that!
 
 * Numerous font authors whose free
-    offerings are included. I need to
-    assemble a list...
+    offerings are included.
+
+* Fela Winkelmolen, for devoting an entire summer to get Hackety to v1.0!
+
+* Everybody who's been putting hard work into Shoes. You guys are awesome.
