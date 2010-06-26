@@ -4,8 +4,8 @@ require 'h-ety-h/boot'
 require 'h-ety-h/home'
 require 'h-ety-h/prefs'
 
-Shoes.setup do gem 'ruby-debug' end
-require 'ruby-debug'
+#Shoes.setup do gem 'ruby-debug' end
+#require 'ruby-debug'
 
 def HH.anonymous_binding
   bind = ::TOPLEVEL_BINDING
