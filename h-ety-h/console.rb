@@ -487,6 +487,7 @@ class HH::IRB < RubyLex
       raise Empty if @line == ''
     else
       l.strip!
+      l.chop! #remove the trailing ;
       @history.unshift l
       case l
       when "reset"
