@@ -45,6 +45,8 @@ bq.   $ cd hacketyhack
 
 Otherwise, pick 'h-ety-h.rb' from the "Open an App." menu in Shoes.
 
+You can also run 'shoes h-ety-h.rb' or if you're on a Mac, something like ' /Users/steveklabnik/Documents/src/shoes/Shoes.app/Contents/MacOS/shoes h-ety-h.rb' from the terminal.
+
 h2. Building an installer
 
 If you want to build Hackety Hack as a standalone app with the installer for your platform, you need to have your own Shoes built. Then, get your directories lined up...
