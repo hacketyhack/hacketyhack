@@ -15,5 +15,7 @@ class String
     r[phrase] = ""
     r
   end
-
+  def to_a
+    self.split "\n"
+  end
 end

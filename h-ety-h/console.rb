@@ -2,6 +2,7 @@ require 'irb/ruby-lex'
 require 'stringio'
 require 'h-ety-h/markup'
 require 'h-ety-h/completion'
+require 'h-ety-h/string'
 
 module HH::Lessons
   attr_accessor :lesson, :started, :bookmark
