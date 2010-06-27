@@ -159,27 +159,29 @@ module HH::Prefs
         HH.user.get_inbox do |box|
           @mailtable.replace do
 						box = box['messages']
-            box[page * 5, 5].each do |msg|
-              icon = msg['read'] ? "tab-email.png" : "icon-email.png"
-              stack :margin_left => 8, :margin_top => 4 do
-                britelink icon, msg['subject'], msg['created_at'], "#C66" do
-                  @action.clear { open_message msg }
-                end
-                para "from #{msg['from']}", :stroke => "#777", :size => 9,
-                  :font => "Lacuna Regular", :margin => 0, :margin_left => 18
-              end
-            end
-            if box.length > 5
-              stack :top => 0, :right => 10 do
-                nex = box.length > start + 5
-                if start > 0
-                  glossb "<<", :top => 0, :right => 10 + (nex ? 100 : 0), :width => 50, :color => "yellow" do
-                    @action.clear { prefs(page - 1) }
+					  unless box.nil?
+              box[page * 5, 5].each do |msg|
+                icon = msg['read'] ? "tab-email.png" : "icon-email.png"
+                stack :margin_left => 8, :margin_top => 4 do
+                  britelink icon, msg['subject'], msg['created_at'], "#C66" do
+                    @action.clear { open_message msg }
                   end
+                  para "from #{msg['from']}", :stroke => "#777", :size => 9,
+                    :font => "Lacuna Regular", :margin => 0, :margin_left => 18
                 end
-                if nex
-                  glossb "Next 5 >>", :top => 0, :right => 10, :width => 100, :color => "yellow" do
-                    @action.clear { prefs(page + 1) }
+              end
+              if box.length > 5
+                stack :top => 0, :right => 10 do
+                  nex = box.length > start + 5
+                  if start > 0
+                    glossb "<<", :top => 0, :right => 10 + (nex ? 100 : 0), :width => 50, :color => "yellow" do
+                      @action.clear { prefs(page - 1) }
+                    end
+                  end
+                  if nex
+                    glossb "Next 5 >>", :top => 0, :right => 10, :width => 100, :color => "yellow" do
+                      @action.clear { prefs(page + 1) }
+                    end
                   end
                 end
               end
