@@ -17,13 +17,13 @@ module HH::Lessons
          "More still did I wish to munch it.\n"
 
   def subtitle txt
-    @lesson.app { subtitle txt, TITLES }
+    @lesson.app { subtitle txt, Shoes::HH::Lessons::TITLES }
   end
   def item *txt
-    @lesson.app { txt << LIST; para(*txt) }
+    @lesson.app { txt << Shoes::HH::Lessons::LIST; para(*txt) }
   end
   def para *txt
-    @lesson.app { txt << PARAS; para(*txt) }
+    @lesson.app { txt << Shoes::HH::Lessons::PARAS; para(*txt) }
   end
   def link *a; @lesson.link *a end
   def em txt; @lesson.em txt end
@@ -618,7 +618,7 @@ module HH::Console
         begin
           @multiline = false
           @say.show
-          out, obj = @irb.run(@cmd)
+          out, obj = @irb.run(@cmd + ';')
           @str += [syntax(@cmd), "\n"]
           @str << span(out, :stroke => white) if out
           @str += [span("=> ", :stroke => "#fd5396"),
