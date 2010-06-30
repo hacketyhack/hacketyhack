@@ -1,8 +1,8 @@
-#HH::NET = "hacketyhack.heroku.com"
-#HH::REST = "http://hacketyhack.heroku.com"
+HH::NET = "hacketyhack.heroku.com"
+HH::REST = "http://hacketyhack.heroku.com"
 #for easy switching when developing
-HH::NET = "localhost:3000"
-HH::REST = "http://localhost:3000"
+#HH::NET = "localhost:3000"
+#HH::REST = "http://localhost:3000"
 HH::HOME = Dir.pwd
 HH::STATIC = Dir.pwd + "/static"
 HH::FONTS = HH::HOME + "/fonts"
