@@ -25,12 +25,8 @@ class Shoes::TurtleCanvas < Shoes::Widget
     @image = image "#{HH::STATIC}/turtle.png"
     @image.transform :center
     @turtle_angle = 180
-    update_position(@width/2, @height / 2)
+    update_position(@width/2, @height/2)
     update_turtle_heading
-  end
-
-  def start blk
-    self.instance_eval &blk
   end
 
   def start_draw
@@ -39,10 +35,13 @@ class Shoes::TurtleCanvas < Shoes::Widget
     @image.hide
   end
 
-  def reset
-    set_defaults
-    clear
-  end
+
+  ### user commands ###
+
+  #def reset
+  #  set_defaults
+  #  clear
+  #end
   def forward len=100
     is_step
     x = len*sin(@heading) + @x
@@ -53,7 +52,6 @@ class Shoes::TurtleCanvas < Shoes::Widget
     end
     update_position(x, y)
   end
-  # adds singleton methods
   def backward len=100
     forward(-len)
   end
@@ -107,28 +105,11 @@ class Shoes::TurtleCanvas < Shoes::Widget
   def getposition
     [@x, @y]
   end
-
   def getheading
     @heading
   end
 
-  def step
-    @queue.enq nil
-  end
-
-  def toggle_pause
-    @paused = !@paused
-    if !@paused
-      @speed = SPEED if @speed.nil?
-      step
-    end
-    @paused # return value
-  end
-
-  def draw_all
-    start_draw
-    step
-  end
+  ### user commands already in shoes (the first two with another name ###
 
   def pencolor *args
     is_step
@@ -153,7 +134,28 @@ class Shoes::TurtleCanvas < Shoes::Widget
     move_turtle_to_top
   end
 
-  private
+
+  ## UI commands: should not be used by the user ##
+
+  def step
+    @queue.enq nil
+  end
+
+  def toggle_pause
+    @paused = !@paused
+    if !@paused
+      @speed = SPEED if @speed.nil?
+      step
+    end
+    @paused # return value
+  end
+
+  def draw_all
+    start_draw
+    step
+  end
+
+private
   def update_position x, y
     @x, @y = x, y
     @image.move(x.round - 16, y.round - 16) unless drawing?
@@ -202,6 +204,7 @@ class Shoes::TurtleCanvas < Shoes::Widget
     @next_command.replace(method)
   end
 
+  # false if drawing directly the final result
   def drawing?
     @speed.nil? and not @paused
   end
@@ -217,29 +220,36 @@ module Turtle
     w = opts[:width] || Shoes::TurtleCanvas::WIDTH
     h = opts[:height] || Shoes::TurtleCanvas::HEIGHT
     opts[:width] = w + 20
-    opts[:height] = h + ( opts[:draw]? 20 : 100)
+    opts[:height] = h + ( opts[:draw]? 60 : 130)
 
     Shoes.app opts do
       extend Turtle # add methods back (after self changed)
-      @canvas = nil
+
+      glossb "save...", :color => 'dark', :right => '-0px', :width => 100 do
+        save_image
+      end
+
       stack :height => h + 20 do
         background gray
         stack :top => 10, :left => 10, :width => w, :height => h do
-          background white
-          @canvas = turtle_canvas
+          shape do
+            background white
+            @canvas = turtle_canvas
+          end
         end
       end
       
       if opts[:draw]
         Thread.new do
-          t.start_draw
-          sleep 0.1
-          t.instance_eval &blk
+          @canvas.start_draw
+          sleep 0.1 # HACK
+          execute_canvas_code &blk
         end
       else
         draw_controls
         Thread.new do
-          @canvas.instance_eval &blk
+          sleep 0.1 # HACK
+          execute_canvas_code &blk
           @next_command.replace("*** END ***")
         end
       end
@@ -247,6 +257,14 @@ module Turtle
   end
 
   private
+  def execute_canvas_code &blk
+    @canvas.instance_eval do
+      shape do
+        self.instance_eval &blk
+      end
+    end
+  end
+
   def draw_controls
     flow do
       stack do
@@ -263,7 +281,7 @@ module Turtle
 
     flow do
       glossb "slower", :color => 'dark', :width => 100 do
-        @canvas.speed /= 2 if t.speed > 2
+        @canvas.speed /= 2 if @canvas.speed > 2
       end
       @toggle_pause = glossb "play", :color => 'dark', :width => 100 do
         paused = @canvas.toggle_pause
@@ -274,7 +292,7 @@ module Turtle
         end
       end
       glossb "faster", :color => 'dark', :width => 100 do
-        t.speed *= 2
+        @canvas.speed *= 2
       end
       glossb "draw all", :color => 'dark', :right => '-0px', :width => 100 do
         @canvas.draw_all
