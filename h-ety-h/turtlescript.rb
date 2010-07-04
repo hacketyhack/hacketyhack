@@ -10,7 +10,7 @@ class Shoes::TurtleCanvas < Shoes::Widget
   DEG = PI / 180.0
 
   # para with the next command written on it
-  attr_writer :next_command
+  attr_writer :next_command, :pen_info
   attr_accessor :speed # powers of two
 
   def initialize
@@ -25,6 +25,9 @@ class Shoes::TurtleCanvas < Shoes::Widget
     @image = image "#{HH::STATIC}/turtle.png"
     @image.transform :center
     @turtle_angle = 180
+    @bg_color = white
+    @fg_color = black
+    @pen_size = 1
     update_position(@width/2, @height/2)
     update_turtle_heading
   end
@@ -111,14 +114,18 @@ class Shoes::TurtleCanvas < Shoes::Widget
 
   ### user commands already in shoes (the first two with another name ###
 
-  def pencolor *args
+  def pencolor args
     is_step
-    stroke *args
+    stroke args
+    @fg_color = args
+    update_pen_info
   end
 
-  def pensize *args
+  def pensize args
     is_step
-    strokewidth *args
+    strokewidth args
+    @pen_size = args
+    update_pen_info
   end
 
   alias clear_orig clear
@@ -128,10 +135,12 @@ class Shoes::TurtleCanvas < Shoes::Widget
     in_step
     clear_orig *args
   end
-  def background *args
+  def background args
     is_step
-    background_orig *args
+    background_orig args
     move_turtle_to_top
+    @bg_color = args
+    update_pen_info
   end
 
 
@@ -208,6 +217,13 @@ private
   def drawing?
     @speed.nil? and not @paused
   end
+
+  def update_pen_info
+    @pen_info.append do
+      background_orig @bg_color
+      line 5, 10, 35, 10, :stroke => @fg_color, :strokewidth => @pen_size
+    end if @pen_info
+  end
 end
 
 module Turtle
@@ -225,6 +241,14 @@ module Turtle
     Shoes.app opts do
       extend Turtle # add methods back (after self changed)
 
+      unless opts[:draw]
+        para "pen: "
+        @pen_info = stack :top => 5, :width => 40, :height => 20 do
+          background white
+          line 5, 10, 35, 10
+        end
+      end
+
       glossb "save...", :color => 'dark', :right => '-0px', :width => 100 do
         save_image
       end
@@ -238,6 +262,8 @@ module Turtle
           end
         end
       end
+
+      Thread.abort_on_exception = true;
       
       if opts[:draw]
         Thread.new do
@@ -295,8 +321,10 @@ module Turtle
         @canvas.speed *= 2
       end
       glossb "draw all", :color => 'dark', :right => '-0px', :width => 100 do
+        reset
         @canvas.draw_all
       end
     end
+    @canvas.pen_info = @pen_info
   end
 end
