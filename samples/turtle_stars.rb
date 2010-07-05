@@ -2,6 +2,7 @@ require 'h-ety-h/boot'
 
 Turtle.start do
   background blue
+  pensize 2
   pencolor yellow
   30.times do
     go rand(400), rand(400)

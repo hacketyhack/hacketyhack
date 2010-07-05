@@ -164,6 +164,10 @@ class Shoes::TurtleCanvas < Shoes::Widget
     step
   end
 
+  def save
+    _snapshot :filename => 'snapshot.pdf', :format => :pdf
+  end
+
 private
   def update_position x, y
     @x, @y = x, y
@@ -202,9 +206,10 @@ private
 
   def display
     method = nil
+    puts caller
     1.upto 4 do |i|
       m = caller[i][/`([^']*)'/, 1]
-      if m.nil?
+      if m.nil? || m =~ /^block /
         break
       else
         method = m
@@ -250,7 +255,7 @@ module Turtle
       end
 
       glossb "save...", :color => 'dark', :right => '-0px', :width => 100 do
-        save_image
+        @canvas.save
       end
 
       stack :height => h + 20 do
