@@ -265,8 +265,10 @@ module Turtle
 
       glossb "save...", :color => 'dark', :right => '-0px', :width => 100 do
         filename = ask_save_file
-        filename += '.pdf' unless filename =~ /\.pdf$/
-        @canvas.save filename
+        unless filename.nil?
+          filename += '.pdf' unless filename =~ /\.pdf$/
+          @canvas.save filename
+        end
       end
 
       stack :height => h + 20 do
