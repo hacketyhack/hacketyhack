@@ -4,8 +4,8 @@ require 'h-ety-h/boot'
 require 'h-ety-h/home'
 require 'h-ety-h/prefs'
 
-Shoes.setup do gem 'ruby-debug' end
-require 'ruby-debug'
+#Shoes.setup do gem 'ruby-debug' end
+#require 'ruby-debug'
 
 def HH.anonymous_binding
   bind = ::TOPLEVEL_BINDING
@@ -113,22 +113,27 @@ window :title => "Hackety Hack", :width => 500, :height => 580 do
     every 20 do
       if HH.user
 				HH.user.update_programs do |programs|
-					programs = programs['programs']
-					programs.each do |program|
-						name = program['name'].gsub(/ /, '_')
-						unless HH.script_exists?(name)
-							HH.save_script(name, program['text'])
-						end
-					end
+				  unless  programs['programs'].nil?
+				    debug("programs count: #{programs['programs'].count}")
+  					programs = programs['programs']
+  					programs.each do |program|
+  						name = program['name'].gsub(/ /, '_')
+  						unless HH.script_exists?(name)
+  							HH.save_script(name, program['text'])
+  						end
+  					end
+  				end
 				end
 				if @notice.hidden == true
 					HH.user.get_inbox_count do |c|
-						count = c['messages'].select{|m| m['read'] == false}.length
-						if(count > 0)
-							@noticeN.text = "#{count} new"
-							@notice.show
-							@mailcheck.stop
-						end
+						unless c['messages'].nil?
+					  	count = c['messages'].select{|m| m['read'] == false}.length
+  						if(count > 0)
+  							@noticeN.text = "#{count} new"
+  							@notice.show
+  							@mailcheck.stop
+  						end
+  					end
 					end
 				end
       end

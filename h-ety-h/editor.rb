@@ -286,9 +286,9 @@ module HH::Editor
         end
       when :control_v, :alt_v, :shift_insert
         handle_text_insertion(self.clipboard) if self.clipboard
-      when :control_z
+      when :control_z, :alt_z
         undo_command
-      when :control_y
+      when :control_y, :alt_Z, :shift_alt_z
         redo_command
       when :shift_home, :home
         nl = @str.rindex("\n", @t.cursor - 1) || -1

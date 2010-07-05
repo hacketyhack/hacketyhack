@@ -31,8 +31,7 @@ module HH::YAML
     # if HH::PREFS['username']
     #   req.basic_auth HH::PREFS['username'], HH::PREFS['pass']
     # end
-    headers['Authorization'] = 'Basic ' + Base64.
-      encode64("#{HH::PREFS['username']}:#{HH::PREFS['password']}").strip
+    headers['Authorization'] = 'Basic ' + ["#{HH::PREFS['username']}:#{HH::PREFS['password']}"].pack("m").strip
     HH::APP.download url, :method => meth, :body => body, :headers => headers do |dl|
       blk[YAML.load(dl.response.body)] if blk
     end
