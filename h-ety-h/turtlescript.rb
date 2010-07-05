@@ -170,8 +170,8 @@ class Shoes::TurtleCanvas < Shoes::Widget
     step
   end
 
-  def save
-    _snapshot :filename => 'snapshot.pdf', :format => :pdf
+  def save filename
+    _snapshot :filename => filename, :format => :pdf
   end
 
 private
@@ -264,7 +264,9 @@ module Turtle
       end
 
       glossb "save...", :color => 'dark', :right => '-0px', :width => 100 do
-        @canvas.save
+        filename = ask_save_file
+        filename += '.pdf' unless filename =~ /\.pdf$/
+        @canvas.save filename
       end
 
       stack :height => h + 20 do
@@ -286,7 +288,7 @@ module Turtle
         @interactive_thread = Thread.new do
           sleep 0.1 # HACK
           @canvas.instance_eval &blk
-          @next_command.replace("*** END ***")
+          @next_command.replace("(END)")
         end
       end
     end
@@ -333,6 +335,7 @@ private
       glossb "draw all", :color => 'dark', :right => '-0px', :width => 100 do
         @interactive_thread.kill
         @canvas.reset
+        @next_command.replace("(draw all)")
         draw_all
       end
     end
