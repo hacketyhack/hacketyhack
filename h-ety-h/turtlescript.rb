@@ -206,15 +206,17 @@ private
 
   def display
     method = nil
-    puts caller
+    bt = caller
     1.upto 4 do |i|
-      m = caller[i][/`([^']*)'/, 1]
+      m = bt[i][/`([^']*)'/, 1]
       if m.nil? || m =~ /^block /
         break
       else
         method = m
       end
     end
+    puts '-----------------------------'
+    puts bt
     @next_command.replace(method)
   end
 
@@ -280,7 +282,7 @@ module Turtle
         draw_controls
         Thread.new do
           sleep 0.1 # HACK
-          execute_canvas_code &blk
+          @canvas.instance_eval &blk
           @next_command.replace("*** END ***")
         end
       end
