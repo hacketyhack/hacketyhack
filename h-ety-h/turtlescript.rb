@@ -17,19 +17,13 @@ class Shoes::TurtleCanvas < Shoes::Widget
     @width = WIDTH
     @height = WIDTH
     style width => @width, :height => @height
-    @heading = 180*DEG # internal heading is rotated by 180 w.r.t user heading
-    @pendown = true
-    @speed = SPEED
-    @paused = true
     @queue = Queue.new
     @image = image "#{HH::STATIC}/turtle.png"
     @image.transform :center
-    @turtle_angle = 180
-    @bg_color = white
-    @fg_color = black
-    @pen_size = 1
-    update_position(@width/2, @height/2)
-    update_turtle_heading
+    @speed = SPEED
+    @paused = true
+    reset
+    move_turtle_to_top
   end
 
   def start_draw
@@ -41,10 +35,22 @@ class Shoes::TurtleCanvas < Shoes::Widget
 
   ### user commands ###
 
-  #def reset
-  #  set_defaults
-  #  clear
-  #end
+  def reset
+    clear_orig
+    @pendown = true
+    @heading = 180*DEG # internal heading is rotated by 180 w.r.t user heading
+    @pendown = true
+    @turtle_angle = 180
+    @bg_color = white
+    @fg_color = black
+    @pen_size = 1
+    background_orig @bg_color
+    stroke @fg_color
+    strokewidth @pen_size
+    update_position(@width/2, @height/2)
+    update_turtle_heading
+  end
+
   def forward len=100
     is_step
     x = len*sin(@heading) + @x
@@ -215,8 +221,8 @@ private
         method = m
       end
     end
-    puts '-----------------------------'
-    puts bt
+    #puts '-----------------------------'
+    #puts bt
     @next_command.replace(method)
   end
 
@@ -247,6 +253,7 @@ module Turtle
 
     Shoes.app opts do
       extend Turtle # add methods back (after self changed)
+      @block = blk
 
       unless opts[:draw]
         para "pen: "
@@ -273,14 +280,10 @@ module Turtle
       Thread.abort_on_exception = true;
       
       if opts[:draw]
-        Thread.new do
-          @canvas.start_draw
-          sleep 0.1 # HACK
-          execute_canvas_code &blk
-        end
+        draw_all
       else
         draw_controls
-        Thread.new do
+        @interactive_thread = Thread.new do
           sleep 0.1 # HACK
           @canvas.instance_eval &blk
           @next_command.replace("*** END ***")
@@ -289,8 +292,8 @@ module Turtle
     end
   end
 
-  private
-  def execute_canvas_code &blk
+private
+  def execute_canvas_code blk
     @canvas.instance_eval do
       shape do
         self.instance_eval &blk
@@ -328,10 +331,19 @@ module Turtle
         @canvas.speed *= 2
       end
       glossb "draw all", :color => 'dark', :right => '-0px', :width => 100 do
-        reset
-        @canvas.draw_all
+        @interactive_thread.kill
+        @canvas.reset
+        draw_all
       end
     end
     @canvas.pen_info = @pen_info
+  end
+
+  def draw_all
+    Thread.new do
+      @canvas.start_draw
+      sleep 0.1 # HACK
+      execute_canvas_code @block
+    end
   end
 end
