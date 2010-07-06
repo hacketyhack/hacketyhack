@@ -2,8 +2,8 @@ require 'thread'
 
 class Shoes::TurtleCanvas < Shoes::Widget
   # default values
-  WIDTH = 400
-  HEIGHT = 400
+  WIDTH = 500
+  HEIGHT = 500
   SPEED = 4 # power of two
   
   include Math
@@ -12,6 +12,7 @@ class Shoes::TurtleCanvas < Shoes::Widget
   # para with the next command written on it
   attr_writer :next_command, :pen_info
   attr_accessor :speed # powers of two
+  attr_reader :width, :height
 
   def initialize
     @width = WIDTH
@@ -87,15 +88,15 @@ class Shoes::TurtleCanvas < Shoes::Widget
     is_step
     @pendown = true
   end
-  def isdown?
+  def pendown?
     return @pendown
   end
-  def go x, y
+  def goto x, y
     is_step
     update_position(x, y)
   end
   def center
-    go(200, 200)
+    go(width/2, height/2)
   end
   def setx x
     is_step
@@ -115,7 +116,9 @@ class Shoes::TurtleCanvas < Shoes::Widget
     [@x, @y]
   end
   def getheading
-    @heading
+    degs = @heading/DEG
+    degs += 180
+    degs % 360
   end
 
   ### user commands already in shoes (the first two with another name ###

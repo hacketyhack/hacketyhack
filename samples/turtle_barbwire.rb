@@ -5,7 +5,7 @@ Turtle.start do
   background yellow
   pencolor brown
   pensize 2
-  go 30, 200
+  goto 30, 200
   setheading 180
   1000.times do
     forward 20

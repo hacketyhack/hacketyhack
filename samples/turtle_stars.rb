@@ -5,7 +5,7 @@ Turtle.start do
   pensize 2
   pencolor yellow
   30.times do
-    go rand(400), rand(400)
+    goto rand(width), rand(height)
     setheading rand(360)
     len = 5 + rand(30)
     5.times do
