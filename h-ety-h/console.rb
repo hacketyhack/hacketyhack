@@ -34,6 +34,8 @@ module HH::Lessons
 
   def check code, answer, output
     return unless @match
+    return if @match[0] and code !~ @match[0]
+    return if @match[2] and output !~ @match[2]
     case answer when @match[1]
       unless help(@bookmark[0], @bookmark[1] + 1)
         help(@bookmark[0] + 1, 0)
