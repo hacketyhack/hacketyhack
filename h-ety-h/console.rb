@@ -33,13 +33,7 @@ module HH::Lessons
   def prompt txt; @lesson.code txt, :stroke => "#EEE", :fill => "#703" end
 
   def check code, answer, output
-    debug("checking:")
-    debug("Code: " + code.to_s)
-    debug("answer: " + answer.to_s)
-    debug("output: " + output.to_s)
     return unless @match
-    debug("hey") || return if @match[0] and code !~ @match[0]
-    debug("ho") || return if @match[2] and output !~ @match[2]
     case answer when @match[1]
       unless help(@bookmark[0], @bookmark[1] + 1)
         help(@bookmark[0] + 1, 0)
