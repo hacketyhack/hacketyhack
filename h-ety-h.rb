@@ -15,7 +15,7 @@ def HH.anonymous_binding
   bind
 end
 
-window :title => "Hackety Hack", :width => 500, :height => 580 do
+window :title => "Hackety Hack", :width => 575, :height => 700 do
   HH::APP = self
   extend HH::Widgets, HH::Home
   style(Shoes::LinkHover, :fill => nil, :stroke => "#C66")
