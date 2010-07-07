@@ -15,6 +15,7 @@ require 'h-ety-h/speech'
 require 'h-ety-h/table'
 require 'h-ety-h/time'
 require 'h-ety-h/web'
+require 'h-ety-h/turtlescript'
 
 require 'h-ety-h/init'
 

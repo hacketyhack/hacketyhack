@@ -1,0 +1,99 @@
+Turtle Graphics support (http://en.wikipedia.org/wiki/Turtle_graphics)
+
+Turtle code can be run from the HacketyHack editor, two modes are available:
+
+1. interactive mode, allowing step by step execution
+
+Turtle.start do
+  # turtle code here
+end
+
+
+2. drawing mode that execute the whole code at once
+
+Turtle.draw do
+  # turtle code here
+end
+
+
+== Available Commands ==
+penup
+after this command gets called the pen is up and nothing is drawn
+
+pendown
+after this command the pen is dawn and lines are drawn as the turtle moves
+
+pendown?
+returns true if the pen is down, (default is true)
+
+pensize x
+set the width of the line drawn by the turtle to x
+
+pencolor c
+set the color of the line drawn by the turtle to c, use the shoes color system
+
+background c
+set the background color to c, use the shoes color system
+
+forward x
+moves the turtle forward by x pixels
+when no options are given a default argument of 50 pixels is used
+
+backward x
+moves the turtle forward by x pixels, equivalent to forward -x
+when no options are given a default argument of 50 pixels is used
+
+turnleft a
+turns the turtle heading a degrees to the left, default heading is 0 degrees
+when no options are given a default argument of 90 degrees is used
+
+turnright a
+turns the turtle heading a degrees to the right, equivalent to turnleft -a
+when no options are given a default argument of 90 degrees is used
+
+setheading a
+sets the current heading to a
+
+getheading
+retuns the current heading in degrees
+
+setx x
+moves the turtle horizontally to (current_y, x)
+doesn't draw anything
+
+sety y
+moves the turtle vertically to (y, current_x)
+doesn't draw anything
+
+goto x, y
+moves the turtle to (x, y)
+doesn't draw anything
+
+getposition
+retuns [x, y] (as an array)
+
+clear
+removes all content (but does not change the turtle attributes)
+
+reset
+removes all content and resets all attributes (including turtle position)
+
+
+
+== Example ==
+
+
+Turtle.start do
+  background blue
+  pensize 2
+  pencolor yellow
+  30.times do
+    goto rand(width), rand(height)
+    setheading rand(360)
+    len = 5 + rand(30)
+    5.times do
+      forward len
+      turnleft 180-360/10
+    end
+  end
+end
