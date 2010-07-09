@@ -10,7 +10,6 @@ require 'h-ety-h/prefs'
 def HH.anonymous_binding
   bind = ::TOPLEVEL_BINDING
   obj = eval("self", bind)
-  # obj.extend HH::Kernel
   obj.instance_variable_set("@binding", bind)
   bind
 end
