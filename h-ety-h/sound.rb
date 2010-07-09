@@ -123,7 +123,7 @@ module HH::Foley
         code = "  type #{@sound.type}\n"
         @controls.keys.each do |m|
           v = @sound.send(m)
-          if v != PLAIN.send(m)
+          if v != Shoes::App::HH::Foley::PLAIN.send(m)
             code << "  %s %0.2f\n" % [m, v]
           end
         end
