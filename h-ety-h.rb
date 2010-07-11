@@ -20,7 +20,9 @@ window :title => "Hackety Hack", :width => 575, :height => 700 do
       home
     end
 
+  # auxiliary method to load the editor
   def load_editor name = {}
+    # the editor methods are included the first time
     unless respond_to? :editor
       require 'h-ety-h/editor'
       extend HH::Editor
@@ -33,6 +35,7 @@ window :title => "Hackety Hack", :width => 575, :height => 700 do
       background "#F7A", :curve => 6
       para "HOME", :margin => 3, :margin_left => 40, :stroke => white
     end
+    # colored background
     background "#cdc", :width => 38
     background "#dfa", :width => 36
     background "#fda", :width => 30
@@ -47,6 +50,7 @@ window :title => "Hackety Hack", :width => 575, :height => 700 do
       load_editor
     end    
     sidetab "#{HH::STATIC}/tab-try.png", 64, "TRY RUBY!" do
+      # the console methods are included the first time
       unless respond_to? :console
         require 'h-ety-h/console'
         extend HH::Console
@@ -130,6 +134,7 @@ window :title => "Hackety Hack", :width => 575, :height => 700 do
       end
     end
 
+  # splash screen
   stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
     splash
   end
