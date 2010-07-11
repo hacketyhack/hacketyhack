@@ -1,3 +1,5 @@
+# the messages tab content
+
 module HH::Prefs
   def loading_stack *a
     n = nil

@@ -1,3 +1,8 @@
+# sets constant in the HH module and environment variables
+# initializes the database and mixes in HH::DbMixin into it
+# the current directory in set to HH::USER (~/.hacketyhack on unix systems)
+# (HH::APP is initialized in h-ety-h.rb instead)
+
 HH::NET = "hacketyhack.heroku.com"
 HH::REST = "http://hacketyhack.heroku.com"
 #for easy switching when developing
