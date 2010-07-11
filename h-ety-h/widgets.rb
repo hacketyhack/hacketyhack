@@ -1,8 +1,12 @@
-def scroll_box(opts = {}, &blk)
-  opts = {:width => 1.0, :height => 300, :scroll => true}.merge(opts)
-  stack opts, &blk
-end
+# some extensions to shoes (subclasses of Shoes::Widget)
+# and auxiliary methods for the hh app (the HH::Widgets mixin)
 
+#def scroll_box(opts = {}, &blk)
+#  opts = {:width => 1.0, :height => 300, :scroll => true}.merge(opts)
+#  stack opts, &blk
+#end
+
+# a glossy button
 class Glossb < Shoes::Widget
   def initialize(name, opts={}, &blk)
     fg, bgfill = "#777", "#DDD"
@@ -35,54 +39,56 @@ class Glossb < Shoes::Widget
   end
 end
 
-class Lightboard < Shoes::Widget
-  def initialize(width, height, actual = width * height)
-    @opts = []
-    nostroke
-    resize(width, height, actual)
-  end
-  def coords(x, y, opts)
-    at((y * @width) + x, opts)
-  end
-  def at(i, opts)
-    return if i > @actual
-    r, p = self.contents[i * 2], self.contents[(i * 2) + 1]
-    @opts[i] = (@opts[i] || {}).update(opts)
-    if opts[:text]
-      p.text = opts[:text]
-    end
-    if opts[:fill]
-      r.fill = opts[:fill]
-    end
-  end
-  def fits(length)
-    r = Math.sqrt(length)
-    resize(r.round, r.ceil, length)
-  end
-  def resize(width, height, actual = width * height) 
-    @width, @height, @actual = width, height, actual
-    build
-  end
-  def build
-    height = parent.height / @height
-    width = parent.width / @width
-    clear do
-      @actual.times do |i|
-        y = i / @width
-        x = i % @width
-        top = y * height
-        left = x * width
-        opts = @opts[i] || {}
-        rect left + 4, top + 4, width - 8, height - 8,
-          :curve => 12, :fill => opts[:fill] || white
-        para opts[:text] || "", :top => top + (height * 0.5) - 32,
-          :left => left, :width => width, :align => "center",
-          :size => 31, :font => "Lacuna Regular"
-      end
-    end
-  end
-end
+#class Lightboard < Shoes::Widget
+#  def initialize(width, height, actual = width * height)
+#    @opts = []
+#    nostroke
+#    resize(width, height, actual)
+#  end
+#  def coords(x, y, opts)
+#    at((y * @width) + x, opts)
+#  end
+#  def at(i, opts)
+#    return if i > @actual
+#    r, p = self.contents[i * 2], self.contents[(i * 2) + 1]
+#    @opts[i] = (@opts[i] || {}).update(opts)
+#    if opts[:text]
+#      p.text = opts[:text]
+#    end
+#    if opts[:fill]
+#      r.fill = opts[:fill]
+#    end
+#  end
+#  def fits(length)
+#    r = Math.sqrt(length)
+#    resize(r.round, r.ceil, length)
+#  end
+#  def resize(width, height, actual = width * height)
+#    @width, @height, @actual = width, height, actual
+#    build
+#  end
+#  def build
+#    height = parent.height / @height
+#    width = parent.width / @width
+#    clear do
+#      @actual.times do |i|
+#        y = i / @width
+#        x = i % @width
+#        top = y * height
+#        left = x * width
+#        opts = @opts[i] || {}
+#        rect left + 4, top + 4, width - 8, height - 8,
+#          :curve => 12, :fill => opts[:fill] || white
+#        para opts[:text] || "", :top => top + (height * 0.5) - 32,
+#          :left => left, :width => width, :align => "center",
+#          :size => 31, :font => "Lacuna Regular"
+#      end
+#    end
+#  end
+#end
 
+# splash screen and a link with a similar appearance as the gloss buttons
+# included by the hh app
 module HH::Widgets
   def splash
     nostroke
@@ -144,6 +150,7 @@ module HH::Widgets
     end
   end
 
+  # creates a link having a similar appearance as the gloss buttons
   def britelink icon, name, time = nil, bg = "#8c9", &blk
     bg = background bg, :curve => 6, :height => 29, :hidden => true
     flow :margin => 4 do

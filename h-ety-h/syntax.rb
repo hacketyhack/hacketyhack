@@ -1,3 +1,5 @@
+# tokenizer used for syntax highlighting
+
 require 'h-ety-h/syntax/common'
 
 module HH::Syntax
