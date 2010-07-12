@@ -136,6 +136,6 @@ window :title => "Hackety Hack", :width => 575, :height => 700 do
 
   # splash screen
   stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
-    splash
+    #splash
   end
 end
