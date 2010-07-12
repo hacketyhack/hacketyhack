@@ -1,6 +1,6 @@
 # syntax highlighting
 
-require 'h-ety-h/syntax'
+require 'h-ety-h/syntax/syntax'
 
 module HH::Markup
 

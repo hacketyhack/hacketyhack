@@ -1,7 +1,7 @@
 # the editor tab content
 
 require 'h-ety-h/artist'
-require 'h-ety-h/markup'
+require 'h-ety-h/syntax/markup'
 
 module HH::Editor
   # common code between InsertionAction and DeletionAction
