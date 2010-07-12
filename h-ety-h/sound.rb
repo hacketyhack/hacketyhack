@@ -1,3 +1,8 @@
+# some methods to allow the user to play sounds
+#
+# and a sound editor (similar to the graphics editor) that allows the user
+# to easily insert sounds code into the text editor
+
 require 'bloops'
 
 module Kernel

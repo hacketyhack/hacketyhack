@@ -1,4 +1,4 @@
-# the editor tab content
+# the code editor tab contents
 
 require 'h-ety-h/artist'
 require 'h-ety-h/syntax/markup'

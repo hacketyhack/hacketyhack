@@ -2,6 +2,8 @@
 # = Address =
 # map a real street address
 #
+# not used anywhere
+#
 def address(str)
   Address.new(str)
 end

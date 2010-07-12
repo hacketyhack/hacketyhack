@@ -1,3 +1,8 @@
+# graphics editor called when art[tab] is typed in the text editor
+# generates code to redraw the graphics drawn
+# for now to be able to use it the keyboard shortcuts need to be known
+# (C, P, L, R, O, A, M, F, arrow keys, Escape)
+
 module HH::Artist
   def artist indent = 0, &blk
     dialog :title => "Hackety Hack Artist", :resizable => false do
