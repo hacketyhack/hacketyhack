@@ -150,6 +150,5 @@ module HH::Home
         image 10, 70
       end
     end
-    para "12345 this is a test"
   end
 end
