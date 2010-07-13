@@ -12,3 +12,10 @@ module HH::Sequel #:nodoc:
     Database.connect(url)
   end
 end
+
+require 'app/db/table'
+
+# some constant initialization
+HH::DB = HH::Sequel::SQLite::Database.new(:database => File.join(HH::USER, "+TABLES"))
+HH::DB.extend HH::DbMixin
+HH::DB.init

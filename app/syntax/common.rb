@@ -179,7 +179,7 @@ module HH::Syntax
   # handler will be returned.
   def load( syntax )
     begin
-      require "h-ety-h/syntax/lang/#{syntax}"
+      require "app/syntax/lang/#{syntax}"
     rescue LoadError
     end
     SYNTAX[ syntax ].new

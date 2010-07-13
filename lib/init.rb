@@ -1,5 +1,4 @@
 # sets constant in the HH module and environment variables
-# initializes the database and mixes in HH::DbMixin into it
 # the current directory in set to HH::USER (~/.hacketyhack on unix systems)
 # (HH::APP is initialized in h-ety-h.rb instead)
 
@@ -15,7 +14,7 @@ $LOAD_PATH << HH::HOME
 
 # platform-specific directories
 case RUBY_PLATFORM when /win32/
-  require 'h-ety-h/win32'
+  require 'lib/win32'
   HOME = ENV['USERPROFILE'].gsub(/\\/, '/')
   ENV['MYDOCUMENTS'] = HH.read_shell_folder('Personal')
   ENV['APPDATA'] = HH.read_shell_folder('AppData')
@@ -37,9 +36,6 @@ end
 
 HH::DOWNLOADS = File.join(HH::USER, 'Downloads')
 FileUtils.makedirs(HH::DOWNLOADS)
-HH::DB = HH::Sequel::SQLite::Database.new(:database => File.join(HH::USER, "+TABLES"))
-HH::DB.extend HH::DbMixin
-HH::DB.init
 
 Dir.chdir(HH::USER)
 

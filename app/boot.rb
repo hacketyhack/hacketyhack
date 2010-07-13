@@ -10,10 +10,7 @@ require 'app/web/all'
 require 'app/syntax/markup'
 
 require 'app/db/sequel'
-require 'app/db/table'
 
 require 'app/ui/errors'
 require 'app/ui/widgets'
 require 'app/ui/completion'
-
-require 'app/init'
