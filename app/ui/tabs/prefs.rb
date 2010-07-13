@@ -148,7 +148,7 @@ module HH::Prefs
           button "Save", :margin_top => 10 do
             HH::PREFS['username'] = @user.text
             HH::PREFS['password'] = @pass.text
-						HH::PREFS['key'] = @key.text
+            HH::PREFS['key'] = @key.text
             HH.save_prefs
             @action.clear { prefs }
           end
@@ -160,8 +160,8 @@ module HH::Prefs
         start = page * 5
         HH.user.get_inbox do |box|
           @mailtable.replace do
-						box = box['messages']
-					  unless box.nil?
+            box = box['messages']
+            unless box.nil?
               box[page * 5, 5].each do |msg|
                 icon = msg['read'] ? "tab-email.png" : "icon-email.png"
                 stack :margin_left => 8, :margin_top => 4 do

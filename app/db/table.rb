@@ -195,8 +195,8 @@ module HH
       File.open(HH::USER + "/" + name + ".rb", "w") do |f|
         f << code
       end
-			return if PREFS['username'].blank?
-			@user.send_to_the_cloud(name, code)
+      return if PREFS['username'].blank?
+      @user.send_to_the_cloud(name, code)
     end
 
     def get_script(name)

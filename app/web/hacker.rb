@@ -10,13 +10,13 @@ class Hacker
   include HH::YAML
 
   attr :name
-	attr :key
-	attr :password
+  attr :key
+  attr :password
 
   def initialize(who)
     @name = who['username']
-		@password = who['password']
-		@key = who['key']
+    @password = who['password']
+    @key = who['key']
   end
 
   def inspect
@@ -37,7 +37,7 @@ class Hacker
 
   def get_from_inbox msg
     http('GET', "/messages/#{msg['id']}.yaml", :who => @name) do |msg|
-			msg = msg['message']
+      msg = msg['message']
       if msg['text'] =~ /^--- (.+?)\.rb\n/
         msg['script_name'] = $1
         msg['script_code'] = $'
@@ -49,17 +49,17 @@ class Hacker
   end
 
   def put_in_outbox msg, &blk
-		msg[:api_key] = @key
+    msg[:api_key] = @key
     http('POST', '/messages', msg, &blk)
   end
 
-	def update_programs &blk
+  def update_programs &blk
     http('GET', '/programs.yaml', :who => @name, :api_key => @key, &blk)
-	end
+  end
 
-	def send_to_the_cloud name, code
-		url = "/users/" + @name + "/programs/" + name
-		http('GET', url, {:text => code, :api_key => @key}) {|u| true }
-	end
+  def send_to_the_cloud name, code
+    url = "/users/" + @name + "/programs/" + name
+    http('GET', url, {:text => code, :api_key => @key}) {|u| true }
+  end
 
 end
