@@ -103,30 +103,30 @@ window :title => "Hackety Hack", :width => 575, :height => 700 do
   @mailcheck =
     every 20 do
       if HH.user
-				HH.user.update_programs do |programs|
-				  unless  programs['programs'].nil?
-				    debug("programs count: #{programs['programs'].count}")
-  					programs = programs['programs']
-  					programs.each do |program|
-  						name = program['name'].gsub(/ /, '_')
-  						unless HH.script_exists?(name)
-  							HH.save_script(name, program['text'])
-  						end
-  					end
-  				end
-				end
-				if @notice.hidden == true
-					HH.user.get_inbox_count do |c|
-						unless c['messages'].nil?
-					  	count = c['messages'].select{|m| m['read'] == false}.length
-  						if(count > 0)
-  							@noticeN.text = "#{count} new"
-  							@notice.show
-  							@mailcheck.stop
-  						end
-  					end
-					end
-				end
+        HH.user.update_programs do |programs|
+          unless  programs['programs'].nil?
+            debug("programs count: #{programs['programs'].count}")
+            programs = programs['programs']
+            programs.each do |program|
+              name = program['name'].gsub(/ /, '_')
+              unless HH.script_exists?(name)
+                HH.save_script(name, program['text'])
+              end
+            end
+          end
+        end
+        if @notice.hidden == true
+          HH.user.get_inbox_count do |c|
+            unless c['messages'].nil?
+              count = c['messages'].select{|m| m['read'] == false}.length
+              if(count > 0)
+                @noticeN.text = "#{count} new"
+                @notice.show
+                @mailcheck.stop
+              end
+            end
+          end
+        end
       end
     end
 
