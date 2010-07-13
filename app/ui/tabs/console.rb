@@ -3,9 +3,6 @@
 
 require 'irb/ruby-lex'
 require 'stringio'
-require 'h-ety-h/syntax/markup'
-require 'h-ety-h/completion'
-require 'h-ety-h/string'
 
 module HH::Lessons
   attr_accessor :lesson, :started, :bookmark

@@ -1,4 +1,4 @@
-require 'h-ety-h/syntax/convertors/abstract'
+require 'app/syntax/convertors/abstract'
 
 module HH::Syntax
   module Convertors

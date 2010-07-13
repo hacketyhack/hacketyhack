@@ -1,6 +1,6 @@
 require 'uri'
 
-require 'h-ety-h/sequel/schema'
+require 'app/db/schema'
 
 module HH::Sequel
   # A Database object represents a virtual connection to a database.

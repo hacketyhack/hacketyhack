@@ -1,6 +1,6 @@
 # website integration
 
-require 'h-ety-h/yaml'
+require 'app/web/yaml'
 
 def Channel(name)
   Hacker('username'=> '_why').channel(name)

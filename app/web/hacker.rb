@@ -1,6 +1,6 @@
 # website integration
 
-require 'h-ety-h/yaml'
+require 'app/web/yaml'
 
 def Hacker name
   Hacker.new name

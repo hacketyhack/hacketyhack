@@ -90,74 +90,108 @@ module HH::Syntax
       @options ? @options[opt] : nil
     end
 
-    private
+  private
 
-      EOL = /(?=\r\n?|\n|$)/
+    EOL = /(?=\r\n?|\n|$)/
 
-      # A convenience for delegating method calls to the scanner.
-      def self.delegate( sym )
-        define_method( sym ) { |*a| @text.__send__( sym, *a ) }
-      end
+    # A convenience for delegating method calls to the scanner.
+    def self.delegate( sym )
+      define_method( sym ) { |*a| @text.__send__( sym, *a ) }
+    end
 
-      delegate :bol?
-      delegate :eos?
-      delegate :scan
-      delegate :scan_until
-      delegate :check
-      delegate :check_until
-      delegate :getch
-      delegate :matched
-      delegate :pre_match
-      delegate :peek
-      delegate :pos
+    delegate :bol?
+    delegate :eos?
+    delegate :scan
+    delegate :scan_until
+    delegate :check
+    delegate :check_until
+    delegate :getch
+    delegate :matched
+    delegate :pre_match
+    delegate :peek
+    delegate :pos
 
-      # Access the n-th subgroup from the most recent match.
-      def subgroup(n)
-        @text[n]
-      end
+    # Access the n-th subgroup from the most recent match.
+    def subgroup(n)
+      @text[n]
+    end
 
-      # Append the given data to the currently active chunk.
-      def append( data )
-        @chunk << data
-      end
+    # Append the given data to the currently active chunk.
+    def append( data )
+      @chunk << data
+    end
 
-      # Request that a new group be started. If the current group is the same
-      # as the group being requested, a new group will not be created. If a new
-      # group is created and the current chunk is not empty, the chunk's
-      # contents will be yielded to the client as a token, and then cleared.
-      #
-      # After the new group is started, if +data+ is non-nil it will be appended
-      # to the chunk.
-      def start_group( gr, data=nil )
-        flush_chunk if gr != @group
-        @group = gr
-        @chunk << data if data
-      end
+    # Request that a new group be started. If the current group is the same
+    # as the group being requested, a new group will not be created. If a new
+    # group is created and the current chunk is not empty, the chunk's
+    # contents will be yielded to the client as a token, and then cleared.
+    #
+    # After the new group is started, if +data+ is non-nil it will be appended
+    # to the chunk.
+    def start_group( gr, data=nil )
+      flush_chunk if gr != @group
+      @group = gr
+      @chunk << data if data
+    end
 
-      def start_region( gr, data=nil )
-        flush_chunk
-        @group = gr
-        @callback.call( Token.new( data||"", @group, :region_open ) )
-      end
+    def start_region( gr, data=nil )
+      flush_chunk
+      @group = gr
+      @callback.call( Token.new( data||"", @group, :region_open ) )
+    end
 
-      def end_region( gr, data=nil )
-        flush_chunk
-        @group = gr
-        @callback.call( Token.new( data||"", @group, :region_close ) )
-      end
+    def end_region( gr, data=nil )
+      flush_chunk
+      @group = gr
+      @callback.call( Token.new( data||"", @group, :region_close ) )
+    end
 
-      def flush_chunk
-        @callback.call( Token.new( @chunk, @group ) ) unless @chunk.empty?
-        @chunk = ""
-      end
+    def flush_chunk
+      @callback.call( Token.new( @chunk, @group ) ) unless @chunk.empty?
+      @chunk = ""
+    end
 
-      def subtokenize( syntax, text )
-        tokenizer = Syntax.load( syntax )
-        tokenizer.set @options if @options
-        flush_chunk
-        tokenizer.tokenize( text, &@callback )
-      end
+    def subtokenize( syntax, text )
+      tokenizer = Syntax.load( syntax )
+      tokenizer.set @options if @options
+      flush_chunk
+      tokenizer.tokenize( text, &@callback )
+    end
+  end
+
+
+  # A default tokenizer for handling syntaxes that are not explicitly handled
+  # elsewhere. It simply yields the given text as a single token.
+  class Default
+
+    # Yield the given text as a single token.
+    def tokenize( text )
+      yield Token.new( text, :normal )
+    end
 
   end
+
+  # A hash for registering syntax implementations.
+  SYNTAX = Hash.new( Default )
+
+  # Load the implementation of the requested syntax. If the syntax cannot be
+  # found, or if it cannot be loaded for whatever reason, the Default syntax
+  # handler will be returned.
+  def load( syntax )
+    begin
+      require "h-ety-h/syntax/lang/#{syntax}"
+    rescue LoadError
+    end
+    SYNTAX[ syntax ].new
+  end
+  module_function :load
+
+  # Return an array of the names of supported syntaxes.
+  def all
+    lang_dir = File.join(File.dirname(__FILE__), "syntax", "lang")
+    Dir["#{lang_dir}/*.rb"].map { |path| File.basename(path, ".rb") }
+  end
+  module_function :all
+
 
 end

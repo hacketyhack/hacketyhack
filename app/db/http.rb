@@ -1,4 +1,4 @@
-require 'h-ety-h/yaml'
+require 'app/web/yaml'
 
 module HH::Sequel
   module HTTP

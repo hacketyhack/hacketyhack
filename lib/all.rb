@@ -1,0 +1,5 @@
+require 'lib/draw'
+require 'lib/sound'
+require 'lib/speech'
+require 'lib/turtle'
+require 'lib/extensions'

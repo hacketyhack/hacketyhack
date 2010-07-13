@@ -1,11 +1,11 @@
-require 'h-ety-h/sequel/core_ext'
-require 'h-ety-h/sequel/database'
-require 'h-ety-h/sequel/connection_pool'
-require 'h-ety-h/sequel/schema'
-require 'h-ety-h/sequel/dataset'
-require 'h-ety-h/sequel/model'
-require 'h-ety-h/sequel/sqlite'
-require 'h-ety-h/sequel/http'
+require 'app/db/core_ext'
+require 'app/db/database'
+require 'app/db/connection_pool'
+require 'app/db/schema'
+require 'app/db/dataset'
+require 'app/db/model'
+require 'app/db/sqlite'
+require 'app/db/http'
 
 module HH::Sequel #:nodoc:
   def self.connect(url)

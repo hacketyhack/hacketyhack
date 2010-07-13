@@ -1,7 +1,8 @@
 # the code editor tab contents
 
-require 'h-ety-h/artist'
-require 'h-ety-h/syntax/markup'
+require 'app/ui/editor/artist'
+require 'app/ui/editor/dingbattery'
+require 'app/ui/editor/foley'
 
 module HH::Editor
   # common code between InsertionAction and DeletionAction

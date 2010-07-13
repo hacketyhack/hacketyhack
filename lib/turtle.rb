@@ -1,4 +1,4 @@
-# the turtle graphics library
+# a turtle graphics library
 
 require 'thread'
 
