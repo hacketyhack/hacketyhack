@@ -1,5 +1,3 @@
-# the editor tab content
-
 require 'h-ety-h/artist'
 require 'h-ety-h/markup'
 

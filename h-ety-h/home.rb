@@ -1,18 +1,9 @@
-# the home tab content
-# partly unfinished: some features have just started being implemented
-
 module HH::Home
-  # method to create a side tab (actually is just a stack with an image in it)
-  # +icon_path+:: the icon displayed in the tab
-  # +top+:: if > 0 indicates the distance from the top, else the distance from
-  #         the bottom
-  # +name+:: text displayed on icon hover
-  # +blk+:: the block passed is executed on click
-  def sidetab(icon_path, top, name, &blk)
+  def sidetab(image_src, top, name, &blk)
     v = top < 0 ? :bottom : :top
     stack v => top.abs, :left => 0, :width => 38, :margin => 4 do
       bg = background "#DFA", :height => 26, :curve => 6, :hidden => true
-      image(icon_path, :margin => 4).
+      image(image_src, :margin => 4).
         hover { bg.show; @tip.parent.width = 122; @tip.top = nil; @tip.bottom = nil
           @tip.send("#{v}=", top.abs); @tip.contents[1].text = name; @tip.show }.
         leave { bg.hide; @tip.hide; @tip.parent.width = 40 }.
@@ -20,24 +11,21 @@ module HH::Home
     end
   end
 
-  # unfinished method that asks if the user wants to upgrade
-#  def home_bulletin
-#    stack do
-#      background "#FF9".."#FFF"
-#      subtitle "Upgrade to 0.7?", :font => "Phonetica", :align => "center", :margin => 8
-#      para "A New Hackety Hack is Here!", :align => "center", :margin_bottom => 50
-#      glossb "Upgrade", :top => 90, :left => 0.42, :width => 100, :color => "red" do
-#        alert("No upgrades yet.")
-#      end
-#    end
-#    stack do
-#      background black(0.4)..black(0.0)
-#      image 1, 10
-#    end
-#  end
+  def home_bulletin
+    stack do
+      background "#FF9".."#FFF"
+      subtitle "Upgrade to 0.7?", :font => "Phonetica", :align => "center", :margin => 8
+      para "A New Hackety Hack is Here!", :align => "center", :margin_bottom => 50
+      glossb "Upgrade", :top => 90, :left => 0.42, :width => 100, :color => "red" do
+        alert("No upgrades yet.")
+      end
+    end
+    stack do
+      background black(0.4)..black(0.0)
+      image 1, 10
+    end
+  end
 
-  # auxiliary method to displays the arrows, for example in case
-  # more than 5 programs have to be listed
   def home_arrows meth, start, total
     stack :top => 0, :right => 10 do
       nex = total > start + 5
@@ -54,7 +42,6 @@ module HH::Home
     end
   end
 
-  # displays the user programs
   def home_scripts start = 0
     if @scripts.empty?
       para "You have no programs.", :margin_left => 12, :font => "Lacuna Regular"
@@ -75,28 +62,25 @@ module HH::Home
     end
   end
 
-  # I think this was meant to show all tables currently in the database
-#  def home_tables start = 0
-#    if @tables.empty?
-#      para "You have no tables.", :margin_left => 12, :font => "Lacuna Regular"
-#    else
-#      @tables[start,5].each do |name|
-#        stack :margin_left => 8, :margin_top => 4 do
-#          britelink "icon-table.png", name do
-#            alert("No tables page yet.")
-#          end
-#        end
-#      end
-#      home_arrows :home_tables, start, @tables.length
-#    end
-#  end
+  def home_tables start = 0
+    if @tables.empty?
+      para "You have no tables.", :margin_left => 12, :font => "Lacuna Regular"
+    else
+      @tables[start,5].each do |name|
+        stack :margin_left => 8, :margin_top => 4 do
+          britelink "icon-table.png", name do
+            alert("No tables page yet.")
+          end
+        end
+      end
+      home_arrows :home_tables, start, @tables.length
+    end
+  end
 
   def home_lessons
     para "You have no lessons.", :margin_left => 12, :font => "Lacuna Regular"
   end
 
-  # add a tab at the top of the homepane, for now there is only one tab:
-  # (Programs)
   def hometab name, bg, starts = false, &blk
     tab =
       stack :margin_top => (starts ? 6 : 10), :margin_left => 14, :width => 120 do
@@ -124,7 +108,6 @@ module HH::Home
     @tabs << tab
   end
 
-  # creates the content of the home tab
   def home
     image "#{HH::STATIC}/hhhello.png", :bottom => -120, :right => 0
 
@@ -149,7 +132,7 @@ module HH::Home
         background rgb(233, 239, 224, 0.85)..rgb(233, 239, 224, 0.0)
         image 10, 70
       end
+      # @bulletin = stack { home_bulletin }
     end
-    para "12345 this is a test"
   end
 end

@@ -1,10 +1,7 @@
 #
 # = Object =
 #
-# enhancements to the Object class
-#
 class Object
-  # rails like blank?
   def blank?
     if respond_to? :empty?
       empty?

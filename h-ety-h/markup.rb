@@ -1,5 +1,3 @@
-# syntax highlighting
-
 require 'h-ety-h/syntax'
 
 module HH::Markup

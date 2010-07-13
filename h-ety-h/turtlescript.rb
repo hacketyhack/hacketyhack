@@ -1,5 +1,3 @@
-# the turtle graphics library
-
 require 'thread'
 
 class Shoes::TurtleCanvas < Shoes::Widget

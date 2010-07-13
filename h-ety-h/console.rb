@@ -1,6 +1,3 @@
-# the console (try ruby) tab content
-# includes to code for the try ruby lessons
-
 require 'irb/ruby-lex'
 require 'stringio'
 require 'h-ety-h/markup'
