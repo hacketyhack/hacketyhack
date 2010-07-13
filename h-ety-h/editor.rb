@@ -219,7 +219,7 @@ module HH::Editor
         end
       glossb "Run", :width => 52, :top => 2, :left => 60 do
         begin
-          eval(@str, ::TOPLEVEL_BINDING)
+          eval(@str, HH.anonymous_binding)
         rescue Exception => ex
           alert ex.friendly
         end

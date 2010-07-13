@@ -776,7 +776,7 @@ class HH::IRB < RubyLex
   def initialize lesson
     super()
     set_input(StringIO.new)
-    @binding = ::TOPLEVEL_BINDING
+    @binding = HH.anonymous_binding
     @history = []
     reset_history
 

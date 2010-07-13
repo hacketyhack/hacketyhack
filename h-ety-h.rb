@@ -1,10 +1,18 @@
 #!/usr/bin/env shoes
 
-# the main application executable
-
 require 'h-ety-h/boot'
 require 'h-ety-h/home'
 require 'h-ety-h/prefs'
+
+#Shoes.setup do gem 'ruby-debug' end
+#require 'ruby-debug'
+
+def HH.anonymous_binding
+  bind = ::TOPLEVEL_BINDING
+  obj = eval("self", bind)
+  obj.instance_variable_set("@binding", bind)
+  bind
+end
 
 window :title => "Hackety Hack", :width => 575, :height => 700 do
   HH::APP = self
