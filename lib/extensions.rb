@@ -1,3 +1,87 @@
+# Extensions to existing classes
+
+
+
+#
+# = Kernel =
+#
+# Additional Kernel methods.
+#
+module Kernel
+  alias :puts :debug
+end
+
+
+#
+# = Object =
+#
+# enhancements to the Object class
+#
+class Object
+  # rails like blank?
+  def blank?
+    if respond_to? :empty?
+      empty?
+    elsif respond_to? :zero?
+      zero?
+    else
+      !self
+    end
+  end
+
+  def tap
+    yield self
+    self
+  end
+
+  def try(method, *args)
+    respond_to?(method) ? send(method, *args) : self
+  end
+end
+
+
+#
+# = String =
+#
+# Enhancements to strings.
+#
+class String
+  def starts?( beginning )
+    self[0, beginning.length] == beginning
+  end
+  def ends?( ending )
+    self[-ending.length, ending.length] == ending
+  end
+  def remove( phrase )
+    r = dup
+    r[phrase] = ""
+    r
+  end
+  def to_a
+    self.split "\n"
+  end
+end
+
+
+#
+# = Numbers =
+#
+# Enhancements to the basic number classes.
+#
+class Fixnum
+  def ordinalize
+    case self
+    when 1;  "1st"
+    when 2;  "2nd"
+    when 3;  "3rd"
+    else     "#{self}th"
+    end
+  end
+  def weeks; self * 7*24*60*60; end
+end
+
+
+
 #
 # = Time =
 #
@@ -55,3 +139,4 @@ class Time
     end
   end
 end
+
