@@ -2,7 +2,9 @@ require 'app/boot'
 
 require 'app/ui/tabs/home'
 
-window :title => "Hackety Hack", :width => 575, :height => 700 do
+#Thread.abort_on_exception = true
+
+window :title => "Hackety Hack", :width => 1000, :height => 700 do
   HH::APP = self
   extend HH::Widgets, HH::Home
   style(Shoes::LinkHover, :fill => nil, :stroke => "#C66")
@@ -10,11 +12,6 @@ window :title => "Hackety Hack", :width => 575, :height => 700 do
 
   background "#e9efe0"
   background "#e9efe0".."#c1c5d0", :height => 150, :bottom => 150
-
-  @action =
-    stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
-      home
-    end
 
   # auxiliary method to load the editor
   def load_editor name = {}
@@ -26,7 +23,27 @@ window :title => "Hackety Hack", :width => 575, :height => 700 do
     @action.clear { editor(name) }
   end
 
-  stack :top => 0, :left => 0, :width => 40, :height => 1.0 do
+  # returns only once the lesson gets closed
+  def start_lessons # lessons_name
+    Thread.new do
+      @action.style(:width => -500)
+      @lesson.show
+      HH::LessonSet.new.execute_in @lesson
+      # after the lesson ends
+      @lesson.hide
+      @action.style(:width => 1.0)
+    end
+  end
+
+  @action = stack :margin_left => 38, :height => 1.0 do
+    home
+  end
+
+  @lesson = stack :hidden => true, :width => 500
+
+  # declared after the main content because that way hover text
+  # gets displayed on top
+  stack :top => 0, :left => 0, :width => 38, :height => 1.0 do
     @tip = stack :top => 0, :left => 0, :width => 120, :margin => 4, :hidden => true do
       background "#F7A", :curve => 6
       para "HOME", :margin => 3, :margin_left => 40, :stroke => white
@@ -53,15 +70,18 @@ window :title => "Hackety Hack", :width => 575, :height => 700 do
       end
       @action.clear { console }
     end
-    sidetab "#{HH::STATIC}/tab-help.png", 96, "HELP" do
+    sidetab "#{HH::STATIC}/tab-tour.png", 96, "LEARN" do
+      start_lessons
+    end
+    sidetab "#{HH::STATIC}/tab-help.png", 128, "HELP" do
       Shoes.show_manual
     end
-    sidetab "#{HH::STATIC}/tab-cheat.png", 128, "CHEAT" do
+    sidetab "#{HH::STATIC}/tab-cheat.png", 160, "CHEAT" do
       dialog :title => "Hackety Hack - Cheat Sheet", :width => 496 do
         image "#{HH::STATIC}/hhcheat.png"
       end
     end
-    sidetab "#{HH::STATIC}/tab-hand.png", 160, "ABOUT" do
+    sidetab "#{HH::STATIC}/tab-hand.png", 192, "ABOUT" do
       about =
         app.slot.stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
           background black(0.8)
@@ -84,6 +104,7 @@ window :title => "Hackety Hack", :width => 575, :height => 700 do
       exit
     end
   end
+
 
   @notice =
   stack :bottom => 33, :left => 22, :width => 160, :height => 54, :hidden => true do

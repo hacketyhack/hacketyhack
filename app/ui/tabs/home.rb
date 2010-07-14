@@ -2,25 +2,7 @@
 # partly unfinished: some features have just started being implemented
 
 module HH::Home
-  # method to create a side tab (actually is just a stack with an image in it)
-  # +icon_path+:: the icon displayed in the tab
-  # +top+:: if > 0 indicates the distance from the top, else the distance from
-  #         the bottom
-  # +name+:: text displayed on icon hover
-  # +blk+:: the block passed is executed on click
-  def sidetab(icon_path, top, name, &blk)
-    v = top < 0 ? :bottom : :top
-    stack v => top.abs, :left => 0, :width => 38, :margin => 4 do
-      bg = background "#DFA", :height => 26, :curve => 6, :hidden => true
-      image(icon_path, :margin => 4).
-        hover { bg.show; @tip.parent.width = 122; @tip.top = nil; @tip.bottom = nil
-          @tip.send("#{v}=", top.abs); @tip.contents[1].text = name; @tip.show }.
-        leave { bg.hide; @tip.hide; @tip.parent.width = 40 }.
-        click &blk
-    end
-  end
-
-  # unfinished method that asks if the user wants to upgrade
+# unfinished method that asks if the user wants to upgrade
 #  def home_bulletin
 #    stack do
 #      background "#FF9".."#FFF"
@@ -129,7 +111,7 @@ module HH::Home
     image "#{HH::STATIC}/hhhello.png", :bottom => -120, :right => 0
 
     @tabs, @scripts, @tables = [], HH.scripts, HH::DB.tables
-    stack :margin => 0, :margin_left => 38 do
+    stack :margin => 0, :margin_left => 0 do
       stack do
         background "#CDC", :height => 35
         background black(0.05)..black(0.2), :height => 38

@@ -8,6 +8,7 @@ module ::HH end
 require 'lib/all'
 require 'app/web/all'
 require 'app/syntax/markup'
+require 'app/lessons/lessons'
 
 require 'app/db/sequel'
 

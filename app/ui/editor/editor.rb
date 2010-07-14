@@ -125,13 +125,13 @@ module HH::Editor
     InsertionDeletionCommand.on_insert_text {|pos, str|  insert_text(pos, str)}
     InsertionDeletionCommand.on_delete_text {|pos, len|  delete_text(pos, len)}
     @editor =
-      stack :margin_left => 50, :margin_top => 22, :width => 1.0, :height => 92 do
+      stack :margin_left => 10, :margin_top => 22, :width => 1.0, :height => 92 do
         @sname = subtitle name, :font => "Lacuna Regular", :size => 22,
           :margin => 0, :wrap => "trim"
         @stale = para(script[:mtime] ? "Last saved #{script[:mtime].since} ago." :
           "Not yet saved.", :margin => 0, :stroke => "#39C")
       end
-      stack :margin_left => 38, :width => 1.0, :height => -92 do
+      stack :margin_left => 0, :width => 1.0, :height => -92 do
         background white(0.4), :width => 38
         @scroll =
         flow :width => 1.0, :height => 1.0, :margin => 2, :scroll => true do

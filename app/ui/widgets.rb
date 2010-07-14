@@ -176,4 +176,22 @@ module HH::Widgets
       end
     end
   end
+
+  # method to create a side tab (actually is just a stack with an image in it)
+  # +icon_path+:: the icon displayed in the tab
+  # +top+:: if > 0 indicates the distance from the top, else the distance from
+  #         the bottom
+  # +name+:: text displayed on icon hover
+  # +blk+:: the block passed is executed on click
+  def sidetab(icon_path, top, name, &blk)
+    v = top < 0 ? :bottom : :top
+    stack v => top.abs, :left => 0, :width => 38, :margin => 4 do
+      bg = background "#DFA", :height => 26, :curve => 6, :hidden => true
+      image(icon_path, :margin => 4).
+        hover { bg.show; @tip.parent.width = 122; @tip.top = nil; @tip.bottom = nil
+          @tip.send("#{v}=", top.abs); @tip.contents[1].text = name; @tip.show }.
+        leave { bg.hide; @tip.hide; @tip.parent.width = 40 }.
+        click &blk
+    end
+  end
 end
