@@ -899,7 +899,7 @@ module HH::Console
 
   def console
     @str, @cmd = [CURSOR + " "], ""
-    stack :margin => [50, 20, 10, 20], :width => 1.0, :height => 1.0 do
+    stack :margin => [10, 20, 10, 20], :width => 1.0, :height => 1.0 do
       subtitle "Try Ruby!", :font => "Lacuna Regular", :margin => 0, :size => 22
       stack :width => 1.0, :height => 0.35 do
         image "#{HH::STATIC}/hhconsole.png", :top => 0, :left => 0, :width => -5, :height => 1.0

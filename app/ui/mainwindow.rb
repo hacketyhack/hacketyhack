@@ -26,11 +26,11 @@ window :title => "Hackety Hack", :width => 1000, :height => 700 do
   # returns only once the lesson gets closed
   def start_lessons # lessons_name
     Thread.new do
-      @action.style(:width => -500)
-      @lesson.show
-      HH::LessonSet.new.execute_in @lesson
+      @action.style(:width => -400)
+      @lesson_stack.show
+      HH::LessonSet.new.execute_in @lesson_stack
       # after the lesson ends
-      @lesson.hide
+      @lesson_stack.hide
       @action.style(:width => 1.0)
     end
   end
@@ -39,7 +39,7 @@ window :title => "Hackety Hack", :width => 1000, :height => 700 do
     home
   end
 
-  @lesson = stack :hidden => true, :width => 500
+  @lesson_stack = stack :hidden => true, :width => 400
 
   # declared after the main content because that way hover text
   # gets displayed on top

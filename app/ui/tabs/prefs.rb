@@ -121,7 +121,7 @@ module HH::Prefs
     end
     user = HH::PREFS['username']
     clover_whoosh
-    stack :margin => [50, 20, 0, 20], :width => 1.0, :height => 1.0 do
+    stack :margin => [10, 20, 0, 20], :width => 1.0, :height => 1.0 do
       subtitle "Your Messages", :font => "Lacuna Regular", :margin => 0, :size => 22,
         :stroke => "#377"
       if user
