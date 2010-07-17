@@ -89,7 +89,8 @@ class HH::LessonSet
       if @lesson < 0
         @lesson = @lessons.size-1
       end
-      @page = @lessons[@lesson].size-1
+    _name, pages = @lessons[@lesson]
+      @page = pages.size-1
     end
     execute_page
   end
