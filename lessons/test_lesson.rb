@@ -12,13 +12,13 @@ lesson_set "Test Lesson" do
   end
   lesson "Third Lesson"
   page "third lesson lesson" do
-    para "This is the third lesson"
+    para "This is the third lesson", :stroke => white
   end
   page "still third lesson" do
-    para "here is another page"
+    para "here is another page", :stroke => white
   end
   page "still third lesson" do
-    para "and here is one more page"
-    para "with two paras"
+    para "and here is one more page", :stroke => white
+    para "with two paras", :stroke => white
   end
 end
