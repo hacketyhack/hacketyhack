@@ -8,8 +8,9 @@ HH::REST = "http://hacketyhack.heroku.com"
 #HH::NET = "localhost:3000"
 #HH::REST = "http://localhost:3000"
 HH::HOME = Dir.pwd
-HH::STATIC = Dir.pwd + "/static"
+HH::STATIC = HH::HOME + "/static"
 HH::FONTS = HH::HOME + "/fonts"
+HH::LESSONS = HH::HOME + "/lessons"
 $LOAD_PATH << HH::HOME
 
 # platform-specific directories

@@ -23,18 +23,6 @@ window :title => "Hackety Hack", :width => 1000, :height => 700 do
     @action.clear { editor(name) }
   end
 
-  # returns only once the lesson gets closed
-  def start_lessons # lessons_name
-    Thread.new do
-      @action.style(:width => -400)
-      @lesson_stack.show
-      HH::LessonSet.new.execute_in @lesson_stack
-      # after the lesson ends
-      @lesson_stack.hide
-      @action.style(:width => 1.0)
-    end
-  end
-
   @action = stack :margin_left => 38, :height => 1.0 do
     home
   end
@@ -71,7 +59,12 @@ window :title => "Hackety Hack", :width => 1000, :height => 700 do
       @action.clear { console }
     end
     sidetab "#{HH::STATIC}/tab-tour.png", 96, "LEARN" do
-      start_lessons
+      unless respond_to? :prefs
+        require 'app/ui/tabs/lessons'
+        extend HH::LessonTab
+      end
+      @action.clear { lesson_tab }
+      # start_lessons
     end
     sidetab "#{HH::STATIC}/tab-help.png", 128, "HELP" do
       Shoes.show_manual
