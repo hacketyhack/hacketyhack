@@ -1,25 +1,25 @@
 require 'thread'
 
 class HH::LessonSet
+
   def initialize blk
-    @pages = {1 => []}
+    # use of @pages:
+    # name, pages = @lessons[lesson_n]
+    # title, block = pages[page_n]
+    @lessons = []
     instance_eval &blk
-    if @lesson_n.nil?
-      @lesson_n = 1
-    end
   end
 
   # returns only when close gets called
   def execute_in container
-    @lesson = 1
-    @page = 0
+    @lesson, @page = 0, 0
     @container = container
     @execution_thread = Thread.current
     Thread.new do
       begin
         execute_page
       rescue => ex
-        puts ex
+        error ex
       end
     end
     sleep # wait until the close button gets called
@@ -28,21 +28,32 @@ class HH::LessonSet
   def execute_page
     container = @container
     execution_thread = @execution_thread
-    page_title, page_block = @pages[@lesson][@page]
+    lessons = @lessons
     lesson, page = @lesson, @page
     lesson_set = self
+
     container.app do
       container.clear do
       background gray(0.1)
-      #if page == 0
-      #  para "#{lesson}.#{page+1} #{page_title}",
-      #  :stroke => white, :size => 22, :margin => 10
-      #end
-      para "#{lesson}.#{page+1} #{page_title}",
+
+      lesson_name, pages = lessons[lesson]
+      page_title, page_block = pages[page]
+
+      # if first page of a lesson display the lesson name
+      if page == 0
+        para "#{lesson+1}. #{lesson_name}",
+        :stroke => white, :size => 22, :margin => 10
+      end
+
+      # if first page of a lesson don't display page number
+      page_num = page == 0 ? "" : "#{lesson+1}.#{page+1} "
+      para "#{page_num}#{page_title}",
         :stroke => white, :size => 18, :margin => 10
+
       flow :margin => 10 do
         instance_eval &page_block
       end
+      
       flow :height => 40,  :bottom => 0, :right => 0 do
         glossb "previous", :width => 100 do
           lesson_set.previous_page
@@ -60,11 +71,12 @@ class HH::LessonSet
 
   def next_page
     @page += 1
-    if @page >= @pages[@lesson].size
+    _name, pages = @lessons[@lesson]
+    if @page >= pages.size
       @page = 0
       @lesson += 1
-      if @lesson > @lesson_n
-        @lesson = 1
+      if @lesson >= @lessons.size
+        @lesson = 0
       end
     end
     execute_page
@@ -74,24 +86,23 @@ class HH::LessonSet
     @page -= 1
     if @page < 0
       @lesson -= 1
-      if @lesson < 1
-        @lesson = @lesson_n
+      if @lesson < 0
+        @lesson = @lessons.size-1
       end
-      @page = @pages[@lesson].size-1
+      @page = @lessons[@lesson].size-1
     end
     execute_page
   end
 
-  def lesson _
-    if @lesson_n.nil?
-      @lesson_n = 1
-    else
-      @lesson_n += 1
-    end
-    @pages[@lesson_n] = []
+  def lesson name
+    @lessons << [name, []]
   end
 
   def page title, &blk
-    @pages[@lesson_n] << [title, blk]
+    if @lessons.empty?
+      lesson << "Lesson"
+    end
+    _name, pages = @lessons.last
+    pages << [title, blk]
   end
 end

@@ -20,7 +20,7 @@ module HH::LessonTab
         @lesson_stack.hide
         @action.style(:width => 1.0)
       rescue => ex
-        puts ex
+        error ex
       end
     end
   end
