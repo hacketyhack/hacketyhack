@@ -285,17 +285,19 @@ module Turtle
           end
         end
       end
-
-      Thread.abort_on_exception = true;
       
       if opts[:draw]
         draw_all
       else
         draw_controls
         @interactive_thread = Thread.new do
+          begin
           sleep 0.1 # HACK
-          @canvas.instance_eval &blk
-          @next_command.replace("(END)")
+            @canvas.instance_eval &blk
+            @next_command.replace("(END)")
+          rescue => ex
+            error ex
+          end
         end
       end
     end
