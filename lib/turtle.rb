@@ -291,13 +291,9 @@ module Turtle
       else
         draw_controls
         @interactive_thread = Thread.new do
-          begin
           sleep 0.1 # HACK
-            @canvas.instance_eval &blk
-            @next_command.replace("(END)")
-          rescue => ex
-            error ex
-          end
+          @canvas.instance_eval &blk
+          @next_command.replace("(END)")
         end
       end
     end

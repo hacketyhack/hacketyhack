@@ -3,7 +3,7 @@ require 'thread'
 class HH::LessonSet
 
   def initialize blk
-    # use of @pages:
+    # content of @lessons:
     # name, pages = @lessons[lesson_n]
     # title, block = pages[page_n]
     @lessons = []
@@ -15,13 +15,7 @@ class HH::LessonSet
     @lesson, @page = 0, 0
     @container = container
     @execution_thread = Thread.current
-    Thread.new do
-      begin
-        execute_page
-      rescue => ex
-        error ex
-      end
-    end
+    Thread.new { execute_page }
     sleep # wait until the close button gets called
   end
 

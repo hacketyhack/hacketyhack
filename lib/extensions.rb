@@ -140,3 +140,23 @@ class Time
   end
 end
 
+
+#
+# = Thread =
+#
+# Handle exceptions in threads the shoes way.
+#
+require 'thread'
+class Thread
+  alias initialize_orig initialize
+  def initialize *args, &blk
+    initialize_orig *args do
+      begin
+        blk.call
+      rescue => ex
+        error ex
+      end
+    end
+  end
+end
+

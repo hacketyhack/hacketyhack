@@ -1,30 +1,32 @@
 module Kernel
+  # topmost instruction for the lessons DSL
+  # starts a lesson set
   def lesson_set name, &blk
     HH::LessonTab.load_lesson name, blk
   end
 end
 
 module HH::LessonTab
+  # auxiliary function used by Kernel#lesson_set
+  # stores the code of the DSL used to write the lessons
   def self.load_lesson name, blk
     @@lessons << [name, blk]
   end
 
+  # starts a lesson
   # returns only once the lesson gets closed
-  def start_lessons blk # lessons_name
-    Thread.new(Thread.current) do |parent|
-      begin
-        @action.style(:width => -400)
-        @lesson_stack.show
-        HH::LessonSet.new(blk).execute_in @lesson_stack
-        # after the lesson ends
-        @lesson_stack.hide
-        @action.style(:width => 1.0)
-      rescue => ex
-        error ex
-      end
+  def start_lessons blk
+    Thread.new do
+      @action.style(:width => -400)
+      @lesson_stack.show
+      HH::LessonSet.new(blk).execute_in @lesson_stack
+      # after the lesson ends
+      @lesson_stack.hide
+      @action.style(:width => 1.0)
     end
   end
-  
+
+  # draws the lessons tab
   def lesson_tab
     stack :margin => 10 do
       title "Lessons"
