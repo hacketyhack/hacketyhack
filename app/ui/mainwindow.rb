@@ -4,7 +4,7 @@ require 'app/ui/tabs/home'
 
 window :title => "Hackety Hack", :width => 1000, :height => 700 do
   HH::APP = self
-  extend HH::Widgets, HH::Home
+  extend HH::Widgets, HH::Home, HH::Observable
   style(Shoes::LinkHover, :fill => nil, :stroke => "#C66")
   style(Shoes::Link, :stroke => "#377")
 

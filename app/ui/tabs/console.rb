@@ -33,6 +33,10 @@ module HH::Lessons
   def prompt txt; @lesson.code txt, :stroke => "#EEE", :fill => "#703" end
 
   def check code, answer, output
+    # code:: is the code written by the user
+    # answer:: is the result of the code expression
+    # output:: contains what got written to $stdout
+    @lesson.app.emit :try_ruby_command, code, answer, output
     return unless @match
     return if @match[0] and code !~ @match[0]
     return if @match[2] and output !~ @match[2]

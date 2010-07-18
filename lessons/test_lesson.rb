@@ -1,7 +1,12 @@
 lesson_set "Test Lesson" do
   lesson "The first lesson"
   page "First page of the first lesson" do
-    para "Okay let's start this lesson", :stroke => white
+    para "Okay let's start this lesson\n", :stroke => white
+    @p = para "type something in the console to replace",
+      " this text with exclamation marks", :stroke => white
+    on_event :try_ruby_command, :any, :any, String do
+      @p.replace "!!!!!!!!!!!!!!!!!"
+    end
   end
   page "Second page" do
     para "content of the second page of the first lesson", :stroke => white

@@ -10,16 +10,35 @@ class HH::LessonSet
     instance_eval &blk
   end
 
+  def app
+    @container.app
+  end
+
   # returns only when close gets called
   def execute_in container
     @lesson, @page = 0, 0
     @container = container
+    @tmp_event_connections = []
+    
+    app.on_event :new_event_connection, :any do |new_conn|
+      # FIXME: this also events from different parts of the lessons
+      #        for now there aren't any of them, but the concept is broken
+      if new_conn.observer == app && new_conn.event != :new_event_connection
+        @tmp_event_connections << new_conn
+      end
+    end
+
     @execution_thread = Thread.current
-    Thread.new { execute_page }
+    @page_thread = Thread.new { execute_page }
     sleep # wait until the close button gets called
   end
 
   def execute_page
+    @tmp_event_connections.each do |c|
+      @container.app.delete_event_connection(c)
+    end
+    @tmp_event_connections = []
+
     container = @container
     execution_thread = @execution_thread
     lessons = @lessons
@@ -27,7 +46,7 @@ class HH::LessonSet
     lesson_set = self
 
     container.app do
-      container.clear do
+    container.clear do
       background gray(0.1)
 
       lesson_name, pages = lessons[lesson]
