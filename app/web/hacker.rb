@@ -13,12 +13,12 @@ class Hacker
   attr :password
 
   def initialize(who)
-    @name = who['username']
-    @password = who['password']
+    @name = who[:username]
+    @password = who[:password]
   end
 
   def inspect
-    "(Hacker #{@name.inspect})"
+    "(Hacker #{@name})"
   end
 
   def channel(title)
@@ -31,7 +31,7 @@ class Hacker
 
   def save_program_to_the_cloud name, code
     url = "/programs/#{@name}/#{name}.json"
-    http('PUT', url, {:text => code, :username => @name, :password => @password}) {|u| true }
+    http('PUT', url, {:creator_username => @name, :title => name, :code => code, :username => @name, :password => @password}) {|u| true }
   end
 
 end

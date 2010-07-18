@@ -221,6 +221,8 @@ module HH::Editor
         end
 			@save_to_cloud_button =
         glossb "Upload", :width => 70, :top => 2, :left => 0 do
+					hacker = Hacker.new :username => HH::PREFS['username'], :password => HH::PREFS['password']
+					hacker.save_program_to_the_cloud script[:name].to_slug, @str
 					alert("Uploaded!")
 				end
       glossb "Run", :width => 52, :top => 2, :left => 130 do
