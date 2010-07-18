@@ -188,7 +188,7 @@ module HH::Editor
         end
       end
 
-    stack :height => 40, :width => 112, :bottom => 20, :right => 30 do
+    stack :height => 40, :width => 182, :bottom => 20, :right => 20 do
       saver = proc do |name|
         unless name
           msg = ""
@@ -207,18 +207,23 @@ module HH::Editor
         end
       end
       @copy_button = 
-        glossb "Copy", :width => 60, :top => 2, :left => 0 do
+        glossb "Copy", :width => 60, :top => 2, :left => 70 do
           saver[nil]
         end
       @save_button =
-        glossb "Save", :width => 60, :top => 2, :left => 0, :hidden => true do
+        glossb "Save", :width => 60, :top => 2, :left => 70, :hidden => true do
           saver[script[:name]]
           timer 0.1 do
             @save_button.hide
             @copy_button.show
+						@save_to_cloud_button.show
           end
         end
-      glossb "Run", :width => 52, :top => 2, :left => 60 do
+			@save_to_cloud_button =
+        glossb "Upload", :width => 70, :top => 2, :left => 0 do
+					alert("Uploaded!")
+				end
+      glossb "Run", :width => 52, :top => 2, :left => 130 do
         begin
           eval(@str, ::TOPLEVEL_BINDING)
         rescue Exception => ex
@@ -334,6 +339,7 @@ module HH::Editor
       if k and @save_button.hidden
         @copy_button.hide
         @save_button.show
+				@save_to_cloud_button.hide
       end
 
       update_text
