@@ -2,8 +2,6 @@ require 'app/boot'
 
 require 'app/ui/tabs/home'
 
-#Thread.abort_on_exception = true
-
 window :title => "Hackety Hack", :width => 1000, :height => 700 do
   HH::APP = self
   extend HH::Widgets, HH::Home
