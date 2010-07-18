@@ -84,7 +84,7 @@ window :title => "Hackety Hack", :width => 1000, :height => 700 do
           click { about.remove }
         end
     end
-    sidetab "#{HH::STATIC}/tab-email.png", -74, "INBOX" do
+    sidetab "#{HH::STATIC}/tab-properties.png", -74, "INBOX" do
       unless respond_to? :prefs
         require 'app/ui/tabs/prefs'
         extend HH::Prefs
