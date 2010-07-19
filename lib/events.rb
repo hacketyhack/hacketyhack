@@ -31,7 +31,7 @@ class HH::EventConnection
       return match_hash? args[0]
     end
 
-    debug "matching content"
+    #debug "matching content"
     # else match each element
     (0...args.size).each do |i|
       cond = @args_cond[i]
@@ -41,7 +41,7 @@ class HH::EventConnection
   end
 
   def match_hash? hash
-    debug "matching hash #{@args_cond.inspect} vs #{hash}"
+    #debug "matching hash #{@args_cond.inspect} vs #{hash}"
     return false unless hash.is_a?(Hash)
     @args_cond[0].each do |key, cond|
       return false unless cond === hash[key]
@@ -76,13 +76,13 @@ module HH::Observable
     @event_connections = Hash.new(Set.new) if @event_connections.nil?
     new_conn = HH::EventConnection.new(event, args_cond, blk)
     @event_connections[event] += [new_conn]
-    debug "#{new_conn} added"
+    #debug "#{new_conn} added"
     #emit :new_event_connection, new_conn
     new_conn
   end
 
   def delete_event_connection c
-    debug "#{c} deleted!"
+    #debug "#{c} deleted!"
     @event_connections[c.event].delete c
   end
 end
