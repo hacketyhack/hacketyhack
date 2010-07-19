@@ -1,21 +1,43 @@
 require 'thread'
 
+# the code in the +page+ blocks in the lessons is executed with +self+
+# being a LessonContainer, methods of the main app (and thus of shoes) are
+# available because missing methods get propagated there
 class HH::LessonContainer
   def initialize container
     @container = container
+    @event_connections = []
+  end
+
+  # convenience method the access the main shoes application
+  def app
+    @container.app
   end
 
   def method_missing(symbol, *args, &blk)
-    @container.app.send symbol, *args, &blk
+    app.send symbol, *args, &blk
   end
 
   def set_content &blk
+    reset_connections
     @container.clear { instance_eval &blk }
+  end
+
+  def on_event *args, &blk
+    @event_connections << app.on_event(*args, &blk)
+  end
+
+  def reset_connections
+    @event_connections.each do |ec|
+      app.delete_event_connection ec
+    end
+    @event_connections = []
   end
 end
 
-class HH::LessonSet
 
+
+class HH::LessonSet
   def initialize blk
     # content of @lessons:
     # name, pages = @lessons[lesson_n]
@@ -32,7 +54,6 @@ class HH::LessonSet
   def execute_in container
     @lesson, @page = 0, 0
     @container = HH::LessonContainer.new container
-    @tmp_event_connections = []
     
 #    container.app.on_event :new_event_connection, :any do |new_conn|
 #      # FIXME: this also events from different parts of the lessons
@@ -48,12 +69,6 @@ class HH::LessonSet
   end
 
   def execute_page
-    @tmp_event_connections.each do |c|
-      @container.app.delete_event_connection(c)
-    end
-    @tmp_event_connections = []
-
-    #container = @container
     execution_thread = @execution_thread
     lessons = @lessons
     lesson, page = @lesson, @page

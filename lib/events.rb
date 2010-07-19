@@ -23,6 +23,10 @@ class HH::EventConnection
   def observer
     @blk.binding.eval("self")
   end
+
+  def to_s
+    "#<EventConnection :#{@event} #{@args_cond.inspect}] >"
+  end
   
 #  def thread
 #    @blk.binding.eval("Thread.current")
@@ -44,11 +48,13 @@ module HH::Observable
     @connections = Hash.new(Set.new) if @connections.nil? # on first call
     new_conn = HH::EventConnection.new(event, args_cond, blk)
     @connections[event] += [new_conn]
-    emit :new_event_connection, new_conn
+    debug "#{new_conn} added"
+    #emit :new_event_connection, new_conn
     new_conn
   end
 
   def delete_event_connection c
+    debug "#{c} deleted!"
     @connections[c.event].delete c
   end
 end
