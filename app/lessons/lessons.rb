@@ -1,5 +1,19 @@
 require 'thread'
 
+class HH::LessonContainer
+  def initialize container
+    @container = container
+  end
+
+  def method_missing(symbol, *args, &blk)
+    @container.app.send symbol, *args, &blk
+  end
+
+  def set_content &blk
+    @container.clear { instance_eval &blk }
+  end
+end
+
 class HH::LessonSet
 
   def initialize blk
@@ -17,16 +31,16 @@ class HH::LessonSet
   # returns only when close gets called
   def execute_in container
     @lesson, @page = 0, 0
-    @container = container
+    @container = HH::LessonContainer.new container
     @tmp_event_connections = []
     
-    app.on_event :new_event_connection, :any do |new_conn|
-      # FIXME: this also events from different parts of the lessons
-      #        for now there aren't any of them, but the concept is broken
-      if new_conn.observer == app && new_conn.event != :new_event_connection
-        @tmp_event_connections << new_conn
-      end
-    end
+#    container.app.on_event :new_event_connection, :any do |new_conn|
+#      # FIXME: this also events from different parts of the lessons
+#      #        for now there aren't any of them, but the concept is broken
+#      if new_conn.observer == app && new_conn.event != :new_event_connection
+#        @tmp_event_connections << new_conn
+#      end
+#    end
 
     @execution_thread = Thread.current
     @page_thread = Thread.new { execute_page }
@@ -39,14 +53,13 @@ class HH::LessonSet
     end
     @tmp_event_connections = []
 
-    container = @container
+    #container = @container
     execution_thread = @execution_thread
     lessons = @lessons
     lesson, page = @lesson, @page
     lesson_set = self
 
-    container.app do
-    container.clear do
+    @container.set_content do
       background gray(0.1)
 
       lesson_name, pages = lessons[lesson]
@@ -58,7 +71,7 @@ class HH::LessonSet
         :stroke => white, :size => 22, :margin => 10
       end
 
-      # if first page of a lesson don't display page number
+      # if first page of a lesson do not display page number
       page_num = page == 0 ? "" : "#{lesson+1}.#{page+1} "
       para "#{page_num}#{page_title}",
         :stroke => white, :size => 18, :margin => 10
@@ -78,7 +91,6 @@ class HH::LessonSet
           execution_thread.wakeup
         end
       end
-    end
     end
   end
 
