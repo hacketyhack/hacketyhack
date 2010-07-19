@@ -1,7 +1,6 @@
 lesson_set "Proof of Concept" do
   init do
     EXCLAMATION = "!!!!!!!! !!!!!!!! !!!!!!!!"
-    debug "added to #{self.inspect}"
   end
 
   lesson "The first lesson"
@@ -12,7 +11,6 @@ lesson_set "Proof of Concept" do
     @c = on_event :try_ruby_command, :any, :any, String do
       @p.replace "#{EXCLAMATION}\n" +
         "now execute code that returns an array"
-      debug "now in #{self.inspect}"
       delete_event_connection @c
       next_when :try_ruby_command, :any, Array, :any
     end

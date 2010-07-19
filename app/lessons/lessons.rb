@@ -1,13 +1,52 @@
 require 'thread'
 
+module HH::LessonContainerText
+  TITLES = {:font => "Lacuna Regular", :stroke => "#e06", :margin => 4}
+  PARAS = {:stroke => "#eec", :size => 11, :margin_bottom => 6}
+  LIST = {:margin_left => 20, :margin => 4, :size => 10}
+
+  def title txt
+    style = TITLES.clone
+    style[:size] = 22
+    super txt, style
+  end
+  def subtitle txt
+    style = TITLES.clone
+    style[:size] = 14
+    super txt, style
+  end
+  def item *txt
+    txt << LIST
+    para *txt
+  end
+  def para *txt
+    txt << PARAS
+    super *txt
+  end
+  #def link *a; @lesson.link *a end
+  #def em txt; @lesson.em txt end
+  #def strong txt; @lesson.strong txt end
+  def code *txt
+    txt << {:stroke => "#000", :fill => "#FF6"}
+    super *txt
+  end
+  def prompt txt
+    code txt, :stroke => "#EEE", :fill => "#703"
+  end
+end
+
+
+
 # the code in the +page+ blocks in the lessons is executed with +self+
 # being a LessonContainer, methods of the main app (and thus of shoes) are
 # available because missing methods get propagated there
 class HH::LessonContainer
+  include HH::LessonContainerText
+
   attr_accessor :container
 
   def initialize lesson_set
-    @lesson_set = container, lesson_set
+    @lesson_set = lesson_set
     @event_connections = []
   end
 
@@ -21,7 +60,7 @@ class HH::LessonContainer
   end
 
   def set_content &blk
-    reset_connections
+    delete_event_connections
     @container.clear { instance_eval &blk }
   end
 
@@ -35,7 +74,7 @@ class HH::LessonContainer
     on_event(*args) {next_page}
   end
 
-  def reset_connections
+  def delete_event_connections
     @event_connections.each do |ec|
       app.delete_event_connection ec
     end
@@ -74,7 +113,6 @@ class HH::LessonSet
   end
 
   def execute_page
-    execution_thread = @execution_thread
     lessons = @lessons
     lesson, page = @lesson, @page
     lesson_set = self
@@ -85,18 +123,16 @@ class HH::LessonSet
       lesson_name, pages = lessons[lesson]
       page_title, page_block = pages[page]
 
-      # if first page of a lesson display the lesson name
-      if page == 0
-        para "#{lesson+1}. #{lesson_name}",
-        :stroke => white, :size => 22, :margin => 10
-      end
+      stack :margin => 10 do
+        # if first page of a lesson display the lesson name
+        if page == 0
+          title "#{lesson+1}. #{lesson_name}"
+        end
 
-      # if first page of a lesson do not display page number
-      page_num = page == 0 ? "" : "#{lesson+1}.#{page+1} "
-      para "#{page_num}#{page_title}",
-        :stroke => white, :size => 18, :margin => 10
+        # if first page of a lesson do not display page number
+        page_num = page == 0 ? "" : "#{lesson+1}.#{page+1} "
+        subtitle "#{page_num}#{page_title}"
 
-      flow :margin => 10 do
         instance_eval &page_block
       end
       
@@ -108,7 +144,7 @@ class HH::LessonSet
           lesson_set.next_page
         end
         glossb "close", :width => 100, :right => 0 do
-          execution_thread.wakeup
+          lesson_set.close_lesson
         end
       end
     end
@@ -138,6 +174,11 @@ class HH::LessonSet
       @page = pages.size-1
     end
     execute_page
+  end
+
+  def close_lesson
+    @container.delete_event_connections
+    @execution_thread.wakeup
   end
 
   def lesson name
