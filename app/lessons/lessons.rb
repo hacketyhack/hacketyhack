@@ -4,8 +4,10 @@ require 'thread'
 # being a LessonContainer, methods of the main app (and thus of shoes) are
 # available because missing methods get propagated there
 class HH::LessonContainer
-  def initialize container, lesson_set
-    @container, @lesson_set = container, lesson_set
+  attr_accessor :container
+
+  def initialize lesson_set
+    @lesson_set = container, lesson_set
     @event_connections = []
   end
 
@@ -53,17 +55,18 @@ class HH::LessonSet
     # name, pages = @lessons[lesson_n]
     # title, block = pages[page_n]
     @lessons = []
+    @container = HH::LessonContainer.new self
     instance_eval &blk
   end
 
-  def app
-    @container.app
+  def init &blk
+    @container.instance_eval &blk
   end
 
   # returns only when close gets called
-  def execute_in container
+  def execute_in container    
     @lesson, @page = 0, 0
-    @container = HH::LessonContainer.new container, self
+    @container.container = container
 
     @execution_thread = Thread.current
     @page_thread = Thread.new { execute_page }
