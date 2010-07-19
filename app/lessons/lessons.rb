@@ -23,7 +23,9 @@ module HH::LessonContainerText
     txt << PARAS
     super *txt
   end
-  #def link *a; @lesson.link *a end
+  # FileUtils.link gets precedence else, i don't quite understand why that
+  # module is included at all but it is...
+  def link *a; app.link *a end
   #def em txt; @lesson.em txt end
   #def strong txt; @lesson.strong txt end
   def code *txt
