@@ -16,7 +16,7 @@ lesson_set "Try Ruby" do
         em("Enter"), " and watch it go. Nothing to it."
     para "For example, try typing some math. Like: ",
         prompt("2 + 6")
-    next_when :try_ruby_command, /\+|\-|\/|\*/, Fixnum, :any
+    next_when :try_ruby_command, :code => /\+|\-|\/|\*/, :answer => Fixnum
   end
 
   page "Second page" do

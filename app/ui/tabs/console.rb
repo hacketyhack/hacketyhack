@@ -36,7 +36,8 @@ module HH::Lessons
     # code:: is the code written by the user
     # answer:: is the result of the code expression
     # output:: contains what got written to $stdout
-    @lesson.app.emit :try_ruby_command, code, answer, output
+    @lesson.app.emit :try_ruby_command, 
+      :code => code, :answer => answer, :output => output
     return unless @match
     return if @match[0] and code !~ @match[0]
     return if @match[2] and output !~ @match[2]

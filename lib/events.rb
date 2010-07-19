@@ -1,4 +1,16 @@
 class HH::EventConnection
+
+#  module Array
+#    def ===(other)
+#      return false unless other.is_a? ::Array
+#      (0...size).each do |i|
+#        cond = self[i]
+#        return false unless cond == :any || cond === other[i]
+#      end
+#      return false
+#    end
+#  end
+
   attr_reader :event
   def initialize event, args_cond, blk
     @event, @args_cond, @blk = event, args_cond, blk
@@ -6,18 +18,35 @@ class HH::EventConnection
 
   # executes the connection if the arguments match
   def try args
-    #puts args.inspect + "\n" + @args_cond.inspect
-    # match size
-    return if @args_cond.size != args.size
+    # the argument conditions matched
+    @blk.call *args if match? args
+  end
 
-    # match content
-    (0...args.size).each do |i|
-      cond = @args_cond[i]
-      return unless cond == :any || cond === args[i]
+  # checks if the arguments match the conditions
+  def match? args
+    # match size
+    return false if @args_cond.size != args.size
+
+    if @args_cond.size == 1 && @args_cond[0].is_a?(Hash)
+      return match_hash? args[0]
     end
 
-    # the argument conditions matched
-    @blk.call *args
+    debug "matching content"
+    # else match each element
+    (0...args.size).each do |i|
+      cond = @args_cond[i]
+      return false unless cond == :any || cond === args[i]
+    end
+    return true
+  end
+
+  def match_hash? hash
+    debug "matching hash #{@args_cond.inspect} vs #{hash}"
+    return false unless hash.is_a?(Hash)
+    @args_cond[0].each do |key, cond|
+      return false unless cond === hash[key]
+    end
+    return true
   end
 
   def observer
