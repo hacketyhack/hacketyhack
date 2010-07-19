@@ -32,9 +32,9 @@ module HH::LessonTab
       title "Lessons"
       @@lessons = []
       Dir["#{HH::LESSONS}/*.rb"].each { |f| load f }
-      stack do
-        @@lessons.each do |name, blk|
-          britelink "icon-file.png", name, Time.now do
+      @@lessons.each do |name, blk|
+        stack do
+          britelink "icon-file.png", name do
             start_lessons blk
           end
         end
