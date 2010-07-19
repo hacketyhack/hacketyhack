@@ -4,8 +4,8 @@ require 'thread'
 # being a LessonContainer, methods of the main app (and thus of shoes) are
 # available because missing methods get propagated there
 class HH::LessonContainer
-  def initialize container
-    @container = container
+  def initialize container, lesson_set
+    @container, @lesson_set = container, lesson_set
     @event_connections = []
   end
 
@@ -24,7 +24,13 @@ class HH::LessonContainer
   end
 
   def on_event *args, &blk
-    @event_connections << app.on_event(*args, &blk)
+    conn = app.on_event(*args, &blk)
+    @event_connections << conn
+    conn
+  end
+
+  def next_when *args
+    on_event(*args) {next_page}
   end
 
   def reset_connections
@@ -33,10 +39,14 @@ class HH::LessonContainer
     end
     @event_connections = []
   end
+
+  def next_page
+    @lesson_set.next_page
+  end
 end
 
 
-
+# class to load and execute the level sets
 class HH::LessonSet
   def initialize blk
     # content of @lessons:
@@ -53,15 +63,7 @@ class HH::LessonSet
   # returns only when close gets called
   def execute_in container
     @lesson, @page = 0, 0
-    @container = HH::LessonContainer.new container
-    
-#    container.app.on_event :new_event_connection, :any do |new_conn|
-#      # FIXME: this also events from different parts of the lessons
-#      #        for now there aren't any of them, but the concept is broken
-#      if new_conn.observer == app && new_conn.event != :new_event_connection
-#        @tmp_event_connections << new_conn
-#      end
-#    end
+    @container = HH::LessonContainer.new container, self
 
     @execution_thread = Thread.current
     @page_thread = Thread.new { execute_page }
