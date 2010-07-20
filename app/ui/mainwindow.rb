@@ -2,7 +2,7 @@ require 'app/boot'
 
 require 'app/ui/tabs/home'
 
-window :title => "Hackety Hack", :width => 1000, :height => 700 do
+window :title => "Hackety Hack", :width => 790, :height => 550 do
   HH::APP = self
   extend HH::Widgets, HH::Home, HH::Observable
   style(Shoes::LinkHover, :fill => nil, :stroke => "#C66")
