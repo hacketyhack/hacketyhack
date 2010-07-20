@@ -77,8 +77,19 @@ class HH::LessonContainer
     conn
   end
 
-  def next_when *args
-    on_event(*args) {next_page}
+  # on the event specified in +args+ goes to the next page
+  # if a block is specified it is used as additional condition
+  # the event arguments are passed to the block
+  def next_when *args, &blk
+    if blk
+      unless args.size == 1
+        raise ArgumentError, "if a block is passed there should be no arguments"
+      end
+      cond = HH::EventCondition.new &blk
+      on_event(args[0], cond) {next_page}
+    else
+      on_event(*args) {next_page}
+    end
   end
 
   def delete_event_connections

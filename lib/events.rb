@@ -28,7 +28,7 @@ class HH::EventConnection
     return false if @args_cond.size != args.size
 
     if @args_cond.size == 1 && @args_cond[0].is_a?(Hash)
-      return match_hash? args[0]
+      return match_hash?(@args_cond[0], args[0])
     end
 
     #debug "matching content"
@@ -40,10 +40,10 @@ class HH::EventConnection
     return true
   end
 
-  def match_hash? hash
+  def self.match_hash?(cond, hash)
     #debug "matching hash #{@args_cond.inspect} vs #{hash}"
     return false unless hash.is_a?(Hash)
-    @args_cond[0].each do |key, cond|
+    cond.each do |key, cond|
       return false unless cond === hash[key]
     end
     return true
@@ -58,6 +58,25 @@ class HH::EventConnection
   end
 
   alias inspect to_s
+end
+
+
+class HH::EventCondition
+  def initialize &blk
+    @blk = blk
+  end
+
+  def === args
+    if not args.is_a? Hash
+      raise ArgumentError, "for now EventCondition only works on hash events"
+    end
+    @blk.call args# && match_hash?(args, {})
+  end
+
+#private
+#  def simple_condition_match? args
+#    HH::EventConnection.match_hash?(@simple_condition, hash)
+#  end
 end
 
 

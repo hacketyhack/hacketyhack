@@ -8,8 +8,8 @@ lesson_set "Try Ruby" do
            "More still did I wish to munch it.\n"
 
     # convenience method
-    def next_when_command *args
-      next_when :try_ruby_command, *args
+    def next_when_command *args, &blk
+      next_when :try_ruby_command, *args, &blk
     end
   end
   
@@ -21,7 +21,12 @@ lesson_set "Try Ruby" do
         em("Enter"), " and watch it go. Nothing to it."
     para "For example, try typing some math. Like: ",
         prompt("2 + 6")
-    next_when_command :code => /\+|\-|\/|\*/, :answer => Fixnum
+    # just a proof of concept code TODO: remove
+    next_when_command do |event_args|
+      a, c = event_args[:answer], event_args[:code]
+      c =~ /\+|\-|\/|\*/ && a.is_a?(Fixnum) && a > 0 && a < 20 && a%2==0
+    end
+    #next_when_command :code => /\+|\-|\/|\*/, :answer => Fixnum
   end
 
   page "Numbers & Math" do
