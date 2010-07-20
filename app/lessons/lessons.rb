@@ -5,35 +5,40 @@ module HH::LessonContainerText
   PARAS = {:stroke => "#eec", :size => 11, :margin_bottom => 6}
   LIST = {:margin_left => 20, :margin => 4, :size => 10}
 
-  def title txt
-    style = TITLES.clone
-    style[:size] = 22
-    super txt, style
+  # merges options +opts+ with those of +args+ if any
+  def merge_opts(args, opts)
+    res = args.dup
+    if res.last.is_a? Hash
+      # there are already options
+      # keep them
+      orig_opts = res.last
+      orig_opts.replace(opts.merge(orig_opts))
+    else
+      res << opts
+    end
+    res
   end
-  def subtitle txt
-    style = TITLES.clone
-    style[:size] = 14
-    super txt, style
+
+  def title *args
+    super *merge_opts( args, TITLES.merge(:size => 22) )
   end
-  def item *txt
-    txt << LIST
-    para *txt
+  def subtitle *args
+    super *merge_opts( args, TITLES.merge(:size => 14) )
   end
-  def para *txt
-    txt << PARAS
-    super *txt
+  def item *args
+    para *merge_opts( args, LIST )
+  end
+  def para *args
+    super *merge_opts( args, PARAS )
   end
   # FileUtils.link gets precedence else, i don't quite understand why that
   # module is included at all but it is...
   def link *a; app.link *a end
-  #def em txt; @lesson.em txt end
-  #def strong txt; @lesson.strong txt end
-  def code *txt
-    txt << {:stroke => "#000", :fill => "#FF6"}
-    super *txt
+  def code *args
+    super *merge_opts( args, {:stroke => "#000", :fill => "#FF6"} )
   end
-  def prompt txt
-    code txt, :stroke => "#EEE", :fill => "#703"
+  def prompt *args
+    code *merge_opts( args, {:stroke => "#EEE", :fill => "#703"} )
   end
 end
 
