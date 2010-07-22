@@ -21,7 +21,7 @@ end
 
 class HH::IRB < RubyLex
   attr :history
-  attr_reader :console_env
+  attr_reader :binding
 
   class Continue < StandardError; end
   class Empty < StandardError; end
@@ -30,8 +30,7 @@ class HH::IRB < RubyLex
   def initialize
     super()
     set_input(StringIO.new)
-    @console_env = HH::ConsoleEnv.new
-    @binding = @console_env.binding
+    @binding = HH::ConsoleEnv.new.binding
     @history = []
     reset_history
 
@@ -90,7 +89,7 @@ class HH::IRB < RubyLex
       begin
         obj = eval @line, @binding, "(irb)", @line_no
       rescue Exception => e
-        STDOUT << e.class << " " << (e.class == SyntaxError) << "\n"
+        #STDOUT << e.class << " " << (e.class == SyntaxError) << "\n"
         if e.says =~ /unexpected \$end/
           raise Continue
         else
@@ -146,8 +145,8 @@ module HH::Console
 
   include HH::Markup
 
-  def console_environment
-    @irb.console_env
+  def console_binding
+    @irb.binding
   end
 
   def syntax(cmd)
@@ -238,8 +237,8 @@ module HH::Console
           @cmd = ""
         rescue Object => e
           @str += [syntax(@cmd), "\n", 
-            span("#{e.friendly}\n", :stroke => "#FC994F"),
-            "#{CURSOR} "]
+            span("#{e.friendly}\n", :stroke => "#FC994F"), "#{CURSOR} "]
+            debug e.backtrace
           @cmd = ""
         ensure
           @say.hide

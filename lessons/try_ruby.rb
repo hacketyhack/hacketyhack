@@ -11,6 +11,10 @@ lesson_set "Try Ruby" do
     def next_when_command *args, &blk
       next_when :try_ruby_command, *args, &blk
     end
+    
+    def eval_in_console code
+      HH::APP.console_binding.eval code
+    end
   end
   
 
@@ -30,7 +34,6 @@ lesson_set "Try Ruby" do
   end
 
   page "Numbers & Math" do
-    HH::APP.console_environment.instance_eval "poem = #{POEM.dump}"
     para "Good! You did a bit of math. See how the answer popped out?"
     para "Ruby recognizes numbers and mathematic symbols.  You could try some other math like:"
     para "\t", code("4 * 10"), S, code("5 - 12"), S, code("40 / 4")
@@ -161,7 +164,7 @@ lesson_set "Try Ruby" do
   lesson "Poetry"
 
   page "Chapter No. 3 is Upon Us" do
-    # FIXME eval("poem = #{POEM.dump}", @binding)
+    eval_in_console "poem = #{POEM.dump}"
     para "Now, look how your second minute went:"
     item strong("Errors."), " If you try to reverse a number or do anything fishy, ",
       "Ruby will skip the prompt and tell you so."
