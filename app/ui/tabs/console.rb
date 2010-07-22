@@ -63,6 +63,11 @@ class HH::IRB < RubyLex
     @tmp_history = [nil] + @history
   end
 
+  def add_to_history cmd
+    @history.delete cmd   # remove duplicated
+    @history.unshift cmd  # add at the beginning
+  end
+
   def run(str)
     obj = nil
     @io << str
@@ -70,9 +75,11 @@ class HH::IRB < RubyLex
     unless l = lex
       raise Empty if @line == ''
     else
+      debug l.inspect
       l.strip!
-      l.chop! #remove the trailing ;
-      @history.unshift l
+      l.chop! # remove the trailing ;
+      l.strip!
+      add_to_history l
       case l
       when "reset"
         @line = ""
