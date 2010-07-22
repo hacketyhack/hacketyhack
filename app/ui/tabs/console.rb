@@ -33,15 +33,21 @@ class HH::IRB < RubyLex
     @binding = HH::ConsoleEnv.new.binding
     @history = []
     reset_history
-
-    #@main = eval("self", @binding)
-    #@main.started = Time.now
   end
 
   def back_history cmd
     if @index < @tmp_history.length-1
       @tmp_history[@index] = cmd
       @index += 1
+      # history search
+#      (@index+1).upto(@tmp_history.length-1) do |i|
+#        # check if the +cmd+ matches the start of the command in history
+#        if @tmp_history[i][0...cmd.length] == cmd
+#          # we found the command
+#          @index = i
+#          break
+#        end
+#      end
       @tmp_history[@index]
     else
       cmd
@@ -75,7 +81,6 @@ class HH::IRB < RubyLex
     unless l = lex
       raise Empty if @line == ''
     else
-      debug l.inspect
       l.strip!
       l.chop! # remove the trailing ;
       l.strip!
@@ -156,12 +161,12 @@ module HH::Console
     @irb.binding
   end
 
-  def syntax(cmd)
+  def syntax(cmd, cursor=false)
     if cmd.nil?
       error "cmd is nil #{__FILE__}:#{__LINE__}"
       return []
     end
-    cursor_pos = cmd.size-1
+    cursor_pos = cursor ? cmd.size : nil
     highlight cmd, cursor_pos, COLORS
   end
 
@@ -267,7 +272,7 @@ module HH::Console
       when :alt_v
         @cmd += self.clipboard
       end
-      @console.replace *(@str + syntax(@cmd))
+      @console.replace *(@str + syntax(@cmd, true))
       @scroll.scroll_top = @scroll.scroll_max
     end
   end
