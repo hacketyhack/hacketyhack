@@ -30,6 +30,7 @@ lesson_set "Try Ruby" do
   end
 
   page "Numbers & Math" do
+    HH::APP.console_environment.instance_eval "poem = #{POEM.dump}"
     para "Good! You did a bit of math. See how the answer popped out?"
     para "Ruby recognizes numbers and mathematic symbols.  You could try some other math like:"
     para "\t", code("4 * 10"), S, code("5 - 12"), S, code("40 / 4")

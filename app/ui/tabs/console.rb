@@ -4,25 +4,39 @@
 require 'irb/ruby-lex'
 require 'stringio'
 
+class HH::ConsoleEnv
+  def initialize
+    @started = Time.new
+  end
+
+  # make public
+  def binding
+    super
+  end
+  
+  def time
+    puts "You started #{@started.since} ago"
+  end
+end
 
 class HH::IRB < RubyLex
   attr :history
+  attr_reader :console_env
 
   class Continue < StandardError; end
   class Empty < StandardError; end
   class Clear < StandardError; end
 
-  def initialize lesson
+  def initialize
     super()
     set_input(StringIO.new)
-    @binding = ::TOPLEVEL_BINDING
+    @console_env = HH::ConsoleEnv.new
+    @binding = @console_env.binding
     @history = []
     reset_history
 
-    @main = eval("self", @binding)
-    @main.extend HH::Lessons
-    @main.lesson = lesson
-    @main.started = Time.now
+    #@main = eval("self", @binding)
+    #@main.started = Time.now
   end
 
   def back_history cmd
@@ -88,7 +102,8 @@ class HH::IRB < RubyLex
     output = $stdout.read
     $stdout.truncate(0)
     $stdout.rewind
-    @main.check(@line, obj, output)
+    HH::APP.emit :try_ruby_command, 
+      :code => @line, :answer => obj, :output => output
 
     @indent = 0
     @indent_stack = []
@@ -101,7 +116,8 @@ class HH::IRB < RubyLex
     case e when Empty, Continue
       # do nothing
     else
-      @main.check(@line, nil, e.friendly)
+      HH::APP.emit :try_ruby_command,
+        :code => @line, :output => e.friendly, :error => true
       @line = ""
     end
     raise e
@@ -129,6 +145,10 @@ module HH::Console
   }
 
   include HH::Markup
+
+  def console_environment
+    @irb.console_env
+  end
 
   def syntax(cmd)
     if cmd.nil?
@@ -191,7 +211,7 @@ module HH::Console
         end
     end
 
-    @irb = HH::IRB.new(@lesson)
+    @irb = HH::IRB.new
     $stdout = StringIO.new
 
     keypress do |k|

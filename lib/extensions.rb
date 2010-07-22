@@ -7,9 +7,9 @@
 #
 # Additional Kernel methods.
 #
-module Kernel
-  alias :puts :debug
-end
+#module Kernel
+#  alias :puts :debug
+#end
 
 
 #

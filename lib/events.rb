@@ -28,7 +28,7 @@ class HH::EventConnection
     return false if @args_cond.size != args.size
 
     if @args_cond.size == 1 && @args_cond[0].is_a?(Hash)
-      return match_hash?(@args_cond[0], args[0])
+      return self.class.match_hash?(@args_cond[0], args[0])
     end
 
     #debug "matching content"
@@ -84,6 +84,7 @@ require 'set'
 
 module HH::Observable
   def emit event, *args
+    return unless @event_connections
     connections = @event_connections[event]
     connections.each {|c| c.try(args)}
   end
