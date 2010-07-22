@@ -265,39 +265,50 @@ module HH::Console
     end
   end
 
-  # number of autocompletion possibilieties shown
+  # number of autocompletion options shown
   COMPLETION_N = 15
 
   def autocomplete
+    # find the starting index from which to last command starts
     index = @cmd.rindex(/[^\w\.\d:]/)
     if index
       last = @cmd[index+1..-1]
     else
       last = @cmd
     end
+    debug "last = #{last.inspect}"
+    
     # special case for strings and regular expressions
-    # check last character
+    # find last character before +last+
     last_char = @cmd[-last.size-1, 1]
     if last_char == '"' or last_char == '/'
-      # find first index of " or /
+      # find index of matching " or /
       i = @cmd.rindex(last_char, -last.size-2)
       # include string/regexp
       last = @cmd[i..-1] if i
     end
-    #STDOUT << last << "\n"
+
+    # find possible completions
     options = HH::InputCompletor.complete(last, @binding)
-    options = options.select{|x| x}#.sort
-    completion = options.first
+    options = options.select{|x| x}.map{|x| x.to_s}
+
+    # completion will contain the part that is automatically completed
+    # because in common between all options
+    completion = options.first.dup
     options.each do |o|
+      # for each option resize completion until it matches the beginning of +o+
       while o[0, completion.size] != completion
         # remove last char
         completion[-1] = ''
       end
+      break if completion.empty?
     end
 
+    # autocomplete the command
     @cmd[-last.size..-1] = completion if completion and last.size > 0
+
+    # display options if more then one
     if options.size > 1
-      # display options
       @str += [syntax(@cmd), "\n"]
       @str << options[0...COMPLETION_N].join(' ')
       size = options.size
@@ -310,8 +321,7 @@ module HH::Console
     end
   end
 
-  def say msg
-    @say.text = msg
-  end
-
+#  def say msg
+#    @say.text = msg
+#  end
 end
