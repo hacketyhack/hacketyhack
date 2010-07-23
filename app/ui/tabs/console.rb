@@ -127,8 +127,8 @@ class HH::IRB < RubyLex
     case e when Empty, Continue
       # do nothing
     else
-      HH::APP.emit :try_ruby_command,
-        :code => @line, :output => e.friendly, :error => true
+      HH::APP.emit :try_ruby_command_error,
+        :code => @line, :output => e.friendly
       @line = ""
     end
     raise e
@@ -306,7 +306,7 @@ module HH::Console
 
     # completion will contain the part that is automatically completed
     # because in common between all options
-    completion = options.first.dup
+    completion = options.first.dup if options.first
     options.each do |o|
       # for each option resize completion until it matches the beginning of +o+
       while o[0, completion.size] != completion

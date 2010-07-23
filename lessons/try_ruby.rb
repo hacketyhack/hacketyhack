@@ -26,11 +26,11 @@ lesson_set "Try Ruby" do
     para "For example, try typing some math. Like: ",
         prompt("2 + 6")
     # just a proof of concept code TODO: remove
-    next_when_command do |event_args|
-      a, c = event_args[:answer], event_args[:code]
-      c =~ /\+|\-|\/|\*/ && a.is_a?(Fixnum) && a > 0 && a < 20 && a%2==0
-    end
-    #next_when_command :code => /\+|\-|\/|\*/, :answer => Fixnum
+#    next_when_command do |event_args|
+#      a, c = event_args[:answer], event_args[:code]
+#      c =~ /\+|\-|\/|\*/ && a.is_a?(Fixnum) && a > 0 && a < 20 && a%2==0
+#    end
+    next_when_command :code => /\+|\-|\/|\*/, :answer => Numeric
   end
 
   page "Numbers & Math" do
@@ -51,7 +51,7 @@ lesson_set "Try Ruby" do
       "beginning and end."
     para "To reverse your name, type: ", prompt('"Jimmy".reverse'),
       " (", em("Don't forget the dot!"), ")"
-    next_when_command :code => /reverse/, :answer => String
+    next_when_command :code => /reverse/, :answer => /..+/
   end
 
   page "Counting the Letters" do
@@ -71,7 +71,7 @@ lesson_set "Try Ruby" do
       "use this simple code."
     para "Watch this.  Let's multiply your name by 5. ",
       prompt('"Jimmy" * 5')
-    next_when_command :code => /\*/, :answer => String
+    next_when_command :code => /\*/, :answer => /.{5,}/
   end
 
 
@@ -89,7 +89,8 @@ lesson_set "Try Ruby" do
       "them and turning them into new things. Doing okay? Sure you are."
     para "Okay, here's something uncomfortable.  Try reversing a number: ",
       prompt("40.reverse")
-    next_when_command :code => /reverse/, :output => /`reverse` method/
+    next_when :try_ruby_command_error,
+               :code => /reverse/, :output => /`reverse` method/
   end
 
   page "Stop, You're Barking Mad!" do
@@ -99,7 +100,7 @@ lesson_set "Try Ruby" do
     para "So, Ruby has tossed an error message. It says there is no ",
       "method ", code("reverse"), " for numbers. It's true, there really isn't."
     para "Maybe if you turn it into a string: ", prompt("40.to_s.reverse")
-    next_when_command :code => /reverse/, :answer => /^\d+$/
+    next_when_command :code => /reverse/, :answer => /^\d\d+$/
   end
 
   page "A Horse Is Not a Cigar" do
@@ -145,7 +146,7 @@ lesson_set "Try Ruby" do
       strong("variable"), " called ", code("ticket"), "."
     para "Let's put your lotto numbers in order, how about?  Use: ",
       prompt("ticket.sort!")
-    next_when_command :code => /sort/, :answer => Array
+    next_when_command :code => /sort!/, :answer => Array
   end
   
   page "Ruby Screams If It's Permanent" do
@@ -205,7 +206,7 @@ lesson_set "Try Ruby" do
       "though. Move the last line up to first and the first line ",
       "down to last.  Backwards, but not ", em("that"), " backwards."
     para "Here's how: ", prompt("poem.to_a.reverse")
-    next_when_command :answer => Array
+    next_when_command :code => /reverse/, :answer => Array
   end
   
   page "Ringlets of Chained Methods" do
@@ -230,7 +231,7 @@ lesson_set "Try Ruby" do
       "used ", code("to_s"), ".)"
     para "To separate the poem into individual words, we can split it: ",
       prompt('poem.split(" ")')
-    next_when_command :answer => Array
+    next_when_command :code => /split/, :answer => Array
   end
 
 
@@ -254,7 +255,7 @@ lesson_set "Try Ruby" do
       ". Go ahead and try a few (such as ", code("poem.downcase"),
       " or ", code("poem.delete"), ".)"
     para "When you're ready to move on, type: ", prompt("books = {}")
-    next_when_command :answer => {}
+    next_when_command :code => /=/, :answer => {}
   end
 
   page "A Wee Blank Book" do
@@ -270,7 +271,7 @@ lesson_set "Try Ruby" do
     para "Put the title in square brackets and put ",
       "the rating after the equals."
     para "For example: ", prompt('books["Gravity\'s Rainbow"] = :splendid')
-    next_when_command :answer => Symbol
+    next_when_command :code => /\[.+=/, :answer => Symbol
   end
 
   page "More Bite-Size Reviews" do
@@ -287,7 +288,7 @@ lesson_set "Try Ruby" do
       "the computer will store the symbol only ", em("once"), "."
     para "Once you've got ", strong("three"), " or ", strong("four"),
       " books in  there, type: ", prompt("books.length"), "."
-    next_when_command :answer => (3..9)
+    next_when_command :code => /length|size/, :answer => (3..9)
   end
 
   page "Wait, Did I Like Gravity's Rainbow?" do
@@ -297,7 +298,7 @@ lesson_set "Try Ruby" do
     para "If you'd like to look up one of your old reviews, again ",
       "put the title in the square.  But leave off the equals."
     para "Just like this: ", prompt('books["Gravity\'s Rainbow"]')
-    next_when_command :answer => Symbol
+    next_when_command :code => /\[/, :answer => Symbol
   end
 
   page "Hashes as Pairs" do
@@ -330,7 +331,7 @@ lesson_set "Try Ruby" do
       "surrounded by curly braces."
     para "Let's try another block: ", prompt('5.times { print "Odelay!" }')
     next_when_command :code => /\{.+\}/m,
-      :answer => (3..9), :output => /\AOdelay!Od/
+      :answer => (3..20), :output => /\AOdelay!Od/i
   end
 
 
@@ -417,8 +418,7 @@ lesson_set "Try Ruby" do
     para "To add your own comic to the list, let's open the file in ",
       strong('append'), " mode."
     para "Do it like this:"
-    para prompt('File.open("Home/comics.txt", "a") do |f|'),
-      "."
+    para prompt('File.open("Home/comics.txt", "a") do |f|'), "."
     para "Then press Enter. Your prompt will change to two dots. Then this:"
     para prompt('f << "Cat and Girl: http://catandgirl.com/\n"')
     para "And another Enter. Finally, an ", prompt("end"), " should do it!"
@@ -451,7 +451,7 @@ lesson_set "Try Ruby" do
     item prompt('def say_hello( name )')
     item prompt(' puts "Hello, " + name')
     item prompt('end')
-    next_when_command :code => /say_hello/, :answer => nil
+    next_when_command :code => /def\s+say_hello/, :answer => nil
   end
 
   page "In Ruby, Def Leppard Means Define Leppard (a Method)!" do
@@ -461,7 +461,7 @@ lesson_set "Try Ruby" do
       " scary and dangerous!"
     para "now try it out:"
     para prompt('say_hello("Steve")')
-    next_when_command :code => /say_hello/, :output => /Hello, /
+    next_when_command :code => /^\s+\w+\s+$/, :output => /\s+/, :answer => nil
   end
   
   page "Once again, with feeling!" do
@@ -477,15 +477,15 @@ lesson_set "Try Ruby" do
     item prompt('  end')
     item prompt('  comics')
     item prompt('end')
-    next_when_command :code => /load_comics/, :answer => nil
+    next_when_command :code => /def.*File/, :answer => nil
   end
 
   page "The Ripened Fruit of Your Own Creation" do
     para "A new method is born. Let us use it: ",
       prompt("comics = load_comics('comics.txt')")
-    para em('If you have a problem, you might have mistyped. Use the '), code('back'),
-      em(" command and try again.")
-    next_when_command :code => /load_comics/, :answer => Hash
+    para em('If you have a problem, you might have mistyped. Go to the ' +
+        'previous page and try again')
+    next_when_command :code => /=/, :answer => Hash
   end
   
   page "Hey, Cool, a Comics Thing" do
