@@ -60,6 +60,11 @@ class String
   def to_a
     self.split "\n"
   end
+
+	#used to convert strings into slugs, just like the website uses.
+	def to_slug
+		self.gsub(/\W/, "").gsub(/\s/, "_").downcase
+	end
 end
 
 

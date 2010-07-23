@@ -96,52 +96,6 @@ window :title => "Hackety Hack", :width => 790, :height => 550 do
     end
   end
 
-
-  @notice =
-  stack :bottom => 33, :left => 22, :width => 160, :height => 54, :hidden => true do
-    fill black(0.6)
-    nostroke
-    shape 0, 20 do
-      line_to 23.6, 0
-      line_to 23.6, 10
-      line_to 0, 0
-    end
-    background black(0.6), :curve => 6, :left => 24, :width => 136
-    para "You have ", @noticeN = strong("0 new"), " messages.",
-      :stroke => "#FFF", :margin => 6, :size => 11, :margin_left => 24,
-      :align => "center"
-  end
-
-  @mailcheck =
-    every 20 do
-      if HH.user
-        HH.user.update_programs do |programs|
-          unless  programs['programs'].nil?
-            debug("programs count: #{programs['programs'].count}")
-            programs = programs['programs']
-            programs.each do |program|
-              name = program['name'].gsub(/ /, '_')
-              unless HH.script_exists?(name)
-                HH.save_script(name, program['text'])
-              end
-            end
-          end
-        end
-        if @notice.hidden == true
-          HH.user.get_inbox_count do |c|
-            unless c['messages'].nil?
-              count = c['messages'].select{|m| m['read'] == false}.length
-              if(count > 0)
-                @noticeN.text = "#{count} new"
-                @notice.show
-                @mailcheck.stop
-              end
-            end
-          end
-        end
-      end
-    end
-
   # splash screen
   stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
     #splash
