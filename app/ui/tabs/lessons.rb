@@ -15,11 +15,11 @@ module HH::LessonTab
 
   # starts a lesson
   # returns only once the lesson gets closed
-  def start_lessons blk
+  def start_lessons name, blk
     Thread.new do
       @action.style(:width => -400)
       @lesson_stack.show
-      HH::LessonSet.new(blk).execute_in @lesson_stack
+      HH::LessonSet.new(name, blk).execute_in @lesson_stack
       # after the lesson ends
       @lesson_stack.hide
       @action.style(:width => 1.0)
@@ -35,7 +35,7 @@ module HH::LessonTab
       @@lessons.each do |name, blk|
         stack do
           britelink "icon-file.png", name do
-            start_lessons blk
+            start_lessons name, blk
           end
         end
       end

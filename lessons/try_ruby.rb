@@ -184,7 +184,7 @@ lesson_set "Try Ruby" do
     para "Instead of toast, go for a melon or something. Try this: ",
       prompt("poem['toast'] = 'honeydew'")
     para "And then type ,", prompt("print poem"), " by itself to see the new poem."
-    next_when_command :output => /\AMy honey /
+    next_when_command :output => /\AMy honey/
   end
 
   page "Ready, Aim" do

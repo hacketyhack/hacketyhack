@@ -39,6 +39,63 @@ class Glossb < Shoes::Widget
   end
 end
 
+class IconButton < Shoes::Widget
+#  BSIZE = 16
+#  MARGIN = 8
+#  SIZE = BSIZE + MARGIN * 2
+  def initialize (type, opts={}, &blk)
+    strokewidth 1
+    nofill
+    #fill "nofill"
+
+    stack do
+      stack :margin => 8, :width => 32, :height => 32 do
+        stroke white
+        send type
+      end
+
+      hover { @over.show }
+      leave { @over.hide }
+    end
+
+    style(:width => 32)
+
+    stack :margin => 8, :top => 0, :left => 0 do
+      @over = stack :width => 16, :height => 16, :hidden => true do
+        background green, :curve => 2
+        stroke black
+        send type
+      end
+    end
+
+    click &blk
+  end
+
+  def arrow_right
+    line(1, 8, 14, 8)
+    line(14, 8, 10, 1+3)
+    line(14, 8, 10, 15-3)
+  end
+
+  def arrow_left
+    line(1, 8, 14, 8)
+    line(1, 8, 6, 1+3)
+    line(1, 8, 6, 15-3)
+  end
+
+  def x
+    line(2, 2, 13, 13)
+    line(2, 13, 13, 2)
+  end
+
+  def menu
+    rect 2, 2, 11, 11
+    line 4, 6, 11, 6
+    line 4, 8, 11, 8
+    line 4, 10, 11, 10
+  end
+end
+
 #class Lightboard < Shoes::Widget
 #  def initialize(width, height, actual = width * height)
 #    @opts = []

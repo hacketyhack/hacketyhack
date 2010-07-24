@@ -107,11 +107,12 @@ end
 
 # class to load and execute the level sets
 class HH::LessonSet
-  def initialize blk
+  def initialize name, blk
     # content of @lessons:
     # name, pages = @lessons[lesson_n]
     # title, block = pages[page_n]
     @lessons = []
+    @name = name
     @container = HH::LessonContainer.new self
     instance_eval &blk
   end
@@ -128,6 +129,34 @@ class HH::LessonSet
     @execution_thread = Thread.current
     @page_thread = Thread.new { execute_page }
     sleep # wait until the close button gets called
+  end
+
+  def show_menu
+    name, lessons = @name, @lessons
+    lesson_set = self
+    @container.set_content do
+      background gray(0.1)
+      stack :margin => 10 do
+        title name
+
+        lesson_i = 0
+        lessons.each do |name, pages|
+          lesson = lesson_i
+          lesson_i += 1
+          open_lesson = proc do lesson_set.instance_eval do
+            @lesson, @page = lesson, 0
+            execute_page
+          end end
+
+          subtitle link("#{lesson_i} #{name}", :click => open_lesson, :underline => "none")
+        end
+      end
+      flow :height => 40,  :bottom => 0, :right => 0 do
+        icon_button :x, :right => 10 do
+          lesson_set.close_lesson
+        end
+      end
+    end
   end
 
   def execute_page
@@ -154,14 +183,17 @@ class HH::LessonSet
         instance_eval &page_block
       end
       
-      flow :height => 40,  :bottom => 0, :right => 0 do
-        glossb "previous", :width => 100 do
+      flow :height => 32,  :bottom => 0, :right => 0 do
+        icon_button :arrow_left, :left => 10 do
           lesson_set.previous_page
         end
-        glossb "next", :width => 100 do
+        icon_button :arrow_right, :left => 100 do
           lesson_set.next_page
         end
-        glossb "close", :width => 100, :right => 0 do
+        icon_button :menu, :left => 55 do
+          lesson_set.show_menu
+        end
+        icon_button :x, :right => 10 do
           lesson_set.close_lesson
         end
       end
