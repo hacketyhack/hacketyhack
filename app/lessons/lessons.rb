@@ -125,6 +125,7 @@ class HH::LessonSet
   def execute_in container    
     @lesson, @page = 0, 0
     @container.container = container
+    container.extend HH::Tooltip
 
     @execution_thread = Thread.current
     @page_thread = Thread.new { execute_page }
@@ -148,13 +149,15 @@ class HH::LessonSet
             execute_page
           end end
 
-          subtitle link("#{lesson_i} #{name}", :click => open_lesson, :underline => "none")
+          subtitle link("#{lesson_i} #{name}", :click => open_lesson,
+                                    :underline => "none", :stroke => gray(0.9))
         end
       end
       flow :height => 40,  :bottom => 0, :right => 0 do
-        icon_button :x, :right => 10 do
-          lesson_set.close_lesson
-        end
+        puts "TODO: add"
+#        icon_button :x, :right => 10 do
+#          lesson_set.close_lesson
+#        end
       end
     end
   end
@@ -184,16 +187,16 @@ class HH::LessonSet
       end
       
       flow :height => 32,  :bottom => 0, :right => 0 do
-        icon_button :arrow_left, :left => 10 do
+        icon_button :arrow_left, "Next", :left => 10 do
           lesson_set.previous_page
         end
-        icon_button :arrow_right, :left => 100 do
+        icon_button :arrow_right, "Previous", :left => 100 do
           lesson_set.next_page
         end
-        icon_button :menu, :left => 55 do
+        icon_button :menu, "Index", :left => 55 do
           lesson_set.show_menu
         end
-        icon_button :x, :right => 10 do
+        icon_button :x, "Close", :right => 10 do
           lesson_set.close_lesson
         end
       end

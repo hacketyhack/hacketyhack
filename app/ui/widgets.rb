@@ -43,10 +43,11 @@ class IconButton < Shoes::Widget
 #  BSIZE = 16
 #  MARGIN = 8
 #  SIZE = BSIZE + MARGIN * 2
-  def initialize (type, opts={}, &blk)
+  def initialize (type, tooltip, opts={}, &blk)
     strokewidth 1
     nofill
-    #fill "nofill"
+
+    @tooltip_text = tooltip
 
     stack do
       stack :margin => 8, :width => 32, :height => 32 do
@@ -54,21 +55,62 @@ class IconButton < Shoes::Widget
         send type
       end
 
-      hover { @over.show }
-      leave { @over.hide }
+      hover do
+        @over.show
+        if @tooltip_text
+          create_tooltip
+        end
+      end
+      leave do
+        @over.hide
+        if @tooltip
+          puts "trying to hide"
+          @tooltip.hide
+          @tooltip.remove
+          @tooltip = nil
+        else
+          puts "nothing to hide"
+        end
+      end
     end
 
     style(:width => 32)
 
     stack :margin => 8, :top => 0, :left => 0 do
-      @over = stack :width => 16, :height => 16, :hidden => true do
-        background green, :curve => 2
+       @over = stack :width => 16, :height => 16, :hidden => true do
+        background gray(0.8)
         stroke black
         send type
       end
     end
 
     click &blk
+
+    finish do
+      debug "finished #{self}"
+      @tooltip.hide
+      #@tooltip.remove
+      #@tooltip = nil
+    end
+  end
+  
+  def create_tooltip
+    slot = parent
+    x, y = left, top
+    puts "initial:"
+    p x, y
+    while not slot.respond_to? :tooltip
+      x += slot.left
+      y += slot.top
+      slot = slot.parent
+      puts "parent:"
+      p x, y
+    end
+
+    p slot
+
+    @tooltip = slot.tooltip(@tooltip_text, x, y-20,
+          :fill => red, :stroke => white)
   end
 
   def arrow_right
@@ -93,6 +135,23 @@ class IconButton < Shoes::Widget
     line 4, 6, 11, 6
     line 4, 8, 11, 8
     line 4, 10, 11, 10
+  end
+end
+
+module HH::Tooltip
+  def tooltip str, x, y, opts={}
+    f = nil
+    #opts[:wrap] = "trim"
+    slot = self
+    app do
+    slot.append do
+    f = flow  :left => x, :top => y do
+      para str, opts
+    end
+    end
+    end
+    puts "(#{f.left}, #{f.top})"
+    f
   end
 end
 
