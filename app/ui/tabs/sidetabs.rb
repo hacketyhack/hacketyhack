@@ -1,17 +1,20 @@
 class HH::SideTabs
   include HH::Observable
   ICON_SIZE = 16
+  HOVER_WIDTH = 120
   def initialize slot, dir
     @slot, @directory = slot, dir
     @n_tabs = {:top => 0, :bottom => 1}
     # tabs whose file has been loaded
     @loaded_tabs = {}
     sidetabs = self
+    width = HOVER_WIDTH;
     append_to @slot do
       tip = nil
       right = stack :margin_left => 38, :height => 1.0
       left = stack :top => 0, :left => 0, :width => 38, :height => 1.0 do
-        tip = stack :top => 0, :left => 0, :width => 200, :margin => 4, :hidden => true do
+        tip = stack :top => 0, :left => 0, :width => width, :margin => 4,
+                    :hidden => true do
           background "#F7A", :curve => 6
           para "HOME", :margin => 3, :margin_left => 40, :stroke => white
         end
@@ -50,11 +53,12 @@ class HH::SideTabs
     onclick = proc do
       opentab symbol
     end
+    width = HOVER_WIDTH+22;
     append_to @left do
       stack pos => pixelpos, :left => 0, :width => 38, :margin => 4 do
         bg = background "#DFA", :height => 26, :curve => 6, :hidden => true
         image(icon_path, :margin => 4).
-          hover { bg.show; tip.parent.width = 222; tip.top = nil; tip.bottom = nil
+          hover { bg.show; tip.parent.width = width; tip.top = nil; tip.bottom = nil
             tip.send("#{pos}=", pixelpos); tip.contents[1].text = hover; tip.show }.
           leave { bg.hide; tip.hide; tip.parent.width = 40 }.
           click &onclick
