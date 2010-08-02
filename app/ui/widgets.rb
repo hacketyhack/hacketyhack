@@ -64,12 +64,9 @@ class IconButton < Shoes::Widget
       leave do
         @over.hide
         if @tooltip
-          puts "trying to hide"
           @tooltip.hide
           @tooltip.remove
           @tooltip = nil
-        else
-          puts "nothing to hide"
         end
       end
     end
@@ -87,7 +84,6 @@ class IconButton < Shoes::Widget
     click &blk
 
     finish do
-      debug "finished #{self}"
       @tooltip.hide
       #@tooltip.remove
       #@tooltip = nil
@@ -97,17 +93,11 @@ class IconButton < Shoes::Widget
   def create_tooltip
     slot = parent
     x, y = left, top
-    puts "initial:"
-    p x, y
     while not slot.respond_to? :tooltip
       x += slot.left
       y += slot.top
       slot = slot.parent
-      puts "parent:"
-      p x, y
     end
-
-    p slot
 
     @tooltip = slot.tooltip(@tooltip_text, x, y-20,
           :fill => red, :stroke => white)
@@ -150,7 +140,6 @@ module HH::Tooltip
     end
     end
     end
-    puts "(#{f.left}, #{f.top})"
     f
   end
 end

@@ -142,7 +142,7 @@ end
 
 
 
-module HH::Console
+class HH::SideTabs::Console < HH::SideTab
   CURSOR = ">>"
   CONTINUE = ".."
   COLORS = {
@@ -170,7 +170,7 @@ module HH::Console
     highlight cmd, cursor_pos, COLORS
   end
 
-  def console
+  def content
     @str, @cmd = [CURSOR + " "], ""
     stack :margin => [10, 20, 10, 20], :width => 1.0, :height => 1.0 do
       subtitle "Try Ruby!", :font => "Lacuna Regular", :margin => 0, :size => 22

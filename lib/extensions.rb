@@ -37,6 +37,10 @@ class Object
   def try(method, *args)
     respond_to?(method) ? send(method, *args) : self
   end
+
+  # FIXME fixes the link inherited from FileUtils, I don't know why or where
+  # FileUtils is extended...
+  undef link
 end
 
 

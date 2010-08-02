@@ -4,7 +4,7 @@ require 'app/ui/editor/artist'
 require 'app/ui/editor/dingbattery'
 require 'app/ui/editor/foley'
 
-module HH::Editor
+class HH::SideTabs::Editor < HH::SideTab
   # common code between InsertionAction and DeletionAction
   # on_insert_text and on_delete_text should be called before any subclass
   # can be used
@@ -110,14 +110,24 @@ module HH::Editor
   end
 end # module HH::Editor
 
-module HH::Editor
+class HH::SideTabs::Editor
   include HH::Markup
   include HH::Artist
   include HH::Dingbat
   include HH::Foley
   include UndoRedo
 
-  def editor(script = {})
+  def content
+    reset
+  end
+
+  def load script
+    @content.clear do
+      reset script
+    end
+  end
+
+  def reset(script = {})
     @str = script[:script] || ""
     name = script[:name] || "A New Program"
 
@@ -279,8 +289,8 @@ module HH::Editor
         else
           handle_text_insertion("  ")
         end
-      when :alt_q
-        @action.clear { home }
+#      when :alt_q
+#        @action.clear { home }
       when :control_a, :alt_a
         @t.marker = 0
         @t.cursor = @str.length

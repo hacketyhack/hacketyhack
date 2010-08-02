@@ -1,7 +1,7 @@
 # the home tab content
 # partly unfinished: some features have just started being implemented
 
-module HH::Home
+class HH::SideTabs::Home < HH::SideTab
 # unfinished method that asks if the user wants to upgrade
 #  def home_bulletin
 #    stack do
@@ -44,7 +44,7 @@ module HH::Home
       @scripts[start,5].each do |script|
         stack :margin_left => 8, :margin_top => 4 do
           britelink "icon-file.png", script[:name], script[:mtime] do
-            load_editor script
+            load_file script
           end
           if script[:desc]
             para script[:desc], :stroke => "#777", :size => 9,
@@ -107,7 +107,7 @@ module HH::Home
   end
 
   # creates the content of the home tab
-  def home
+  def content
     image "#{HH::STATIC}/hhhello.png", :bottom => -120, :right => 0
 
     @tabs, @scripts, @tables = [], HH.scripts, HH::DB.tables

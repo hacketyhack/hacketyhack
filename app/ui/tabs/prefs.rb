@@ -1,6 +1,6 @@
 # the messages tab content
 
-module HH::Prefs
+class HH::SideTabs::Prefs < HH::SideTab
   def loading_stack *a
     n = nil
     s = stack(*a) do
@@ -31,7 +31,7 @@ module HH::Prefs
     background "#efefa0".."#c1d5c0", :height => 150, :bottom => 150
   end
 
-  def prefs(page = 0)
+  def content(page = 0)
     user = HH::PREFS['username']
     clover_whoosh
     stack :margin => [10, 20, 0, 20], :width => 1.0, :height => 1.0 do
@@ -60,7 +60,7 @@ module HH::Prefs
             HH::PREFS['username'] = @user.text
             HH::PREFS['password'] = @pass.text
             HH.save_prefs
-            @action.clear { prefs }
+            #FIXME: @action.clear { prefs }
           end
         end
       end

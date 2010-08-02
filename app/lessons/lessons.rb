@@ -154,10 +154,9 @@ class HH::LessonSet
         end
       end
       flow :height => 40,  :bottom => 0, :right => 0 do
-        puts "TODO: add"
-#        icon_button :x, :right => 10 do
-#          lesson_set.close_lesson
-#        end
+        icon_button :x, :right => 10 do
+          lesson_set.close_lesson
+        end
       end
     end
   end

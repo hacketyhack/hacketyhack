@@ -13,7 +13,7 @@ lesson_set "Try Ruby" do
     end
     
     def eval_in_console code
-      HH::APP.console_binding.eval code
+      gettab(:Console).console_binding.eval code
     end
   end
   
