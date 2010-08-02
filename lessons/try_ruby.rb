@@ -21,7 +21,19 @@ lesson_set "Try Ruby" do
   lesson "Getting Started"
 
   page "Okay, Let's Do This" do
-    para "The purplish-red window above is a Ruby prompt. Type a little bit of code, press ",
+    para "To start this lesson you will have to open the Ruby prompt. ",
+      "What's the Ruby prompt? Click on this icon:"
+
+      image "#{HH::STATIC}/tab-try.png", :margin_left => 10
+    
+    para  "in the sidebar and see for yourself."
+
+    next_when :tab_opened, :Console
+  end
+
+  page "Here we are!!" do
+    para "The purplish-red window to the left is a Ruby prompt. ",
+         "Type a little bit of code, press ",
         em("Enter"), " and watch it go. Nothing to it."
     para "For example, try typing some math. Like: ",
         prompt("2 + 6")

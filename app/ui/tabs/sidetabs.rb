@@ -1,4 +1,5 @@
 class HH::SideTabs
+  include HH::Observable
   ICON_SIZE = 16
   def initialize slot, dir
     @slot, @directory = slot, dir
@@ -26,10 +27,6 @@ class HH::SideTabs
       sidetabs.instance_eval{@left, @right, @tip = left, right, tip}
     end
   end
-
-#  def method_missing symbol, *args, &blk
-#    @slot.send symbol, *args, &blk
-#  end
 
   # +opts+ is an hash
   # if block is given no file gets loaded
@@ -77,6 +74,7 @@ class HH::SideTabs
       @current_tab = tab
     end
     tab.open
+    emit :tab_opened, symbol
   end
 
   def gettab symbol
@@ -99,6 +97,10 @@ end
 module HH::HasSideTabs
   def init_tabs slot, dir="app/ui/tabs"
     @__side_tab_class = HH::SideTabs.new slot, dir
+    # effectively redirects event to HH::APP
+    @__side_tab_class.on_event :tab_opened, :any do |newtab|
+      emit :tab_opened, newtab
+    end
   end
 
   # returns the created tab
@@ -116,7 +118,6 @@ module HH::HasSideTabs
 end
 
 class HH::SideTab
-  include HH::Observable
   def initialize slot
     @slot = slot
     slot.append do
@@ -131,7 +132,6 @@ class HH::SideTab
     if has_content?
       @content.show
     end
-    emit :clicked
   end
 
   def close
