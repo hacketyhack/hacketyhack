@@ -1,7 +1,7 @@
 class HH::SideTabs
   include HH::Observable
   ICON_SIZE = 16
-  HOVER_WIDTH = 120
+  HOVER_WIDTH = 140
   def initialize slot, dir
     @slot, @directory = slot, dir
     @n_tabs = {:top => 0, :bottom => 1}

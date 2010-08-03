@@ -123,11 +123,11 @@ class HH::SideTabs::Editor
 
   def load script
     @content.clear do
-      reset script
+      draw_content script
     end
   end
 
-  def reset(script = {})
+  def draw_content(script = {})
     @str = script[:script] || ""
     name = script[:name] || "A New Program"
 

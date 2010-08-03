@@ -31,7 +31,11 @@ class HH::SideTabs::Prefs < HH::SideTab
     background "#efefa0".."#c1d5c0", :height => 150, :bottom => 150
   end
 
-  def content(page = 0)
+  def reset
+    @content.clear {content}
+  end
+
+  def content
     user = HH::PREFS['username']
     clover_whoosh
     stack :margin => [10, 20, 0, 20], :width => 1.0, :height => 1.0 do
@@ -60,7 +64,7 @@ class HH::SideTabs::Prefs < HH::SideTab
             HH::PREFS['username'] = @user.text
             HH::PREFS['password'] = @pass.text
             HH.save_prefs
-            #FIXME: @action.clear { prefs }
+            reset
           end
         end
       end
