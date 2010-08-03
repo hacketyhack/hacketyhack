@@ -172,7 +172,7 @@ class HH::LessonSet
       lesson_name, pages = lessons[lesson]
       page_title, page_block = pages[page]
 
-      stack :margin => 10 do
+      stack :margin => 10, :height => -32, :scroll => true do
         # if first page of a lesson display the lesson name
         if page == 0
           title "#{lesson+1}. #{lesson_name}"
@@ -186,10 +186,10 @@ class HH::LessonSet
       end
       
       flow :height => 32,  :bottom => 0, :right => 0 do
-        icon_button :arrow_left, "Next", :left => 10 do
+        icon_button :arrow_left, "Previous", :left => 10 do
           lesson_set.previous_page
         end
-        icon_button :arrow_right, "Previous", :left => 100 do
+        icon_button :arrow_right, "Next", :left => 100 do
           lesson_set.next_page
         end
         icon_button :menu, "Index", :left => 55 do
