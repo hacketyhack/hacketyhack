@@ -30,7 +30,7 @@ window :title => "Hackety Hack", :width => 790, :height => 550 do
   style(Shoes::LinkHover, :fill => nil, :stroke => "#C66")
   style(Shoes::Link, :stroke => "#377")
 
-  @main_content = flow :width => 1.0, :height => 1.0 do
+  @main_content = flow :width => 1.0, :height => -1 do
     background "#e9efe0"
     background "#e9efe0".."#c1c5d0", :height => 150, :bottom => 150
   end
