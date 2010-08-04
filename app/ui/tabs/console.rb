@@ -166,7 +166,10 @@ class HH::SideTabs::Console < HH::SideTab
       error "cmd is nil #{__FILE__}:#{__LINE__}"
       return []
     end
-    cursor_pos = cursor ? cmd.size : nil
+    cursor_pos = nil
+    if cursor
+      cursor_pos = cmd.size + @console.cursor + 1
+    end
     highlight cmd, cursor_pos, COLORS
   end
 
