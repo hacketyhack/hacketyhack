@@ -32,7 +32,7 @@ class HH::SideTabs
   end
 
   # +opts+ is an hash
-  # if block is given no file gets loaded
+  # if a block is given no file gets loaded
   def addtab symbol, opts={}, &blk
     # default options
     if not symbol.is_a?(Symbol)
@@ -58,10 +58,19 @@ class HH::SideTabs
       stack pos => pixelpos, :left => 0, :width => 38, :margin => 4 do
         bg = background "#DFA", :height => 26, :curve => 6, :hidden => true
         image(icon_path, :margin => 4).
-          hover { bg.show; tip.parent.width = width; tip.top = nil; tip.bottom = nil
-            tip.send("#{pos}=", pixelpos); tip.contents[1].text = hover; tip.show }.
-          leave { bg.hide; tip.hide; tip.parent.width = 40 }.
-          click &onclick
+          hover do
+            bg.show
+            tip.parent.width = width
+            tip.top = nil
+            tip.bottom = nil
+            tip.send("#{pos}=", pixelpos)
+            tip.contents[1].text = hover
+            tip.show
+          end.leave do
+            bg.hide
+            tip.hide
+            tip.parent.width = 40
+          end.click &onclick
       end
     end
 
@@ -125,9 +134,8 @@ class HH::SideTab
   def initialize slot
     @slot = slot
     slot.append do
-      @content = flow :left => 0, :top => 0, :width => 1.0, :height => 1.0, :hidden => true do
-        content
-      end
+      @content = flow :hidden => true, :left => 0, :top => 0,
+                      :width => 1.0, :height => 1.0 do content end
     end
   end
 
@@ -144,6 +152,10 @@ class HH::SideTab
     end
   end
 
+  def clear &blk
+    @content.clear &blk
+  end
+
   def has_content?
     self.class.method_defined?(:content)
   end
@@ -154,7 +166,7 @@ class HH::SideTab
   end
 
   def on_click
-    # default does nothing
+    # by default does nothing
   end
 end
 

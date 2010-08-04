@@ -32,7 +32,7 @@ class HH::SideTabs::Prefs < HH::SideTab
   end
 
   def reset
-    @content.clear {content}
+    clear {content}
   end
 
   def content

@@ -188,38 +188,37 @@ class HH::SideTabs::Console < HH::SideTab
           end
       end
 
-      @lesson =
-        stack :margin_top => 8 do
-          para "Try out Ruby code in the prompt above. Here are some commands to get you started:"
-          stack :margin_left => 20 do
-            flow do
-              stack :width => 70 do
-                para strong("clear"),  :size => 10, :margin => 4
-              end
-              stack :width => -70 do
-                para "Clear the screen. (If things start to slow down.)", :size => 10, :margin => 4
-              end
-            end
-            flow do
-              stack :width => 70 do
-                para strong("reset"),  :size => 10, :margin => 4
-              end
-              stack :width => -70 do
-              para "Reset the prompt. If it stops responding.", :size => 10, :margin => 4
-              end
-            end
-            flow do
-              stack :width => 70 do
-                para strong("time"),  :size => 10, :margin => 4
-              end
-              stack :width => -70 do
-                para "A stopwatch. How long have you been in here?", :size => 10, :margin => 4
-              end
+      stack :margin_top => 8 do
+        para "Try out Ruby code in the prompt above. Here are some commands to get you started:"
+        stack :margin_left => 20 do
+          flow do
+            stack :width => 70 do
+              para strong("clear"),  :size => 10, :margin => 4
             end
             stack :width => -70 do
+              para "Clear the screen. (If things start to slow down.)", :size => 10, :margin => 4
             end
           end
+          flow do
+            stack :width => 70 do
+              para strong("reset"),  :size => 10, :margin => 4
+            end
+            stack :width => -70 do
+            para "Reset the prompt. If it stops responding.", :size => 10, :margin => 4
+            end
+          end
+          flow do
+            stack :width => 70 do
+              para strong("time"),  :size => 10, :margin => 4
+            end
+            stack :width => -70 do
+              para "A stopwatch. How long have you been in here?", :size => 10, :margin => 4
+            end
+          end
+          stack :width => -70 do
+          end
         end
+      end
     end
 
     @irb = HH::IRB.new
@@ -253,16 +252,35 @@ class HH::SideTabs::Console < HH::SideTab
             debug e.backtrace
           @cmd = ""
         ensure
+          @command.cursor = -1
           @say.hide
         end
       when String
-        @cmd += k
+        pos = @cmd.size + @console.cursor + 1
+        @cmd[pos, 0] = k
       when :backspace
-        @cmd.slice!(-1)
+        pos = @cmd.size + @console.cursor
+        if pos >= 0
+          @cmd[pos, 1] = ""
+        end
+      when :delete
+        if @console.cursor < -1
+          pos = @cmd.size + @console.cursor + 1
+          @cmd[pos, 1] = ""
+          @console.cursor += 1
+        end
       when :up
         @cmd = @irb.back_history @cmd
       when :down
         @cmd = @irb.next_history @cmd
+      when :left
+        if -@console.cursor <= @cmd.size
+          @console.cursor -= 1
+        end
+      when :right
+        if @console.cursor < -1
+          @console.cursor += 1
+        end
       when :tab
         autocomplete
       when :alt_q

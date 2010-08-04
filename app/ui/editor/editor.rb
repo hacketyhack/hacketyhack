@@ -118,13 +118,11 @@ class HH::SideTabs::Editor
   include UndoRedo
 
   def content
-    reset
+    draw_content
   end
 
   def load script
-    @content.clear do
-      draw_content script
-    end
+    clear {draw_content script}
   end
 
   def draw_content(script = {})
@@ -134,69 +132,68 @@ class HH::SideTabs::Editor
     reset_undo_redo
     InsertionDeletionCommand.on_insert_text {|pos, str|  insert_text(pos, str)}
     InsertionDeletionCommand.on_delete_text {|pos, len|  delete_text(pos, len)}
-    @editor =
-      stack :margin_left => 10, :margin_top => 22, :width => 1.0, :height => 92 do
-        @sname = subtitle name, :font => "Lacuna Regular", :size => 22,
-          :margin => 0, :wrap => "trim"
-        @stale = para(script[:mtime] ? "Last saved #{script[:mtime].since} ago." :
-          "Not yet saved.", :margin => 0, :stroke => "#39C")
-      end
-      stack :margin_left => 0, :width => 1.0, :height => -92 do
-        background white(0.4), :width => 38
-        @scroll =
-        flow :width => 1.0, :height => 1.0, :margin => 2, :scroll => true do
-          stack :width => 37, :margin_right => 6 do
-            @ln = para "1", :font => "Liberation Mono", :stroke => "#777", :align => "right"
-          end
-          stack :width => -37, :margin_left => 6, :margin_bottom => 60 do
-            @t = para "", :font => "Liberation Mono", :stroke => "#662",
-              :wrap => "trim", :margin_right => 28
-            @t.cursor = 0
-            def @t.hit_sloppy(x, y)
-              x -= 6
-              c = hit(x, y)
-              if c
-                c + 1
-              elsif x <= 48
-                hit(48, y)
-              end
-            end
-          end
-          @compl = stack :top => -100, :left => 0, :width => 20, :height => 20, :hidden => true do
-            background white(0.8), :curve => 4
-            image "#{HH::STATIC}/icon-art.png", :margin => 2 do
-              artist { |code| onkey(code) }
-              @compl.hide
-            end
-          end
-          motion do |x, y|
-            c = @t.hit_sloppy(x, y)
-            if c
-              if self.cursor == :arrow
-                self.cursor = :text
-              end
-              if self.mouse[0] == 1
-                if @t.marker.nil?
-                  @t.marker = c
-                else
-                  @t.cursor = c
-                end
-              end
-            elsif self.cursor == :text
-              self.cursor = :arrow
-            end
-          end
-          click do |_, x, y|
-            c = @t.hit_sloppy(x, y)
-            if c
-              @t.marker = nil
-              @t.cursor = c
-            end
-            update_text
-          end
-          leave { self.cursor = :arrow }
+    @editor = stack :margin_left => 10, :margin_top => 22, :width => 1.0, :height => 92 do
+      @sname = subtitle name, :font => "Lacuna Regular", :size => 22,
+        :margin => 0, :wrap => "trim"
+      @stale = para(script[:mtime] ? "Last saved #{script[:mtime].since} ago." :
+        "Not yet saved.", :margin => 0, :stroke => "#39C")
+    end
+    stack :margin_left => 0, :width => 1.0, :height => -92 do
+      background white(0.4), :width => 38
+      @scroll =
+      flow :width => 1.0, :height => 1.0, :margin => 2, :scroll => true do
+        stack :width => 37, :margin_right => 6 do
+          @ln = para "1", :font => "Liberation Mono", :stroke => "#777", :align => "right"
         end
+        stack :width => -37, :margin_left => 6, :margin_bottom => 60 do
+          @t = para "", :font => "Liberation Mono", :stroke => "#662",
+            :wrap => "trim", :margin_right => 28
+          @t.cursor = 0
+          def @t.hit_sloppy(x, y)
+            x -= 6
+            c = hit(x, y)
+            if c
+              c + 1
+            elsif x <= 48
+              hit(48, y)
+            end
+          end
+        end
+        @compl = stack :top => -100, :left => 0, :width => 20, :height => 20, :hidden => true do
+          background white(0.8), :curve => 4
+          image "#{HH::STATIC}/icon-art.png", :margin => 2 do
+            artist { |code| onkey(code) }
+            @compl.hide
+          end
+        end
+        motion do |x, y|
+          c = @t.hit_sloppy(x, y)
+          if c
+            if self.cursor == :arrow
+              self.cursor = :text
+            end
+            if self.mouse[0] == 1
+              if @t.marker.nil?
+                @t.marker = c
+              else
+                @t.cursor = c
+              end
+            end
+          elsif self.cursor == :text
+            self.cursor = :arrow
+          end
+        end
+        click do |_, x, y|
+          c = @t.hit_sloppy(x, y)
+          if c
+            @t.marker = nil
+            @t.cursor = c
+          end
+          update_text
+        end
+        leave { self.cursor = :arrow }
       end
+    end
 
     stack :height => 40, :width => 182, :bottom => 20, :right => 20 do
       saver = proc do |name|
