@@ -166,11 +166,11 @@ class HH::SideTabs::Console < HH::SideTab
       error "cmd is nil #{__FILE__}:#{__LINE__}"
       return []
     end
-    cursor_pos = nil
+    pos = nil
     if cursor
-      cursor_pos = cmd.size + @console.cursor + 1
+      pos = current_pos
     end
-    highlight cmd, cursor_pos, COLORS
+    highlight cmd, pos, COLORS
   end
 
   def content
@@ -255,21 +255,20 @@ class HH::SideTabs::Console < HH::SideTab
             debug e.backtrace
           @cmd = ""
         ensure
-          @command.cursor = -1
+          @console.cursor = -1
           @say.hide
         end
       when String
         pos = @cmd.size + @console.cursor + 1
         @cmd[pos, 0] = k
       when :backspace
-        pos = @cmd.size + @console.cursor
+        pos = current_pos - 1
         if pos >= 0
           @cmd[pos, 1] = ""
         end
       when :delete
         if @console.cursor < -1
-          pos = @cmd.size + @console.cursor + 1
-          @cmd[pos, 1] = ""
+          @cmd[current_pos, 1] = ""
           @console.cursor += 1
         end
       when :up
@@ -296,6 +295,10 @@ class HH::SideTabs::Console < HH::SideTab
       @console.replace *(@str + syntax(@cmd, true))
       @scroll.scroll_top = @scroll.scroll_max
     end
+  end
+
+  def current_pos
+    @cmd.size + @console.cursor + 1
   end
 
   # number of autocompletion options shown
