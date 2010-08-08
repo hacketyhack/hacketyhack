@@ -128,7 +128,7 @@ class HH::IRB < RubyLex
       # do nothing
     else
       HH::APP.emit :try_ruby_command_error,
-        :code => @line, :output => e.friendly
+        :code => @line, :output => e.friendly, :error => e
       @line = ""
     end
     raise e

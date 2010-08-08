@@ -234,8 +234,10 @@ class HH::SideTabs::Editor
 				end
       glossb "Run", :width => 52, :top => 2, :left => 130 do
         begin
-          eval(@str, ::TOPLEVEL_BINDING)
+          ans = eval(@str, ::TOPLEVEL_BINDING)
+          HH::APP.emit :program_run, :code => @str, :answer => ans
         rescue Exception => ex
+          HH::APP.emit :program_run_with_error, :code => @str, :error => ex
           alert ex.friendly
         end
       end
