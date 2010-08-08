@@ -4,6 +4,24 @@ module HH::LessonContainerText
   TITLES = {:font => "Lacuna Regular", :stroke => "#e06", :margin => 4}
   PARAS = {:stroke => "#eec", :size => 11, :margin_bottom => 6}
   LIST = {:margin_left => 20, :margin => 4, :size => 10}
+  CODE_STYLE = {:size => 9, :margin => 8, :font => "Liberation Mono",
+    :stroke => "#000"}
+  COLORS = {
+    :comment => {:stroke => "#bba"},
+    :keyword => {:stroke => "#FCF90F"},
+    :method => {:stroke => "#C09", :weight => "bold"},
+    :symbol => {:stroke => "#9DF3C6"},
+    :string => {:stroke => "#C9F5A5"},
+    :number => {:stroke => "#C9F5A5"},
+    :regex => {:stroke => "#000", :fill => "#FFC" },
+    :attribute => {:stroke => "#C9F5A5"},
+    :expr => {:stroke => "#f33" },
+    :ident => {:stroke => "#6e7"},
+    :any => {:stroke => "#FFF"},
+    :constant => {:stroke => "#55f", :weight => "bold"},
+    :class => {:stroke => "#55f", :weight => "bold"},
+    :matching => {:stroke => "#f00", :weight => "bold"},
+  }
 
   # merges options +opts+ with those of +args+ if any
   def merge_opts(args, opts)
@@ -33,12 +51,33 @@ module HH::LessonContainerText
   end
   # FileUtils.link gets precedence else, i don't quite understand why that
   # module is included at all but it is...
-  def link *a; app.link *a end
+  def link *a, &b; app.link *a, &b end
   def code *args
-    super *merge_opts( args, {:stroke => "#000", :fill => "#FF6"} )
+    super *merge_opts( args, {:stroke => "#9de", :fill => "#237"} )
   end
   def prompt *args
-    code *merge_opts( args, {:stroke => "#EEE", :fill => "#703"} )
+    code *merge_opts( args, {:stroke => "#EEE", :fill => "#602"} )
+  end
+
+  include HH::Markup
+  def embed_code str, opts={}
+    #str = str.gsub(/\A\n+/, '').chomp
+    stack :margin_bottom => 12 do
+      background "#602", :curve => 4
+      para highlight(str, nil, COLORS), CODE_STYLE
+      if opts[:run_button]
+        stack :top => 0, :right => 2, :width => 70 do
+          stack do
+            background "#8A7", :margin => [0, 2, 0, 2], :curve => 4
+            l = link("Run this", :stroke => "#eee", :underline => "none") do
+              eval(str, TOPLEVEL_BINDING)
+            end
+            para l, :margin => 4, :align => 'center',
+              :weight => 'bold', :size => 9
+          end
+        end
+      end
+    end
   end
 end
 

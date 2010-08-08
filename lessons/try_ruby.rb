@@ -363,9 +363,9 @@ lesson_set "Try Ruby" do
     item strong("Symbols."), " Tiny, efficient code words with a colon: ",
       code(":splendid"), "."
     item strong("Blocks."), " Chunks of code which can be tacked on to ",
-      "many of Ruby's methods.\n",
-      code("books.values.each { |rate| ratings[rate] += 1 }"), "."
-    para "Now, take a give this a go: ", prompt('Dir.entries "."')
+      "many of Ruby's methods."
+    embed_code "books.values.each { |rate| ratings[rate] += 1 }"
+    para "Now, give this a go: ", prompt('Dir.entries "."')
     next_when_command :code => /entries/, :answer => Array
   end
 
@@ -460,9 +460,9 @@ lesson_set "Try Ruby" do
       " methods and classes. "
     para em('Ahem!'), " Let's get it over with then."
     para "Try this: "
-    item prompt('def say_hello( name )')
-    item prompt(' puts "Hello, " + name')
-    item prompt('end')
+    embed_code "def say_hello( name )\n" +
+      ' puts "Hello, " + name' + "\n" +
+      'end'
     next_when_command :code => /def\s+say_hello/, :answer => nil
   end
 
@@ -481,14 +481,14 @@ lesson_set "Try Ruby" do
       " like you would any other method."
     para "That was a pretty simple method. Let's try a bigger one, with",
       " our comics.txt file."
-    item prompt('def load_comics( path )')
-    item prompt('  comics = {}')
-    item prompt('  File.foreach(path) do |line|')
-    item prompt('    name, url = line.split(\': \')')
-    item prompt('    comics[name] = url.strip')
-    item prompt('  end')
-    item prompt('  comics')
-    item prompt('end')
+    embed_code "def load_comics( path )\n" +
+      "  comics = {}\n" +
+      "  File.foreach(path) do |line|\n" +
+      "    name, url = line.split(': ')\n" +
+      "    comics[name] = url.strip\n" +
+      "  end\n" +
+      "  comics\n" +
+      "end"
     next_when_command :code => /def.*File/, :answer => nil
   end
 
@@ -550,8 +550,7 @@ lesson_set "Try Ruby" do
     para "I really think you'll want to use a class. You are already familiar with ",
       "many classes: ", code('Hash'), ", ", code('Array'), ", ", code('String'), "."
     para "Let's make a new class: "
-    item prompt('class BlogEntry')
-    item prompt('end')
+    embed_code "class BlogEntry\nend"
     next_when_command :code => /class BlogEntry/, :answer => nil
   end
   
@@ -560,9 +559,9 @@ lesson_set "Try Ruby" do
       "made of? A title, sure. Also, a time when the entry was posted. The full text of the entry."
     para "We'll do a mood setting, too, just like LiveJournal. "
     para "Okay, so you know how to make a class. Let's try that again, and :"
-    item prompt('class BlogEntry')
-    item prompt('  attr_accessor :title, :time, :fulltext, :mood')
-    item prompt('end')
+    embed_code "class BlogEntry\n" +
+      "  attr_accessor :title, :time, :fulltext, :mood\n" +
+      "end"
     next_when_command :code => /class BlogEntry/, :answer => nil
   end
 
@@ -578,7 +577,7 @@ lesson_set "Try Ruby" do
       "human thing out there. And the attributes are the dangling limbs, the ",
       " different parts that make up a body."
     para "To set the title of your entry: "
-    item prompt('entry.title = "Today Mt. Hood Was Stolen!"')
+    embed_code 'entry.title = "Today Mt. Hood Was Stolen!"'
     next_when_command :code => /entry/, :answer => String
   end
   
@@ -599,12 +598,12 @@ lesson_set "Try Ruby" do
       "You're not going to want to set the time like that every time you post.",
       "You just want to type in the title and the entry and the mood quickly, right?"
     para "Let's add an ", code('initialize'), " method."
-    item prompt('class BlogEntry')
-    item prompt('  def initialize( title, mood, fulltext )')
-    item prompt('    @time = Time.now')
-    item prompt('    @title, @mood, @fulltext = title, mood, fulltext')
-    item prompt('  end')
-    item prompt('end')
+    embed_code "class BlogEntry\n" +
+      "  def initialize( title, mood, fulltext )\n" +
+      "    @time = Time.now\n" +
+      "    @title, @mood, @fulltext = title, mood, fulltext\n" +
+      "  end\n" +
+      "end"
     para "Once you've got that typed in, try making a new entry: ",
       prompt('BlogEntry.new')
     next_when_command :code => /^BlogEntry$/, :output => /method needs a bit more/
