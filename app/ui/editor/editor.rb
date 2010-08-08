@@ -211,6 +211,9 @@ class HH::SideTabs::Editor
           script[:mtime] = Time.now
           @sname.text = script[:name]
           @stale.text = "Last saved #{script[:mtime].since} ago."
+          true
+        else
+          false
         end
       end
       @copy_button = 
@@ -219,11 +222,12 @@ class HH::SideTabs::Editor
         end
       @save_button =
         glossb "Save", :width => 60, :top => 2, :left => 70, :hidden => true do
-          saver[script[:name]]
-          timer 0.1 do
-            @save_button.hide
-            @copy_button.show
-						@save_to_cloud_button.show
+          if saver[script[:name]]
+            timer 0.1 do
+              @save_button.hide
+              @copy_button.show
+              @save_to_cloud_button.show
+            end
           end
         end
 			@save_to_cloud_button =
