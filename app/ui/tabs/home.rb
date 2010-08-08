@@ -106,6 +106,10 @@ class HH::SideTabs::Home < HH::SideTab
     @tabs << tab
   end
 
+  def on_click
+    reset
+  end
+
   # creates the content of the home tab
   def content
     image "#{HH::STATIC}/hhhello.png", :bottom => -120, :right => 0

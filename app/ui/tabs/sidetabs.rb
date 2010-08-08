@@ -156,6 +156,10 @@ class HH::SideTab
     @content.clear &blk
   end
 
+  def reset
+    clear {content}
+  end
+
   def has_content?
     self.class.method_defined?(:content)
   end

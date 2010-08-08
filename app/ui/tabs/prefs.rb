@@ -31,10 +31,6 @@ class HH::SideTabs::Prefs < HH::SideTab
     background "#efefa0".."#c1d5c0", :height => 150, :bottom => 150
   end
 
-  def reset
-    clear {content}
-  end
-
   def content
     user = HH::PREFS['username']
     clover_whoosh
