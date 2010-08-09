@@ -161,8 +161,11 @@ class HH::LessonSet
   end
 
   # returns only when close gets called
-  def execute_in container    
-    @lesson, @page = 0, 0
+  def execute_in container
+    # contrarily to what is displayed in the ui, @lesson and @page start
+    # counting from 0
+    @lesson = (HH::PREFS["tut_lesson_#@name"] || "0").to_i
+    @page = (HH::PREFS["tut_page_#@name"] || "0").to_i
     @container.container = container
     container.extend HH::Tooltip
 
@@ -268,6 +271,9 @@ class HH::LessonSet
   end
 
   def close_lesson
+    HH::PREFS["tut_lesson_#@name"] = @lesson
+    HH::PREFS["tut_page_#@name"] = @page
+    HH.save_prefs
     @container.delete_event_connections
     @execution_thread.wakeup
   end
