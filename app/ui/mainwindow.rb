@@ -7,6 +7,7 @@ require 'app/boot'
 module HH::App
   # starts a lesson
   # returns only once the lesson gets closed
+  include HH::Markup
   def start_lessons name, blk
     Thread.new do
       @main_content.style(:width => -400)
@@ -21,6 +22,20 @@ module HH::App
   def load_file name={}
     gettab(:Editor).load(name)
     opentab :Editor
+  end
+
+  # replaces the "Running..." message of the currently running program
+  def say arg
+    # FIXME TODO: DECOMMENT TO REPRODUCE A SEGMENTATION FAULT: para (para "abc")
+    if @program_running
+      txt = case arg
+      when String
+        arg
+      else
+        highlight(txt.inspect)
+      end
+      @program_running.clear{para txt}
+    end
   end
 end
 

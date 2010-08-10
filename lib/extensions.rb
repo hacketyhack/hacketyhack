@@ -10,6 +10,11 @@
 #module Kernel
 #  alias :puts :debug
 #end
+module Kernel
+  def say arg
+    HH::APP.say arg
+  end
+end
 
 
 #

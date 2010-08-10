@@ -3,6 +3,7 @@
 require 'app/ui/editor/artist'
 require 'app/ui/editor/dingbattery'
 require 'app/ui/editor/foley'
+require 'app/ui/editor/program_runner'
 
 class HH::SideTabs::Editor < HH::SideTab
   # common code between InsertionAction and DeletionAction
@@ -115,6 +116,7 @@ class HH::SideTabs::Editor
   include HH::Artist
   include HH::Dingbat
   include HH::Foley
+  include HH::ProgramRunner
   include UndoRedo
 
   def content
@@ -237,13 +239,7 @@ class HH::SideTabs::Editor
 					alert("Uploaded!")
 				end
       glossb "Run", :width => 52, :top => 2, :left => 130 do
-        begin
-          ans = eval(@str, ::TOPLEVEL_BINDING)
-          HH::APP.emit :program_run, :code => @str, :answer => ans
-        rescue Exception => ex
-          HH::APP.emit :program_run_with_error, :code => @str, :error => ex
-          alert ex.friendly
-        end
+        run_program(@str)
       end
     end
 
