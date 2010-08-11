@@ -157,6 +157,34 @@ class Feed::Item
   end
 end
 
+def Web.download(url, filename=nil)
+  # wait for the download to complete
+  queue = Queue.new
+
+  w = window :width => 450, :height => 100, :margin => 10 do
+    #url = 'http://www.rin-shun.com/shoes/shoes-0.r1263.exe'
+    status = para "Downloading #{url}"
+    p = progress :width => 1.0
+    
+    filename ||= File.basename(url)
+
+    # wait for the download to complete
+
+    download url,
+      :save => "#{HH::USER}/Downloads/#{filename}",
+      :start => proc{|dl| status.text = 'Connecting...'},
+      :progress => proc{|dl|
+        status.text = "Transferred #{dl.transferred} of #{dl.length} bytes (#{dl.percent}%)"
+        p.fraction = dl.percent * 0.01},
+      :finish => proc{|dl| status.text = 'Download finished'; queue.enq nil;},
+      :error => proc{|dl, err| status.text = "Error: #{err}"; queue.enq nil;}
+  end
+
+  queue.deq # wait for the download to finish
+  sleep 1
+  w.close
+end
+
 def Web.fetch(uri, opts = {}, &blk)
   HH::APP.download(uri, opts) do |dl|
     data = dl.response.body
