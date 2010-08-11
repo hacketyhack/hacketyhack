@@ -11,7 +11,7 @@ module HH::ProgramRunner
   def run_program code
     popup = nil
     # thread actually executing the program
-    program_thread = Thread.new do
+    program_thread = Thread.new do timer(0.01) do #Thread.new do
       begin
         ans = eval(code, ::TOPLEVEL_BINDING)
         popup.remove
@@ -20,9 +20,9 @@ module HH::ProgramRunner
         HH::APP.emit :program_run_with_error, :code => code, :error => ex
         say ex.friendly
       end
-    end
+    end end #end
 
-    HH::APP.app do 
+    HH::APP.app do
     popup = stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
       background black(0.8)
       # "pop up" window

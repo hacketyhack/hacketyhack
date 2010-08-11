@@ -14,6 +14,15 @@ module Kernel
   def say arg
     HH::APP.say arg
   end
+
+#  # workaround for alert not working correctly in threads
+#  # see issue 39 of Shoes: http://github.com/shoes/shoes/issues#issue/39
+#  alias alert_orig alert
+#  def alert *args, &blk
+#    HH::APP.timer(0.01) do
+#      alert_orig *args, &blk
+#    end
+#  end
 end
 
 
