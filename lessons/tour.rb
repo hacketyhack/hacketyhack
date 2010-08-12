@@ -226,12 +226,12 @@ lesson_set "Lear Programming" do
     item "The commands ", code("ask"), ", ", code("say"), ", ", code("sleep"),
       " and ", code("upto"), " were explored a bit."
 
-  para "That's pretty good, actually.  Take a rest, enjoy your accolades and ",
-    "let your brain soak in what you've got so far."
+    para "That's pretty good, actually.  Take a rest, enjoy your accolades and ",
+      "let your brain soak in what you've got so far."
 
-  para strong("EXTRA CREDIT"), ": If you want to try stretching your brain a ",
-    "bit further, try writing a program which blinks.  You can use the ",
-    code("say"), " and ", code("sleep"), " commands to do it!!"
+    para strong("EXTRA CREDIT"), ": If you want to try stretching your brain a ",
+      "bit further, try writing a program which blinks.  You can use the ",
+      code("say"), " and ", code("sleep"), " commands to do it!!"
   end
 
 
@@ -491,17 +491,17 @@ lesson_set "Lear Programming" do
     para "Start up another new program.  Save this one as ", strong("Window"),
       ":"
 
-  embed_code "# A simple window\n" +
-    "window do\n" +
-    '  title("My Page")' + "\n" +
-    '  para("This belongs to ____")' + "\n" +
-    "end"
+    embed_code "# A simple window\n" +
+      "window do\n" +
+      '  title("My Page")' + "\n" +
+      '  para("This belongs to ____")' + "\n" +
+      "end"
 
-  para "You can put your name in where the blanks are. ", em("Save"), " it ",
-    "and ", em("Run"), " it."
+    para "You can put your name in where the blanks are. ", em("Save"), " it ",
+      "and ", em("Run"), " it."
 
-  para "We're using a few things we've seen before, but let's go over each ",
-    "of them, to be clear."
+    para "We're using a few things we've seen before, but let's go over each ",
+      "of them, to be clear."
 #  end
 #
 #  page "Modules and Methods" do
@@ -704,27 +704,39 @@ lesson_set "Lear Programming" do
 ##you back everything inside the table.  Change your blog to show
 ##everything rather than just the most recent.
 
-  lesson "A bit of Ruby"
+  lesson "The Ruby Language"
 
   page "Cheating" do
     para "You've done some useful things.  Downloaded files, built a simple ",
       "blog.  And lots more ahead.  But let's stop and figure out how to ",
       "speed up your learning."
-  end
 
-  para "I Recommend That You Cheat Immediately" do
     flow do
       para "In the tab bar of Hackety Hack, you'll see a series of little ",
-        "icons: a little house, a lightbulb.  Click on ", em("the magic wand"),
-        " icon. ( "
-      image("#{HH::STATIC}/tab-cheat.png")
-      para"). This icon brings up the Cheat Sheet."
+        "icons: a little house, a lightbulb.  Click on the "
+      image "#{HH::STATIC}/tab-cheat.png", :margin => 6
+      para"icon. This icon brings up the Cheat Sheet."
     end
+    
+    next_when :tab_opened, :Cheat
+  end
 
+  page "I Recommend That You Cheat Immediately" do
     para "You don't need to read the whole thing just yet.  We're just going ",
       "to glance over a few parts of it to get you comfortable with reading ",
       "the Cheat Sheet.  You can keep this out while you're writing ",
       "programs in the main window."
+  end
+
+  page "Try Ruby" do
+    flow do
+      para "When you want to try out some code, just to see what happens, ",
+        "with no need to save anything, you can use the ", strong("Try Ruby"),
+        " tab. To open it click on the "
+      image "#{HH::STATIC}/tab-try.png", :margin => 6
+      para "icon."
+    end
+    next_when :tab_opened, :Console
   end
 
   page "Numbers" do
@@ -743,11 +755,13 @@ lesson_set "Lear Programming" do
       "a block."
 
     para "In the main window, start a new program.  Let's get multiplication ",
-      "working.  Type in the first line of the program: "
+      "working.  Type in the following into the Try Ruby box: "
 
     embed_code "days = years * 365"
 
-    para strong("Run"), " it."
+    next_when :try_ruby_command_error, :error => NameError
+
+    #para strong("Run"), " it."
   end
 
   page "Days and Years" do
@@ -758,14 +772,22 @@ lesson_set "Lear Programming" do
     para "And also add at the end: ", code("puts days")
 
     para "Any luck?"
+    
+    on_event :try_ruby_command, :code => /=/, :answer => Numeric do
+      next_when :try_ruby_command, :code => /puts/, :answer => nil
+    end
   end
 
   page "On to the Times" do
-    para "Move to the second example on the cheat sheet.  Replace the ",
-      code("days"), " and ", code("years"), " program with this:"
+    para "Move to the second example on the cheat sheet. Try:"
 
     embed_code '5.times { puts "Odelay!" }'
 
+    next_when :try_ruby_command,
+      :code => /\.times/, :output => /.+/, :answer => (2..20)
+  end
+
+  page "Numbers are done" do
     para "And that's it.  These two examples are the key to using numbers. ",
       "Numbers are for math.  Or numbers are for repeating something. "
   end
@@ -780,8 +802,12 @@ lesson_set "Lear Programming" do
 
     embed_code 'books = ["Don Quixote", "Bluebeard"]'
 
-    para "Type this in as a new program.  Remember to ", code("puts"),
-      " the variable you're storing the Array in!"
+    para "Then ", code("puts"),  " the variable you're storing the Array in!"
+
+    on_event :try_ruby_command, :code => /=/, :answer => Array do
+      next_when :try_ruby_command, 
+        :code => /puts/, :answer => nil, :output => /./
+    end
   end
 
   page "Briefly, More Arrays" do
@@ -791,14 +817,13 @@ lesson_set "Lear Programming" do
       " method with a block."
 
     para strong("For EXTRA CREDIT"), ": get that ", code("each"),
-      " method and its block hooked on to the ", code("books"),
-      "array in your new program!"
+      " method and its block hooked on to the ", code("books"), " array!"
   end
 
-  page "Using Help" do
-    para "Keep the cheat sheet open to the ", strong("Array"),
-      " section. Now go back to the main window and click the ",
-      strong("purple books icon") (right next to the magic wand.)
+#  page "Using Help" do
+#    para "Keep the cheat sheet open to the ", strong("Array"),
+#      " section. Now go back to the main window and click the ",
+#      strong("purple books icon") (right next to the magic wand.)
 
 ##This is the help manual!  Click on '''Ruby''' on the left-hand side.
 ##A little submenu opened up.  Now, click on '''Array'''.
