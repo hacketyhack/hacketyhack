@@ -157,6 +157,9 @@ class Feed::Item
   end
 end
 
+# downloads the file at url to filename showing the progress in a window
+# if filename is a relative path, the file will be saved to the Downloads
+# directory of HH, by default the basename of the url is used
 def Web.download(url, filename=nil)
   # wait for the download to complete
   queue = Queue.new
@@ -169,9 +172,10 @@ def Web.download(url, filename=nil)
     filename ||= File.basename(url)
 
     # wait for the download to complete
+    File.expand_path(filename,  "#{HH::USER}/Downloads/")
 
     download url,
-      :save => "#{HH::USER}/Downloads/#{filename}",
+      :save => File.expand_path(filename,  "#{HH::USER}/Downloads/"),
       :start => proc{|dl| status.text = 'Connecting...'},
       :progress => proc{|dl|
         status.text = "Transferred #{dl.transferred} of #{dl.length} bytes (#{dl.percent}%)"
