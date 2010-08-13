@@ -347,18 +347,11 @@ class HH::SideTabs::Editor
       when :shift_left, :left
         @t.cursor -= 1 if @t.cursor > 0
       end
-      if k and @save_button.hidden
-        @copy_button.hide
-        @save_button.show
-				@save_to_cloud_button.hide
+      if k
+        text_changed
       end
 
       update_text
-    end
-
-    def update_text
-      @t.replace *highlight(@str, @t.cursor)
-      @ln.replace [*1..(@str.count("\n")+1)].join("\n")
     end
 
     spaces = [?\t, ?\s, ?\n]
@@ -403,7 +396,21 @@ class HH::SideTabs::Editor
     end
 
     #onkey(nil)
+    text_changed if script[:mtime].nil?
     update_text
+  end
+  
+  def update_text
+    @t.replace *highlight(@str, @t.cursor)
+    @ln.replace [*1..(@str.count("\n")+1)].join("\n")
+  end
+
+  def text_changed
+    if @save_button.hidden
+      @copy_button.hide
+      @save_button.show
+      @save_to_cloud_button.hide
+    end
   end
 
   # find the indentation level at the current cursor or marker
