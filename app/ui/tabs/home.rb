@@ -17,6 +17,11 @@ class HH::SideTabs::Home < HH::SideTab
 #      image 1, 10
 #    end
 #  end
+  def initialize *args, &blk
+    super *args, &blk
+    # never changes so is most efficient to load here
+    @samples = HH.samples
+  end
 
   # auxiliary method to displays the arrows, for example in case
   # more than 5 programs have to be listed
@@ -36,12 +41,22 @@ class HH::SideTabs::Home < HH::SideTab
     end
   end
 
-  # displays the user programs
-  def home_scripts start = 0
-    if @scripts.empty?
+
+  def home_scripts start=0
+    display_scripts @scripts, start
+  end
+
+  def sample_scripts start=0
+    display_scripts @samples, start, true
+  end
+
+  # auxiliary function used to both display the user programs (scripts)
+  # and the samples
+  def display_scripts scripts, start, samples = false
+    if scripts.empty?
       para "You have no programs.", :margin_left => 12, :font => "Lacuna Regular"
     else
-      @scripts[start,5].each do |script|
+      scripts[start,5].each do |script|
         stack :margin_left => 8, :margin_top => 4 do
           britelink "icon-file.png", script[:name], script[:mtime] do
             load_file script
@@ -53,7 +68,9 @@ class HH::SideTabs::Home < HH::SideTab
           end
         end
       end
-      home_arrows :home_scripts, start, @scripts.length
+      # FIXME: sometimes :sample_scripts
+      m = samples ? :sample_scripts : :home_scripts
+      home_arrows m, start, scripts.length
     end
   end
 
@@ -114,7 +131,8 @@ class HH::SideTabs::Home < HH::SideTab
   def content
     image "#{HH::STATIC}/hhhello.png", :bottom => -120, :right => 0
 
-    @tabs, @scripts, @tables = [], HH.scripts, HH::DB.tables
+    @tabs, @tables = [], HH::DB.tables
+    @scripts = HH.scripts
     stack :margin => 0, :margin_left => 0 do
       stack do
         background "#CDC", :height => 35
@@ -122,6 +140,9 @@ class HH::SideTabs::Home < HH::SideTab
         flow do
           hometab "Programs", "#555", true do
             @homepane.clear { home_scripts }
+          end
+          hometab "Samples", "#555", false do
+            @homepane.clear { sample_scripts }
           end
         end
       end

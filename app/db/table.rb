@@ -198,9 +198,8 @@ module HH
       return if PREFS['username'].blank?
     end
 
-    def get_script(name)
-      path = File.join(HH::USER, name + '.rb')
-      app = {:name => name, :script => File.read(path)}
+    def get_script(path)
+      app = {:name => File.basename(path, '.rb'), :script => File.read(path)}
       m, = *app[:script].match(/\A(([ \t]*#.+)(\r?\n|$))+/)
       app[:mtime] = File.mtime(path)
       app[:desc] = m.gsub(/^[ \t]*#+[ \t]*/, '').strip.gsub(/\n+/, ' ') if m
@@ -208,8 +207,16 @@ module HH
     end
 
     def scripts
-      Dir["#{HH::USER}/*.rb"].map { |app| get_script(File.basename(app, '.rb')) }.
-        sort_by { |app| Time.now - app[:mtime] }
+      Dir["#{HH::USER}/*.rb"].map { |path| get_script(path) }.
+        sort_by { |script| Time.now - script[:mtime] }
+    end
+
+    def samples
+      Dir["#{HH::HOME}/samples/*.rb"].map do |path|
+        s = get_script(path)
+        s[:mtime] = nil
+        s
+      end. sort_by { |script| script[:name] }
     end
 
     def user
