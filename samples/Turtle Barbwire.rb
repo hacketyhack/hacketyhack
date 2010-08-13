@@ -1,7 +1,6 @@
-require 'h-ety-h/boot'
+# Turtle drawing barbwire
 
 Turtle.start do
-  # barbwire
   background yellow
   pencolor brown
   pensize 2

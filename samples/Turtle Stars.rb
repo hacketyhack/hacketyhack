@@ -1,4 +1,4 @@
-require 'h-ety-h/boot'
+# A sky full of stars
 
 Turtle.start do
   background blue
