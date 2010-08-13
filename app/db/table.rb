@@ -214,7 +214,9 @@ module HH
     def samples
       Dir["#{HH::HOME}/samples/*.rb"].map do |path|
         s = get_script(path)
+        # set the creation time to nil
         s[:mtime] = nil
+        s[:sample] = true
         s
       end. sort_by { |script| script[:name] }
     end

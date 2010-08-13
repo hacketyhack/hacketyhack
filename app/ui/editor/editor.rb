@@ -395,8 +395,8 @@ class HH::SideTabs::Editor
       end
     end
 
-    #onkey(nil)
-    text_changed if script[:mtime].nil?
+    # for samples display the option to save it
+    text_changed if script[:sample]
     update_text
   end
   

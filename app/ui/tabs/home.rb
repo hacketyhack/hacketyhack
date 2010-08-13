@@ -58,8 +58,18 @@ class HH::SideTabs::Home < HH::SideTab
     else
       scripts[start,5].each do |script|
         stack :margin_left => 8, :margin_top => 4 do
-          britelink "icon-file.png", script[:name], script[:mtime] do
-            load_file script
+          flow do
+            britelink "icon-file.png", script[:name], script[:mtime] do
+              load_file script
+            end
+            unless script[:sample]
+              # if it is not a sample file
+              para (link "x" do
+                if confirm("Do you really want to delete \"#{script[:name]}\"?")
+                  delete script
+                end
+              end)
+            end
           end
           if script[:desc]
             para script[:desc], :stroke => "#777", :size => 9,
@@ -72,6 +82,11 @@ class HH::SideTabs::Home < HH::SideTab
       m = samples ? :sample_scripts : :home_scripts
       home_arrows m, start, scripts.length
     end
+  end
+
+  def delete script
+    File.delete "#{HH::USER}/#{script[:name]}.rb"
+    reset
   end
 
   # I think this was meant to show all tables currently in the database

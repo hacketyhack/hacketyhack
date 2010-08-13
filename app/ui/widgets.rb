@@ -258,7 +258,7 @@ module HH::Widgets
   # creates a link having a similar appearance as the gloss buttons
   def britelink icon, name, time = nil, bg = "#8c9", &blk
     bg = background bg, :curve => 6, :height => 29, :hidden => true
-    flow :margin => 4 do
+    flow :margin => 4, :width => 300 do
       image HH::STATIC + "/" + icon, :margin_right => 6, :margin => 3
       p1 = link(name, :stroke => black, :underline => "none", &blk)
       para p1, :size => 13, :font => "Lacuna Regular", :margin => 0,
