@@ -1,7 +1,5 @@
 require 'app/boot'
 
-#require 'app/ui/tabs/home'
-
 
 # methods for the main app
 module HH::App
@@ -50,6 +48,9 @@ window :title => "Hackety Hack", :width => 790, :height => 550 do
     background "#e9efe0".."#c1c5d0", :height => 150, :bottom => 150
   end
   @lesson_stack = stack :hidden => true, :width => 400
+  @lesson_stack.finish do
+    HH::LessonSet.close_open_lesson
+  end
 
   extend HH::HasSideTabs
   init_tabs @main_content
@@ -79,7 +80,7 @@ window :title => "Hackety Hack", :width => 790, :height => 550 do
     end
   end
   addtab :Quit, :icon => "tab-quit.png", :position => :bottom do
-    exit
+    close
   end
   addtab :Prefs, :hover => "Preferences", :icon => "tab-properties.png",
     :position => :bottom

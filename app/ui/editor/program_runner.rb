@@ -30,7 +30,7 @@ module HH::ProgramRunner
     popup = stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
       background black(0.8)
       # "pop up" window
-      stack :top => 0.1, :left => 0.1, :width => 0.8, :height => 0.8 do
+      stack :top => 0.1, :left => 0.1, :width => 0.8, :height => 0.8, :scroll => true do
         background "#eee", :curve => 5
         @program_running = stack :margin => 10 do
           para "Running..."

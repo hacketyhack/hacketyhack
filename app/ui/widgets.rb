@@ -82,12 +82,6 @@ class IconButton < Shoes::Widget
     end
 
     click &blk
-
-    finish do
-      @tooltip.hide
-      #@tooltip.remove
-      #@tooltip = nil
-    end
   end
   
   def create_tooltip

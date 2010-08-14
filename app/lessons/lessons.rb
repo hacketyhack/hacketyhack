@@ -171,7 +171,20 @@ class HH::LessonSet
 
     @execution_thread = Thread.current
     @page_thread = Thread.new { execute_page }
+    @@open_lesson = self
+
     sleep # wait until the close button gets called
+
+    save_lesson
+    @container.delete_event_connections
+    @@open_lesson = nil
+  end
+
+  # finalization in case of an open lesson
+  def self.close_open_lesson
+    if @@open_lesson
+      @@open_lesson.save_lesson
+    end
   end
 
   def show_menu
@@ -203,6 +216,7 @@ class HH::LessonSet
     end
   end
 
+  # displays the page @page of lesson @lesson
   def execute_page
     lessons = @lessons
     lesson, page = @lesson, @page
@@ -270,18 +284,24 @@ class HH::LessonSet
     execute_page
   end
 
+  # calls finalization
   def close_lesson
-    HH::PREFS["tut_lesson_#@name"] = @lesson
-    HH::PREFS["tut_page_#@name"] = @page
-    HH.save_prefs
-    @container.delete_event_connections
     @execution_thread.wakeup
   end
 
+  # called on close to save che current lesson and page
+  def save_lesson
+    HH::PREFS["tut_lesson_#@name"] = @lesson
+    HH::PREFS["tut_page_#@name"] = @page
+    HH.save_prefs
+  end
+
+  # lesson DSL method
   def lesson name
     @lessons << [name, []]
   end
 
+  # lesson DSL method
   def page title, &blk
     if @lessons.empty?
       lesson << "Lesson"
