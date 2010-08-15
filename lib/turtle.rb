@@ -348,10 +348,7 @@ private
   end
 
   def draw_all
-    Thread.new do
-      @canvas.start_draw
-      sleep 0.1 # HACK
-      execute_canvas_code @block
-    end
+    @canvas.start_draw
+    execute_canvas_code @block
   end
 end

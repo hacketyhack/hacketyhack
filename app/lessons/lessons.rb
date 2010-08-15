@@ -1,5 +1,3 @@
-require 'thread'
-
 module HH::LessonContainerText
   TITLES = {:font => "Lacuna Regular", :stroke => "#e06", :margin => 4}
   PARAS = {:stroke => "#eec", :size => 11, :margin_bottom => 6}
@@ -146,6 +144,8 @@ end
 
 # class to load and execute the level sets
 class HH::LessonSet
+  include HH::Observable
+  
   def initialize name, blk
     # content of @lessons:
     # name, pages = @lessons[lesson_n]
@@ -169,20 +169,13 @@ class HH::LessonSet
     @container.container = container
     container.extend HH::Tooltip
 
-    @execution_thread = Thread.current
-    @page_thread = Thread.new { execute_page }
+    execute_page
     @@open_lesson = self
-
-    sleep # wait until the close button gets called
-
-    save_lesson
-    @container.delete_event_connections
-    @@open_lesson = nil
   end
 
   # finalization in case of an open lesson
   def self.close_open_lesson
-    if @@open_lesson
+    if (defined? @@open_lesson) && @@open_lesson
       @@open_lesson.save_lesson
     end
   end
@@ -286,7 +279,10 @@ class HH::LessonSet
 
   # calls finalization
   def close_lesson
-    @execution_thread.wakeup
+    save_lesson
+    @container.delete_event_connections
+    @@open_lesson = nil
+    emit :close
   end
 
   # called on close to save che current lesson and page

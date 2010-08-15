@@ -7,14 +7,15 @@ module HH::App
   # returns only once the lesson gets closed
   include HH::Markup
   def start_lessons name, blk
-    Thread.new do
       @main_content.style(:width => -400)
       @lesson_stack.show
-      HH::LessonSet.new(name, blk).execute_in @lesson_stack
-      # after the lesson ends
-      @lesson_stack.hide
-      @main_content.style(:width => 1.0)
-    end
+      l = HH::LessonSet.new(name, blk).execute_in @lesson_stack
+      l.on_event :close do hide_lesson end
+  end
+
+  def hide_lesson
+    @lesson_stack.hide
+    @main_content.style(:width => 1.0)
   end
 
   def load_file name={}
