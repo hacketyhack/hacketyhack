@@ -105,6 +105,12 @@ class Feed
       end
     end
   end
+  def to_s
+    res = "Feed from #{link}\n"
+    res << "== #{title} ==\n"
+    res << "#{description}" if description
+    res << " (#{items.size} items)\n"
+  end
   def each(&blk)
     items.each(&blk)
   end
@@ -157,38 +163,47 @@ class Feed::Item
   end
 end
 
-# downloads the file at url to filename showing the progress in a window
+# downloads the file at URI to filename showing the progress in a window
 # if filename is a relative path, the file will be saved to the Downloads
-# directory of HH, by default the basename of the url is used
-def Web.download(url, filename=nil)
-  # wait for the download to complete
+# directory of HH, by default the basename of the URI is used
+def Web.download uri, filename=nil, &blk
+  filename ||= File.basename(uri)
+  filename = File.expand_path(filename,  "#{HH::USER}/Downloads/")
+  opts = {:save => filename }
 
-  window :width => 450, :height => 100, :margin => 10 do
-    status = para "Downloading #{url}"
-    p = progress :width => 1.0
-    
-    filename ||= File.basename(url)
+  Web.dowload_dialog uri, opts, &blk
+end
 
-    # wait for the download to complete
-    File.expand_path(filename,  "#{HH::USER}/Downloads/")
-
-    Thread.new do
-      sleep
+def Web.dowload_dialog uri, opts = {}, &blk
+  window :width => 450, :height => 100, :margin => 10, :title => "Download" do
+    # method to close the window
+    def self.finished
+      timer 1 do
+        close
+      end
     end
 
-    download url,
-      :save => File.expand_path(filename,  "#{HH::USER}/Downloads/"),
-      :start => proc{|dl| status.text = 'Connecting...'},
-      :progress => proc{|dl|
+    status = para "Downloading #{uri}"
+    p = progress :width => 1.0
+
+    opts[:start] = proc{|dl| status.text = 'Connecting'}
+    opts[:progress] = proc do |dl|
         status.text = "Transferred #{dl.transferred} of #{dl.length} bytes (#{dl.percent}%)"
-        p.fraction = dl.percent * 0.01},
-      :finish => proc{|dl| status.text = 'Download finished'; queue.enq nil;},
-      :error => proc{|dl, err| status.text = "Error: #{err}"; queue.enq nil;}
+        p.fraction = dl.percent * 0.01
+    end
+
+    opts[:finish] = proc do |dl|
+      status.text = 'Download finished'
+      finished
+      blk.call(dl) if blk
+    end
+    opts[:error] = proc{|dl, err| status.text = "Error: #{err}"; finished}
+    HH::APP.download uri, opts
   end
 end
 
 def Web.fetch(uri, opts = {}, &blk)
-  HH::APP.download(uri, opts) do |dl|
+  Web.dowload_dialog uri, opts do |dl|
     data = dl.response.body
     unless opts[:as]
       opts[:as] =

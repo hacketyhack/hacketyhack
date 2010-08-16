@@ -430,8 +430,7 @@ lesson_set "Hackety Hack" do
 
     embed_code(
       "1.upto(6) do |x|\n" +
-      "  say(\"Holding up \#{x} fingers\")\n" +
-      "  sleep 1\n" +
+      "  puts(\"Holding up \#{x} fingers\")\n" +
       "end")
 
     para "This ", code("do ... end"), " section is called a ", strong("block"),
