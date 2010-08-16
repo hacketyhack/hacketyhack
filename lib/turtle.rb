@@ -169,12 +169,7 @@ class Shoes::TurtleCanvas < Shoes::Widget
     end
     @paused # return value
   end
-
-  def draw_all
-    start_draw
-    step
-  end
-
+  
   def save filename
     _snapshot :filename => filename, :format => :pdf
   end
@@ -348,7 +343,9 @@ private
   end
 
   def draw_all
-    @canvas.start_draw
-    execute_canvas_code @block
+    timer 0.1 do
+      @canvas.start_draw
+      execute_canvas_code @block
+    end
   end
 end
