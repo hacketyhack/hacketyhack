@@ -12,16 +12,16 @@ module HH::ProgramRunner
 
     # thread actually executing the program
     program_thread = Thread.new do
-      sleep
-      timer(0.01) do
+      sleep # wait for the launching popup to be drawn
+      timer 0.01 do
         begin
           ans = eval(code, ::TOPLEVEL_BINDING)
-          say "Program terminated successfully"
-          HH::APP.instance_eval {@stop_button.text = "Close"}
+          say "Program launched"
           HH::APP.emit :program_run, :code => code, :answer => ans
         rescue => ex
           HH::APP.emit :program_run_with_error, :code => code, :error => ex
           say ex.friendly
+          raise ex # also show in the shoes console
         end
       end
     end
@@ -33,9 +33,9 @@ module HH::ProgramRunner
       stack :top => 0.1, :left => 0.1, :width => 0.8, :height => 0.8, :scroll => true do
         background "#eee", :curve => 5
         @program_running = stack :margin => 10 do
-          para "Running..."
+          para "Launching program"
         end
-        @stop_button = glossb "Stop Program", :margin => 10 do
+        glossb "Close", :margin => 10 do
           program_thread.kill
           popup.remove
           HH::APP.emit :program_closed, :code => code

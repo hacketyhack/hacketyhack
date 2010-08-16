@@ -174,6 +174,10 @@ def Web.download(url, filename=nil)
     # wait for the download to complete
     File.expand_path(filename,  "#{HH::USER}/Downloads/")
 
+    Thread.new do
+      sleep
+    end
+
     download url,
       :save => File.expand_path(filename,  "#{HH::USER}/Downloads/"),
       :start => proc{|dl| status.text = 'Connecting...'},

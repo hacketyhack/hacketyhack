@@ -1,4 +1,4 @@
-lesson_set "Lear Programming" do
+lesson_set "Hackety Hack" do
   lesson "Your first program"
   page "Let's Get Going, Shall We?" do flow do
     para "This whole dark area is the ", em("Hackety Hack Tutor"),
@@ -53,7 +53,7 @@ lesson_set "Lear Programming" do
     para "In the large box, type the following code exactly as written:"
     embed_code "# Asking and saying\n" +
       'name = ask("Your name please?")' + "\n" +
-      "alert(name)"
+      "puts(name)"
     para "Click ", em("Run"), " when you're finished."
     next_when :program_run, :code => /\Wask\W.*\Walert\W/
   end
@@ -92,7 +92,7 @@ lesson_set "Lear Programming" do
   end
 
   page "How Asking Works" do
-    para "The ", code("ask"), " command you used in Part A pops up a window ",
+    para "The ", code("ask"), " command you used in pops up a window ",
       "and lets the person at the computer type something in.  Whatever they ",
       "end up typing is handed back to your program.  In Part A, you stored ",
       "the typing in the ", code("name"), " variable."
@@ -100,7 +100,7 @@ lesson_set "Lear Programming" do
     para "So how does Ruby know that ", code("ask"), " is a command and ",
       code("name"), " is a variable?  Because of their position in the ",
       "\"sentences\" of your code.  For example, variables are created with ",
-      "an equals sign. Since ", strong("name"), " comes before the equals ",
+      "an equals sign. Since ", code("name"), " comes before the equals ",
       "sign, it is a variable."
 
       embed_code 'name = ask("Your name please?")'
@@ -118,8 +118,7 @@ lesson_set "Lear Programming" do
     para "Here's the new program (the first 2 lines are the same):"
     embed_code "# Asking and saying\n" +
       'name = ask("Your name please?")' + "\n" +
-      'say("Your name is #{name.length} letters long")' + "\n" +
-      'sleep(name.length())'
+      'puts("Your name is #{name.length()} letters long")'
 
     para "Type this one in carefully. You'll notice in the quotes that there ",
       "is a little number sign and some curly braces.  The curly braces are ",
@@ -130,9 +129,8 @@ lesson_set "Lear Programming" do
     para "Click ", em("Save"), " to save what you've done so far.  Then, ",
     em("Run.")
 
-    para "Watch that barbershop pole spin.  Did you notice the words above it ",
-      "change?  The ", code("say"), " command changes the words right above ",
-      "that barbershop pole!"
+    para "Did you notice the words change? That is what the ", code("say"),
+      " command did, changing those words!"
   end
 
   page "What's it Good For?" do
@@ -143,17 +141,9 @@ lesson_set "Lear Programming" do
       "program is doing.  It's a very simple thing, but hey.. this is only ",
       "lesson 1!!"
 
-  end
-
-  page "A Nap at the Barber Shop" do
-    para "Also notice the ", code("sleep"), " command.  Since the spinning ",
-      "pole goes away when your program's finished, the ", code("sleep"),
-      " command lets us pause the program so you can see it for a few seconds ",
-      "before it goes away."
-
     para "We'll skip explanation of the other stuff for now, but run the ",
       "program a few more times and see if you can tell for yourself:"
-    item "What does ", code('name.length'), " do?"
+    item "What does ", code('name.length()'), " do?"
     item "What's that thing surrounding it? ", code('#{....}')
   end
 
@@ -161,11 +151,9 @@ lesson_set "Lear Programming" do
     para "Okay, again: keep the first two lines of the program and go like this:"
     embed_code "# Asking and saying\n" +
       'name = ask("Your name please?")' + "\n" +
-      "1.upto(name.length) do |x|\n" +
-      '  say "Your name has #{x} letters."' + "\n" +
-      "  sleep 1\n" +
-      "end\n" +
-      "sleep 10"
+      "1.upto(name.length()) do |x|\n" +
+      '  puts "Your name has #{x} letters."' + "\n" +
+      "end"
 
     para "Notice the pipe symbols in the program.  At the end of the third ",
       "line, you'll see ", code("|x|"), ". Those two lines around the ",
@@ -186,7 +174,6 @@ lesson_set "Lear Programming" do
     embed_code(
       "1.upto(6) do |x|\n" +
       "  say(\"Holding up \#{x} fingers\")\n" +
-      "  sleep 1\n" +
       "end")
 
     para "The ", code("upto"), " command is a part of every number.  In this ",
@@ -205,9 +192,9 @@ lesson_set "Lear Programming" do
     embed_code('"Hello?".upto(6)')
 
     para "See, that won't work.  Because quoted things don't own a dog called ",
-      code("upto"), ". Because `upto` is for counting!!"
+      code("upto"), ". Because ", code("upto"), " is for counting!!"
 
-    para "We're counting from 1 ''up to'' 6.  Nice and easy to read."
+    para "We're counting from 1 ", em("up to"), " 6.  Nice and easy to read."
   end
 
   page "Lesson One Complete!" do
@@ -233,7 +220,6 @@ lesson_set "Lear Programming" do
       "bit further, try writing a program which blinks.  You can use the ",
       code("say"), " and ", code("sleep"), " commands to do it!!"
   end
-
 
 
   lesson "Getting Outdoors"
@@ -474,181 +460,181 @@ lesson_set "Lear Programming" do
   end
 
 
-  lesson "Making a Blog"
-
-  page "" do
-    para "So, you're still trying to get comfortable with Ruby, but we've ",
-      "seen a lot more of what Hackety Hack can do.  Downloading and eating ",
-      "blogs, not bad."
-
-    para "But this lesson's going to hopscotch all that other stuff.  In this ",
-      "lesson, you'll learn to make your own blog in just a few lines!! ",
-      "And we'll start to figure out what all the little pieces are: ",
-      "strings, numbers, blocks.  Stuff like that."
-  end
-
-  page "window" do
-    para "Start up another new program.  Save this one as ", strong("Window"),
-      ":"
-
-    embed_code "# A simple window\n" +
-      "window do\n" +
-      '  title("My Page")' + "\n" +
-      '  para("This belongs to ____")' + "\n" +
-      "end"
-
-    para "You can put your name in where the blanks are. ", em("Save"), " it ",
-      "and ", em("Run"), " it."
-
-    para "We're using a few things we've seen before, but let's go over each ",
-      "of them, to be clear."
+#  lesson "Making a Blog"
+#
+#  page "" do
+#    para "So, you're still trying to get comfortable with Ruby, but we've ",
+#      "seen a lot more of what Hackety Hack can do.  Downloading and eating ",
+#      "blogs, not bad."
+#
+#    para "But this lesson's going to hopscotch all that other stuff.  In this ",
+#      "lesson, you'll learn to make your own blog in just a few lines!! ",
+#      "And we'll start to figure out what all the little pieces are: ",
+#      "strings, numbers, blocks.  Stuff like that."
 #  end
 #
-#  page "Modules and Methods" do
-#    para "We've talked about modules.  What's the module in the code you ",
-#      "just typed? (", em("Hint: only one is used"), ".)"
-
-    para "And we've talked about commands (also called ", strong("methods"),
-      ".)  What are the methods in the code? "
-  end
-
-  page "Let's See If You Were Right" do
-    #The module is the `Web` module.  It contains a method called
-    #`popup` that we want to use.
-    para "There are three methods in all: ", code("Web.popup"), ", ",
-      code("title"), " and ", code("para"), "."
-
-    para "The ", code("para"), " method means \"paragraph\" here."
-
-  end
-
-  page "Blocks" do
-    para "Attached to ", code("window"), " is a block."
-
-    embed_code "window do\n" +
-      "  ...\n" +
-      "end\n"
-
-    para "The block is everything between ", code("do"), " and ", code("end"),
-      ".  A block is a group of code attached to a command. Again: a ",
-      strong("group of code"), " attached to a method."
-
-    para "A block is like ", strong("a new lung"), ". You plug it in to make a ",
-      "method breathe.  The ", code("Web.popup"), " method gives its block one ",
-      "puff of air. And the block uses that puff of air to make all the parts ",
-      "that go inside the popup.  One popup, made in one puff of air."
-  end
-
-  page "Blocks (cont'd.)" do
-    para "We used a block a few other times.  Here's one:"
-
-    embed_code(
-      "1.upto(6) do |x|\n" +
-      "  say(\"Holding up \#{x} fingers\")\n" +
-      "  sleep 1\n" +
-      "end")
-
-    para "In this one, the block gets ", strong("six puffs of air"),
-      ". Every time we count a new number, the block gets a puff.  ",
-      "And it uses that puff to say something and take a short nap."
-
-    para "Puff.  Puff.  Puff.  Puff.  Puff.  Puff!  And after that sixth one, ",
-      "that block's life is over and done."
-  end
-
-  page "So, Is It Totally Disassembled?" do
-    para "Okay, so we've almost finished taking this apart:"
-
-    embed_code "# A simple window\n" +
-      "window do\n" +
-      '  title("My Page")' + "\n" +
-      '  para("This belongs to ____")' + "\n" +
-      "end"
-    para "First, we have the ", code("window"), " method, which ",
-      "is attached to a block, an iron lung that gets turned on and handed",
-      "a puff of air.  In the block, the `title` and `para` commands run."
-  end
-
-
-  page "Words in Strings" do
-    para "Let's talk about the quoted phrases."
-    embed_code '"My Page"'
-
-    para "This is a string.  It's a short string of letters.  When you think ",
-      '"string", just imagine each letter is ',
-      strong("clipped to a clothesline"), ". The little quotes are the clips ",
-      "on each end, hooked on to theclothesline."
-  end
-
-  page "Upsy Reversy" do
-    para "Strings are great for messing with words.  Try changing the third ",
-      "line to:"
-    embed_code 'title("My Page".upcase().reverse())'
-
-    para "And run it. And think about that."
-
-    para "What is ", code("title"), "? And what are ", code("upcase"),
-      " and ", code("reverse"), "??"
-  end
-
-  page "A Blog Window" do
-    para "Let's change the insides of the popup a bit.  Instead, we want to ",
-      "add a new blog entry."
-
-#{{{
-##!ruby
-## Write in my blog
-#Web.popup() do
-#  title("Add a blog entry")
-#  editline("Title")
-#  editbox()
-#  buttons("cancel", "save")
-#end
-#}}}
-
-#'''Save''' the program as '''WriteMyBlog'''.  '''Run.'''  Hey, neat!
-#Try typing in a short blog entry and saving.
-
-  end
-
-  page "Well, Not Really" do
-    para "Hmm.  Actually.  That didn't save anywhere.  It's gone!!  You lost ",
-      "your precious blog entry!!  That is unacceptable."
-
-      "Let's change the line defining the button:"
-
-#{{{
-##!ruby
-#Web.popup('MyBlog') do
-#}}}
-
-    para "That tells Hackety Hack to attach the button to the ",
-      strong("MyBlog"), " table. Try running it again and typing in a blog ",
-      "entry.  How'd that go??"
-
-    para  "While you're at it, save a few more blog entries.  Get it going."
-  end
-
-  page "About Tables" do
-    para "Tables are empty boxes in Hackety Hack where you can store things.",
-      "Each box will contain the same kinds of things.  So in the ",
-      strong("MyBlog"), " box, we'll be storing blog entries."
-
-    para "What's a blog entry?  Well, in the popup we have an ",
-      code("editline"), " for the title and an ", code("editbox"),
-      " for typing the main blog paragraphs. So, based on the popup we made, ",
-      "a blog entry is a title and a bunch of paragraphs."
-  end
-
-  page "What are Tables?" do
-    para "Tables are a great place to stuff links or journal entries or ",
-      "pictures or... anything really.  And links could go in a ",
-      strong("MyLinks"), " table and journals in a ", strong("ClaspedDiary"),
-      " table...  You know?"
-
-    para "Your tables are all kept in your Hacks folder, right next to your ",
-      "programs.  There's a file called ", strong("+TABLES"), ". That file!"
-  end
+#  page "window" do
+#    para "Start up another new program.  Save this one as ", strong("Window"),
+#      ":"
+#
+#    embed_code "# A simple window\n" +
+#      "window do\n" +
+#      '  title("My Page")' + "\n" +
+#      '  para("This belongs to ____")' + "\n" +
+#      "end"
+#
+#    para "You can put your name in where the blanks are. ", em("Save"), " it ",
+#      "and ", em("Run"), " it."
+#
+#    para "We're using a few things we've seen before, but let's go over each ",
+#      "of them, to be clear."
+##  end
+##
+##  page "Modules and Methods" do
+##    para "We've talked about modules.  What's the module in the code you ",
+##      "just typed? (", em("Hint: only one is used"), ".)"
+#
+#    para "And we've talked about commands (also called ", strong("methods"),
+#      ".)  What are the methods in the code? "
+#  end
+#
+#  page "Let's See If You Were Right" do
+#    #The module is the `Web` module.  It contains a method called
+#    #`popup` that we want to use.
+#    para "There are three methods in all: ", code("Web.popup"), ", ",
+#      code("title"), " and ", code("para"), "."
+#
+#    para "The ", code("para"), " method means \"paragraph\" here."
+#
+#  end
+#
+#  page "Blocks" do
+#    para "Attached to ", code("window"), " is a block."
+#
+#    embed_code "window do\n" +
+#      "  ...\n" +
+#      "end\n"
+#
+#    para "The block is everything between ", code("do"), " and ", code("end"),
+#      ".  A block is a group of code attached to a command. Again: a ",
+#      strong("group of code"), " attached to a method."
+#
+#    para "A block is like ", strong("a new lung"), ". You plug it in to make a ",
+#      "method breathe.  The ", code("Web.popup"), " method gives its block one ",
+#      "puff of air. And the block uses that puff of air to make all the parts ",
+#      "that go inside the popup.  One popup, made in one puff of air."
+#  end
+#
+#  page "Blocks (cont'd.)" do
+#    para "We used a block a few other times.  Here's one:"
+#
+#    embed_code(
+#      "1.upto(6) do |x|\n" +
+#      "  say(\"Holding up \#{x} fingers\")\n" +
+#      "  sleep 1\n" +
+#      "end")
+#
+#    para "In this one, the block gets ", strong("six puffs of air"),
+#      ". Every time we count a new number, the block gets a puff.  ",
+#      "And it uses that puff to say something and take a short nap."
+#
+#    para "Puff.  Puff.  Puff.  Puff.  Puff.  Puff!  And after that sixth one, ",
+#      "that block's life is over and done."
+#  end
+#
+#  page "So, Is It Totally Disassembled?" do
+#    para "Okay, so we've almost finished taking this apart:"
+#
+#    embed_code "# A simple window\n" +
+#      "window do\n" +
+#      '  title("My Page")' + "\n" +
+#      '  para("This belongs to ____")' + "\n" +
+#      "end"
+#    para "First, we have the ", code("window"), " method, which ",
+#      "is attached to a block, an iron lung that gets turned on and handed",
+#      "a puff of air.  In the block, the `title` and `para` commands run."
+#  end
+#
+#
+#  page "Words in Strings" do
+#    para "Let's talk about the quoted phrases."
+#    embed_code '"My Page"'
+#
+#    para "This is a string.  It's a short string of letters.  When you think ",
+#      '"string", just imagine each letter is ',
+#      strong("clipped to a clothesline"), ". The little quotes are the clips ",
+#      "on each end, hooked on to theclothesline."
+#  end
+#
+#  page "Upsy Reversy" do
+#    para "Strings are great for messing with words.  Try changing the third ",
+#      "line to:"
+#    embed_code 'title("My Page".upcase().reverse())'
+#
+#    para "And run it. And think about that."
+#
+#    para "What is ", code("title"), "? And what are ", code("upcase"),
+#      " and ", code("reverse"), "??"
+#  end
+#
+#  page "A Blog Window" do
+#    para "Let's change the insides of the popup a bit.  Instead, we want to ",
+#      "add a new blog entry."
+#
+##{{{
+###!ruby
+### Write in my blog
+##Web.popup() do
+##  title("Add a blog entry")
+##  editline("Title")
+##  editbox()
+##  buttons("cancel", "save")
+##end
+##}}}
+#
+##'''Save''' the program as '''WriteMyBlog'''.  '''Run.'''  Hey, neat!
+##Try typing in a short blog entry and saving.
+#
+#  end
+#
+#  page "Well, Not Really" do
+#    para "Hmm.  Actually.  That didn't save anywhere.  It's gone!!  You lost ",
+#      "your precious blog entry!!  That is unacceptable."
+#
+#      "Let's change the line defining the button:"
+#
+##{{{
+###!ruby
+##Web.popup('MyBlog') do
+##}}}
+#
+#    para "That tells Hackety Hack to attach the button to the ",
+#      strong("MyBlog"), " table. Try running it again and typing in a blog ",
+#      "entry.  How'd that go??"
+#
+#    para  "While you're at it, save a few more blog entries.  Get it going."
+#  end
+#
+#  page "About Tables" do
+#    para "Tables are empty boxes in Hackety Hack where you can store things.",
+#      "Each box will contain the same kinds of things.  So in the ",
+#      strong("MyBlog"), " box, we'll be storing blog entries."
+#
+#    para "What's a blog entry?  Well, in the popup we have an ",
+#      code("editline"), " for the title and an ", code("editbox"),
+#      " for typing the main blog paragraphs. So, based on the popup we made, ",
+#      "a blog entry is a title and a bunch of paragraphs."
+#  end
+#
+#  page "What are Tables?" do
+#    para "Tables are a great place to stuff links or journal entries or ",
+#      "pictures or... anything really.  And links could go in a ",
+#      strong("MyLinks"), " table and journals in a ", strong("ClaspedDiary"),
+#      " table...  You know?"
+#
+#    para "Your tables are all kept in your Hacks folder, right next to your ",
+#      "programs.  There's a file called ", strong("+TABLES"), ". That file!"
+#  end
 
 ##  page "Reading the Blog" do
 ##
