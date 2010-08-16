@@ -460,6 +460,9 @@ lesson_set "Hackety Hack" do
       "sandwich, and please return when you are duly refreshed."
   end
 
+# important things the next lesson contains:
+# - blocks
+# - strings
 
 #  lesson "Making a Blog"
 #
