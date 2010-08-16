@@ -124,12 +124,35 @@ class HH::SideTabs::Editor
   end
 
   def load script
+    if not @save_button.hidden
+      # current script is unsaved
+      name = @script[:name] || "An unnamed program"
+      if not confirm("#{name} has not been saved, if you continue \n" +
+          " all unsaved modifications will be lost")
+        return false
+      end
+    end
     clear {draw_content script}
+    true
+  end
+
+  # asks confirmation and then saves (or not if save is)
+  def save_if_confirmed
+    if not @save_button.hidden
+      name = @script[:name] || "unnamed program"
+      if confirm("Save modifications to #{name}?")
+        save @script[:name]
+        true
+      else
+        false
+      end
+    end
   end
 
   def draw_content(script = {})
     @str = script[:script] || ""
     name = script[:name] || "A New Program"
+    @script = script
 
     reset_undo_redo
     InsertionDeletionCommand.on_insert_text {|pos, str|  insert_text(pos, str)}
@@ -145,10 +168,10 @@ class HH::SideTabs::Editor
       @scroll =
       flow :width => 1.0, :height => 1.0, :margin => 2, :scroll => true do
         stack :width => 37, :margin_right => 6 do
-          @ln = para "1", :font => "Liberation Mono", :stroke => "#777", :align => "right"
+          @ln = para "1", :font => "Liberation Mono", :size => 10, :stroke => "#777", :align => "right"
         end
         stack :width => -37, :margin_left => 6, :margin_bottom => 60 do
-          @t = para "", :font => "Liberation Mono", :stroke => "#662",
+          @t = para "", :font => "Liberation Mono", :size => 10, :stroke => "#662",
             :wrap => "trim", :margin_right => 28
           @t.cursor = 0
           def @t.hit_sloppy(x, y)
@@ -197,34 +220,15 @@ class HH::SideTabs::Editor
       end
     end
 
-    stack :height => 40, :width => 182, :bottom => 20, :right => 20 do
-      saver = proc do |name|
-        unless name
-          msg = ""
-          while true
-            name = ask(msg + "Give your program a name.")
-            break if name.nil? or not HH.script_exists?(name)
-            msg = "You already have a program named '" + name + "'.\n"
-          end
-        end
-        if name
-          script[:name] = name
-          HH.save_script(script[:name], @str)
-          script[:mtime] = Time.now
-          @sname.text = script[:name]
-          @stale.text = "Last saved #{script[:mtime].since} ago."
-          true
-        else
-          false
-        end
-      end
+    stack :height => 40, :width => 182, :bottom => -3, :right => 0 do
+      
       @copy_button = 
         glossb "Copy", :width => 60, :top => 2, :left => 70 do
-          saver[nil]
+          save(nil)
         end
       @save_button =
         glossb "Save", :width => 60, :top => 2, :left => 70, :hidden => true do
-          if saver[script[:name]]
+          if save(script[:name])
             timer 0.1 do
               @save_button.hide
               @copy_button.show
@@ -395,9 +399,31 @@ class HH::SideTabs::Editor
       end
     end
 
-    # for samples display the option to save it
-    text_changed if script[:sample]
+    # for samples do not allow to upload to cloud when just opened
+    @save_to_cloud_button.hide if script[:sample]
     update_text
+  end
+
+  # saves the file, asks for a new name if a nil argument is passed
+  def save name
+    if name.nil?
+      msg = ""
+      while true
+        name = ask(msg + "Give your program a name.")
+        break if name.nil? or not HH.script_exists?(name)
+        msg = "You already have a program named '" + name + "'.\n"
+      end
+    end
+    if name
+      @script[:name] = name
+      HH.save_script(@script[:name], @str)
+      @script[:mtime] = Time.now
+      @sname.text = @script[:name]
+      @stale.text = "Last saved #{@script[:mtime].since} ago."
+      true
+    else
+      false
+    end
   end
   
   def update_text

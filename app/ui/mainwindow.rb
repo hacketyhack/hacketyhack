@@ -19,8 +19,9 @@ module HH::App
   end
 
   def load_file name={}
-    gettab(:Editor).load(name)
-    opentab :Editor
+    if gettab(:Editor).load(name)
+      opentab :Editor
+    end
   end
 
   # replaces the "Running..." message of the currently running program
@@ -51,6 +52,7 @@ window :title => "Hackety Hack", :width => 790, :height => 550 do
   @lesson_stack = stack :hidden => true, :width => 400
   @lesson_stack.finish do
     HH::LessonSet.close_open_lesson
+    gettab(:Editor).save_if_confirmed
   end
 
   extend HH::HasSideTabs

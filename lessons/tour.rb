@@ -750,8 +750,6 @@ lesson_set "Hackety Hack" do
     embed_code "days = years * 365"
 
     next_when :try_ruby_command_error, :error => NameError
-
-    #para strong("Run"), " it."
   end
 
   page "Days and Years" do
