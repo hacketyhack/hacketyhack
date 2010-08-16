@@ -161,6 +161,10 @@ class Feed::Item
       end
     end
   end
+  def to_s
+    res = "== #{title} ==\n"
+    res << "#{description}\n"
+  end
 end
 
 # downloads the file at URI to filename showing the progress in a window

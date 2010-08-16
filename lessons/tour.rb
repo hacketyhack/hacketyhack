@@ -322,7 +322,9 @@ lesson_set "Hackety Hack" do
     para "Here's the next example. Save this one as ", em("MeFi"), "."
 
     embed_code "# Read the Metafilter feed.\n" +
-      'puts Web.fetch("http://xml.metafilter.com/rss.xml")'
+      'Web.fetch("http://xml.metafilter.com/rss.xml") do |feed|' + "\n" +
+      "  puts feed\n" +
+      "end"
 
     para "Run the script. You'll see Hackety Hack download a file... but ",
       "something else happens... hmmm!"
@@ -347,11 +349,12 @@ lesson_set "Hackety Hack" do
 
     para "Let's add a few lines to our program:"
     embed_code "# Read the Metafilter feed.\n" +
-      'feed = Web.fetch("http://xml.metafilter.com/rss.xml")' + "\n" +
-      "feed.items().reject!() do |item|\n" +
-      "  item.description().length() > 200\n" +
-      "end\n" +
-      "puts(feed)"
+      'Web.fetch("http://xml.metafilter.com/rss.xml") do |feed|' + "\n" +
+      "  feed.items().reject!() do |item|\n" +
+      "    item.description().length() > 200\n" +
+      "  end\n" +
+      "  puts( feed.items() )\n" +
+      "end"
   end
 
   page "Ahh! Complicated!" do
@@ -368,15 +371,13 @@ lesson_set "Hackety Hack" do
   end
 
   page "Hidden in the Feed " do
-    para "Try this:"
 
-    embed_code "Read the Metafilter feed.\n" +
-      'feed = Web.fetch("http://xml.metafilter.com/rss.xml")' + "\n" +
-      "puts feed.items()"
+    para "On the previous page we wrote:"
 
-    para "When you run this, the ", code("item"), "s will be listed as ",
+    embed_code "puts( feed.items() )\n"
+
+    para "When you run this, the ", code("items"), " will be listed as ",
       strong(em("an Array")), " which is a list of things."
-
   end
 
   page "Quickly, About Arrays" do
@@ -402,11 +403,12 @@ lesson_set "Hackety Hack" do
       " Kablewy. It deletes that stuff for good. "
 
     embed_code "# Read the Metafilter feed.\n" +
-      'feed = Web.fetch("http://xml.metafilter.com/rss.xml")' + "\n" +
-      "feed.items().reject!() do |item|\n" +
-      "  item.description().length() > 200\n" +
-      "end\n" +
-      "puts(feed)"
+      'Web.fetch("http://xml.metafilter.com/rss.xml") do |feed|' + "\n" +
+      "  feed.items().reject!() do |item|\n" +
+      "    item.description().length() > 200\n" +
+      "  end\n" +
+      "  puts( feed.items() )\n" +
+      "end"
 
     para "This program will remove any thing from the list which is longer ",
       "than 200 letters.  We just want to focus on the short little ",
