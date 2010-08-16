@@ -162,10 +162,8 @@ end
 # directory of HH, by default the basename of the url is used
 def Web.download(url, filename=nil)
   # wait for the download to complete
-  queue = Queue.new
 
-  w = window :width => 450, :height => 100, :margin => 10 do
-    #url = 'http://www.rin-shun.com/shoes/shoes-0.r1263.exe'
+  window :width => 450, :height => 100, :margin => 10 do
     status = para "Downloading #{url}"
     p = progress :width => 1.0
     
@@ -187,10 +185,6 @@ def Web.download(url, filename=nil)
       :finish => proc{|dl| status.text = 'Download finished'; queue.enq nil;},
       :error => proc{|dl, err| status.text = "Error: #{err}"; queue.enq nil;}
   end
-
-  queue.deq # wait for the download to finish
-  sleep 1
-  w.close
 end
 
 def Web.fetch(uri, opts = {}, &blk)
