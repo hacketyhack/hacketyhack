@@ -320,7 +320,8 @@ lesson_set "Hackety Hack" do
     para "Here's the next example. Save this one as ", em("MeFi"), "."
 
     embed_code "# Read the Metafilter feed.\n" +
-      'Web.fetch("http://xml.metafilter.com/rss.xml") do |feed|' + "\n" +
+      'url = "http://xml.metafilter.com/rss.xml"' + "\n" +
+      'Web.fetch(url) do |feed|' + "\n" +
       "  puts feed\n" +
       "end"
 
@@ -347,7 +348,8 @@ lesson_set "Hackety Hack" do
 
     para "Let's add a few lines to our program:"
     embed_code "# Read the Metafilter feed.\n" +
-      'Web.fetch("http://xml.metafilter.com/rss.xml") do |feed|' + "\n" +
+      'url = "http://xml.metafilter.com/rss.xml"' + "\n" +
+      'Web.fetch(url) do |feed|' + "\n" +
       "  feed.items().reject!() do |item|\n" +
       "    item.description().length() > 200\n" +
       "  end\n" +
@@ -357,11 +359,11 @@ lesson_set "Hackety Hack" do
 
   page "Ahh! Complicated!" do
     para "Okay, let's step through this program.  It's quite a bit more ",
-      "complicated, isn't it?  But it's only six lines, so I think we can ",
+      "complicated, isn't it?  But it's only seven lines, so I think we can ",
       "figure it out."
 
     para "The Metafilter news gets saved in a variable called ", code("feed"),
-      ". So we can play with it.  In line 3, the ", code("reject!"),
+      ". So we can play with it.  In line 4, the ", code("reject!"),
       " command is used. This command deletes things from a list. ",
       "And the news feed contains a list of news ", code("items"),
       ". Hmmm.  How does this all fit together?"
@@ -400,7 +402,7 @@ lesson_set "Hackety Hack" do
       " Kablewy. It deletes that stuff for good. "
 
     embed_code "# Read the Metafilter feed.\n" +
-      'url = "http://xml.metafilter.com/rss.xml"'
+      'url = "http://xml.metafilter.com/rss.xml"' + "\n" +
       "Web.fetch(url) do |feed|\n" +
       "  feed.items().reject!() do |item|\n" +
       "    item.description().length() > 500\n" +
@@ -428,7 +430,7 @@ lesson_set "Hackety Hack" do
       "to more easily see what the methods are. But you can also write:"
 
     embed_code "# Read the Metafilter feed.\n" +
-      'url = "http://xml.metafilter.com/rss.xml"'
+      'url = "http://xml.metafilter.com/rss.xml"' + "\n" +
       "Web.fetch url do |feed|\n" +
       "  feed.items.reject! do |item|\n" +
       "    item.description.length > 500\n" +
@@ -573,7 +575,7 @@ lesson_set "Hackety Hack" do
       "end"
     
     para "First, we have the ", code("window"), " method, which ",
-      "is attached to a block, an iron lung that gets turned on and handed",
+      "is attached to a block, an iron lung that gets turned on and handed ",
       "a puff of air.  In the block, the ", code("stack"), " command runs ",
       "and in turn hands a puff of air to another block containing the ",
       "code that displays the title and the paragraph."
@@ -581,7 +583,7 @@ lesson_set "Hackety Hack" do
 
   page "Words in Strings" do
     para "Let's talk about the quoted phrases."
-    embed_code '"My Page"'
+    embed_code '"My Secret Agent application"'
 
     para "This is a string.  It's a short string of letters.  When you think ",
       '"string", just imagine each letter is ',
@@ -613,7 +615,7 @@ lesson_set "Hackety Hack" do
       "end"
 
     para em("Run"), " it."
-    para "Hey neat! Try writing some text and clicking on the button. Did it "
+    para "Hey neat! Try writing some text and clicking on the button. Did it ",
       "work?"
   end
 
@@ -623,14 +625,14 @@ lesson_set "Hackety Hack" do
     para  "Let's change the line defining the button, giving it a block:"
 
     embed_code '    button "Encrypt/Decript" do' + "\n" +
-      '      puts "the button got pressed!"' + "\n"
+      '      puts "the button got pressed!"' + "\n" +
       '    end'
 
     para "That tells Hackety Hack to attach the button to the ",
      "block that contains the ", code("puts")," command. Try running it again ",
      "and press the button a few times. Watch the output on the Hackety ",
      "Hack window. So what happens? Every time the button gets presset it ",
-     "gives a puff of air to the block and its code get executed"
+     "gives a puff of air to the block and its code get executed."
   end
 
   page "ROT 13" do
@@ -647,17 +649,17 @@ lesson_set "Hackety Hack" do
 
     para "The edit box is stored in a variable named ", code("box"),
       ". Its content can then be accessed with ", code("box.text"),
-      ", while content of the box is changed with ", code("box.text =")
+      ", while content of the box is changed with ", code("box.text ="), "."
 
     para "In Hackety Hack strings have the method ", code("rot13"),
-      " that can be used to encrypt and decript their content"
+      " that can be used to encrypt and decript their content."
 
     para strong("ROT 13"), ' means "rotate by 13 places" and is a simple ',
       "encription method where each letter is replaced by the letter 13 ",
       "positions beyond it in the alphabet (when your reach the Z you ",
       "to continue with the A). So A becomes N, B becomes O, and so on... ",
       "Because the letters in the English alphabet are 26 by encrypting ",
-      "again you will get the original text."
+      "again you will get the original text back."
   end
 
   page "Lesson Three is In The Bag" do
@@ -798,7 +800,7 @@ lesson_set "Hackety Hack" do
       para "Hackety Hack is based on a library called Shoes. It is Shoes ",
         "that contains methods like ", code("window"), " and ", code("button"),
         ". You can browse the Shoes help by clicking on "
-      image "#{HH::STATIC}/tab-home.png", :margin => 6
+      image "#{HH::STATIC}/tab-help.png", :margin => 6
       para ". The search option it contains is very useful."
     end
     para "Instead things like strings and arrays are built into Ruby itself. ",
