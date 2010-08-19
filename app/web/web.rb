@@ -27,6 +27,12 @@ module Hpricot
         end
       end
     end
+    def to_s
+      (self/"//*/text()").join("  ").gsub(/\n+^Z/, '')
+    end
+    def length
+      to_s.length
+    end
   end
   module Traverse
     def build_list(ary, top = ary, inside = false) end

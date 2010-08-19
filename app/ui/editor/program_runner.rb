@@ -42,11 +42,12 @@ module HH::ProgramRunner
           STDOUT.delete_event_connection @stdout_connection
         end
         para "Output:", :margin_left => 20, :stroke => green
-        @output = flow :margin => 10
+        @output = flow :mrgin => [10, 0, 10, 10] do
+          background gray(0.8)
+        end
         @stdout_connection = STDOUT.on_event :output, String do |str|
-          debug "appending"
-          @output.append do
-            para str, :font => "Liberation Mono"
+          unless str.empty?
+            @output.append { para str, :font => "Liberation Mono" }
           end
         end
       end

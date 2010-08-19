@@ -83,6 +83,16 @@ class String
 	def to_slug
 		self.gsub(/\W/, "").gsub(/\s/, "_").downcase
 	end
+
+  # rot 13 encoding
+  def rot13
+    tr("A-Za-z", "N-ZA-Mn-za-m")
+  end
+
+  # rot 13 encoding
+  def rot13!
+    tr!("A-Za-z", "N-ZA-Mn-za-m")
+  end
 end
 
 

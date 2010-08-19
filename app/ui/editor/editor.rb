@@ -162,7 +162,7 @@ class HH::SideTabs::Editor
         :margin => 0, :wrap => "trim"
       @stale = para(script[:mtime] ? "Last saved #{script[:mtime].since} ago." :
         "Not yet saved.", :margin => 0, :stroke => "#39C")
-      glossb "New Program", :top => 0, :right => 0, :width => 200 do
+      glossb "New Program", :top => 0, :right => 0, :width => 160 do
         load({})
       end
     end
