@@ -192,6 +192,7 @@ module HH
     end
 
     def save_script(name, code)
+      APP.emit :save, :name => name, :code => code
       File.open(HH::USER + "/" + name + ".rb", "w") do |f|
         f << code
       end

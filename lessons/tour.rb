@@ -62,12 +62,13 @@ lesson_set "Hackety Hack" do
     para "Now, take a moment to look at the program. See if you can figure ",
       "out how it works.  What do you suppose the ", code("ask"),
       " command does? And what is that ", code("name"), " word for?"
+    para "Now ", em("Save"), " the program.  Call it ", em("Asking"), ". "
+    next_when :save, :any
   end
 
   page "Let's Hang on to This" do
-    para "Now ", em("Save"), " the program.  Call it ", em("Asking"), ". "
     flow do
-      para "After that, click on the ", em("Home"), " icon ( "
+      para "Now click on the ", em("Home"), " icon ( "
       image "#{HH::STATIC}/tab-home.png", :margin => 6
       para ") in the tab bar."
     next_when :tab_opened, :Home
