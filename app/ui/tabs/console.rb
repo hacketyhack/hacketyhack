@@ -4,7 +4,7 @@
 require 'irb/ruby-lex'
 require 'stringio'
 
-class HH::ConsoleEnv
+class HH::ConsoleEnvironment
   def initialize
     @started = Time.new
   end
@@ -30,7 +30,7 @@ class HH::IRB < RubyLex
   def initialize
     super()
     set_input(StringIO.new)
-    @binding = HH::ConsoleEnv.new.binding
+    @binding = HH::ConsoleEnvironment.new.binding
     @history = []
     reset_history
   end

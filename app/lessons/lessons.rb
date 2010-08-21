@@ -1,3 +1,6 @@
+
+# redefines methods, like title and para, for use in the lessons
+# included in HH::LessonContainer
 module HH::LessonContainerText
   TITLES = {:font => "Lacuna Regular", :stroke => "#e06", :margin => 4}
   PARAS = {:stroke => "#eec", :size => 11, :margin_bottom => 6}
@@ -59,7 +62,6 @@ module HH::LessonContainerText
 
   include HH::Markup
   def embed_code str, opts={}
-    #str = str.gsub(/\A\n+/, '').chomp
     stack :margin_bottom => 12 do
       background "#602", :curve => 4
       para highlight(str, nil, COLORS), CODE_STYLE
@@ -82,12 +84,13 @@ end
 
 
 # the code in the +page+ blocks in the lessons is executed with +self+
-# being a LessonContainer, methods of the main app (and thus of shoes) are
-# available because missing methods get propagated there
+# being a LessonEnvironment, methods of the main app (and thus of shoes):
+# method_missing propagates all calls
 class HH::LessonContainer
   include HH::LessonContainerText
 
-  attr_accessor :container
+  # the Shoes slot that contains the lesson
+  attr_accessor :slot
 
   def initialize lesson_set
     @lesson_set = lesson_set
@@ -96,16 +99,17 @@ class HH::LessonContainer
 
   # convenience method the access the main shoes application
   def app
-    @container.app
+    @slot.app
   end
 
   def method_missing(symbol, *args, &blk)
     app.send symbol, *args, &blk
   end
 
+  # part of the lesson DSL, executes the page block
   def set_content &blk
     delete_event_connections
-    @container.clear { instance_eval &blk }
+    @slot.clear { instance_eval &blk }
   end
 
   def on_event *args, &blk
@@ -161,12 +165,13 @@ class HH::LessonSet
   end
 
   # returns only when close gets called
-  def execute_in container
-    # contrarily to what is displayed in the ui, @lesson and @page start
-    # counting from 0
+  def execute_in slot
+    # loads saved lesson and page, of 0, 0, by default
+    # differently from what is displayed in the UI,
+    # internally @lesson and @page start at 0
     @lesson = (HH::PREFS["tut_lesson_#@name"] || "0").to_i
     @page = (HH::PREFS["tut_page_#@name"] || "0").to_i
-    @container.container = container
+    @container.slot = slot
     container.extend HH::Tooltip
 
     execute_page
