@@ -37,9 +37,21 @@ module HH::App
       @program_running.clear{para txt}
     end
   end
+
+  def finalization
+    # this gets called on close
+    HH::LessonSet.close_open_lesson
+    gettab(:Editor).save_if_confirmed
+
+    HH::PREFS['width'] = width
+    HH::PREFS['height'] = height
+    HH::save_prefs
+  end
 end
 
-window :title => "Hackety Hack", :width => 790, :height => 550 do
+w = (HH::PREFS['width'] || '790').to_i
+h = (HH::PREFS['height'] || '550').to_i
+window :title => "Hackety Hack", :width => w, :height => h do
   HH::APP = self
   extend HH::App, HH::Widgets, HH::Observable
   style(Shoes::LinkHover, :fill => nil, :stroke => "#C66")
@@ -51,8 +63,7 @@ window :title => "Hackety Hack", :width => 790, :height => 550 do
   end
   @lesson_stack = stack :hidden => true, :width => 400
   @lesson_stack.finish do
-    HH::LessonSet.close_open_lesson
-    gettab(:Editor).save_if_confirmed
+    finalization
   end
 
   extend HH::HasSideTabs
