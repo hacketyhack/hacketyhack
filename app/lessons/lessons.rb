@@ -172,7 +172,7 @@ class HH::LessonSet
     @lesson = (HH::PREFS["tut_lesson_#@name"] || "0").to_i
     @page = (HH::PREFS["tut_page_#@name"] || "0").to_i
     @container.slot = slot
-    container.extend HH::Tooltip
+    slot.extend HH::Tooltip
 
     execute_page
     @@open_lesson = self
@@ -190,23 +190,29 @@ class HH::LessonSet
     lesson_set = self
     @container.set_content do
       background gray(0.1)
-      stack :margin => 10 do
+      stack :margin => 10, :height => -32, :scroll => true do
         title name
 
         lesson_i = 0
         lessons.each do |name, pages|
           lesson = lesson_i
           lesson_i += 1
-          open_lesson = proc do lesson_set.instance_eval do
-            @lesson, @page = lesson, 0
-            execute_page
-          end end
 
-          subtitle link("#{lesson_i} #{name}", :click => open_lesson,
-                                    :underline => "none", :stroke => gray(0.9))
+          subtitle "#{lesson_i} #{name}"#, :stroke => gray(0.9)
+          page_i = 0
+          pages.each do |title, _proc|
+            page = page_i
+            page_i += 1
+            open_page = proc do lesson_set.instance_eval do
+              @lesson, @page = lesson, page
+              execute_page
+            end end
+            para link("#{title}", :stroke => gray(0.9), :click => open_page),
+                                                              :margin_left => 10
+          end
         end
       end
-      flow :height => 40,  :bottom => 0, :right => 0 do
+      flow :height => 32,  :bottom => 0, :right => 0 do
         icon_button :x, :right => 10 do
           lesson_set.close_lesson
         end
@@ -290,7 +296,7 @@ class HH::LessonSet
     emit :close
   end
 
-  # called on close to save che current lesson and page
+  # called on close to save the current lesson and page
   def save_lesson
     HH::PREFS["tut_lesson_#@name"] = @lesson
     HH::PREFS["tut_page_#@name"] = @page
