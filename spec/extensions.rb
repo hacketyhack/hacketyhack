@@ -319,3 +319,102 @@ describe Time, "#full" do
     Time.local(2001, 1, 1, 0, 1, 1).full.should == "2001-01-01 00:01:01"
   end
 end
+
+describe Time, "#since" do
+  def now
+    Time.local(2010, 8, 27, 15, 28, 18)
+  end
+
+  it "should return friendly formatting for times less than a minute ago" do
+    # zero seconds
+    Time.local(2010, 8, 27, 15, 28, 18).since(now).should == "less than a minute"
+    # one second
+    Time.local(2010, 8, 27, 15, 28, 17).since(now).should == "less than a minute"
+    # 40 seconds
+    Time.local(2010, 8, 27, 15, 27, 38).since(now).should == "less than a minute"
+    # 58 seconds
+    Time.local(2010, 8, 27, 15, 27, 20).since(now).should == "1 minute"
+  end
+
+  context "with include_seconds" do
+  it "should return friendly formatting for times less than a minute ago" do
+    # zero seconds
+    Time.local(2010, 8, 27, 15, 28, 18).since(now, true).should == "less than 5 seconds"
+    # 4 second
+    Time.local(2010, 8, 27, 15, 28, 14).since(now, true).should == "less than 5 seconds"
+    # 5 second
+    Time.local(2010, 8, 27, 15, 28, 13).since(now, true).should == "less than 10 seconds"
+    # 9 second
+    Time.local(2010, 8, 27, 15, 28, 9).since(now, true).should == "less than 10 seconds"
+    # 10 second
+    Time.local(2010, 8, 27, 15, 28, 8).since(now, true).should == "less than 20 seconds"
+    # 19 second
+    Time.local(2010, 8, 27, 15, 27, 59).since(now, true).should == "less than 20 seconds"
+    # 20 second
+    Time.local(2010, 8, 27, 15, 27, 58).since(now, true).should == "half a minute"
+    # 39 seconds
+    Time.local(2010, 8, 27, 15, 27, 39).since(now, true).should == "half a minute"
+    # 40 seconds
+    Time.local(2010, 8, 27, 15, 27, 38).since(now, true).should == "less than a minute"
+    # 58 seconds
+    Time.local(2010, 8, 27, 15, 27, 20).since(now, true).should == "less than a minute"
+    # one minute
+    Time.local(2010, 8, 27, 15, 27, 18).since(now, true).should == "1 minute"
+  end
+  end
+
+  it "should return friendly formatting for times less than an hour ago" do
+    # one minute
+    Time.local(2010, 8, 27, 15, 27, 18).since(now).should == "1 minute"
+    # one minute and one second
+    Time.local(2010, 8, 27, 15, 27, 17).since(now).should == "1 minute"
+    # about 3 minutes
+    Time.local(2010, 8, 27, 15, 25, 22).since(now).should == "3 minutes"
+    Time.local(2010, 8, 27, 15, 25, 16).since(now).should == "3 minutes"
+    # about 45 minutes
+    Time.local(2010, 8, 27, 14, 43, 22).since(now).should == "45 minutes"
+    Time.local(2010, 8, 27, 14, 43, 16).since(now).should == "45 minutes"
+  end
+
+  it "should return friendly formatting for times less than a day ago" do
+    # about 46 minutes
+    Time.local(2010, 8, 27, 14, 42, 22).since(now).should == "about 1 hour"
+    Time.local(2010, 8, 27, 14, 42, 16).since(now).should == "about 1 hour"
+    # about 90 minutes
+    Time.local(2010, 8, 27, 13, 58, 22).since(now).should == "about 1 hour"
+    Time.local(2010, 8, 27, 13, 58, 16).since(now).should == "about 1 hour"
+    # about 91 minutes
+    Time.local(2010, 8, 27, 13, 57, 22).since(now).should == "about 2 hours"
+    # 24 hours
+    Time.local(2010, 8, 26, 15, 28, 18).since(now).should == "about 24 hours"
+  end
+
+  it "should return friendly formatting for times less than a year ago" do
+    # about 24 hours and one minute
+    Time.local(2010, 8, 26, 15, 27, 18).since(now).should == "1 day"
+    # about 1 day and 12 hours
+    Time.local(2010, 8, 26,  3, 28, 18).since(now).should == "1 day"
+    # almost 2 days
+    Time.local(2010, 8, 25, 15, 29, 18).since(now).should == "1 day"
+    # 2 days
+    Time.local(2010, 8, 25, 15, 28, 18).since(now).should == "2 days"
+    # 26 days
+    Time.local(2010, 8, 1, 15, 28, 18).since(now).should == "26 days"
+    # 1 day less than a day
+    Time.local(2009, 8, 28, 15, 28, 18).since(now).should == "364 days"
+  end
+
+  it "should return friendly formatting for times more than a year" do
+    Time.local(2009, 8, 27, 15, 28, 18).since(now).should == "1 years"
+    # one day less then 2 years
+    Time.local(2008, 8, 28, 15, 28, 18).since(now).should == "1 years"
+    # two years
+    Time.local(2008, 8, 27, 15, 28, 18).since(now).should == "2 years"
+  end
+
+  it "should use Time.now by default" do
+    now_time = Time.now
+    Time.local(2010, 8, 25, 15, 29, 18).since(now_time).should ==
+      Time.local(2010, 8, 25, 15, 29, 18).since
+  end
+end
