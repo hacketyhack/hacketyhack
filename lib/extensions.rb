@@ -54,7 +54,7 @@ class Object
 
   # FIXME fixes the link inherited from FileUtils, I don't know why or where
   # FileUtils is extended...
-  undef link
+  undef link if defined? link
 end
 
 
