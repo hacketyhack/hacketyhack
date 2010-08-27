@@ -109,8 +109,71 @@ describe HH::EventConnection, "#try" do
       cond = {:a => String, :b => nil, :c => /^\d$/, :wrong => Array}
       try(cond, args).should == :unsuccessful
     end
+  end
+end
 
-    
+
+
+
+describe HH::Observable, "#emit and #on_event" do
+  it "should work when there are no connections for an event" do
+    obj = Object.new
+    obj.extend HH::Observable
+    obj.emit :my_event, "arg1", :arg2
+    obj.emit :another_event, {:arg1 => "str", :arg2 => :sym}
+  end
+
+  it "should call try on all and only the correct connections" do
+    obj = Object.new
+    obj.extend HH::Observable
+
+    conn1_called = conn2_called = conn3_called = 0
+    obj.on_event :event1 do
+      conn1_called += 1
+    end
+    obj.on_event :event1, String do
+      conn2_called += 1
+    end
+    obj.on_event :event2 do
+      conne3_called += 1
+    end
+    obj.emit :event1 # conn1
+    obj.emit :event1 # conn1
+    obj.emit :event1 # conn1
+    obj.emit :event1, 123 # no connection
+    obj.emit :event1, 123 # no connection
+    obj.emit :event1, "str" # conn 2
+    conn1_called.should == 3
+    conn2_called.should == 1
+    conn3_called.should == 0
+  end
+end
+
+describe HH::Observable, "#delete_event_connection" do
+  it "should delete the event connection" do
+    obj = Object.new
+    obj.extend HH::Observable
+
+    conn1_called = conn2_called = conn3_called = 0
+    obj.on_event :event1 do
+      conn1_called += 1
+    end
+    conn2 = obj.on_event :event1, String do
+      conn2_called += 1
+    end
+    obj.on_event :event2 do
+      conne3_called += 1
+    end
+    obj.delete_event_connection conn2
+    obj.emit :event1 # conn1
+    obj.emit :event1 # conn1
+    obj.emit :event1 # conn1
+    obj.emit :event1, 123 # no connection
+    obj.emit :event1, 123 # no connection
+    obj.emit :event1, "str" # conn 2
+    conn1_called.should == 3
+    conn2_called.should == 0 # never called because deleted
+    conn3_called.should == 0
   end
 end
 
