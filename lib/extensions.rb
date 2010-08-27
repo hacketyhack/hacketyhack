@@ -64,9 +64,11 @@ end
 # Enhancements to strings.
 #
 class String
+  # checks if the string starts with the string +beginning+
   def starts?( beginning )
     self[0, beginning.length] == beginning
   end
+  # checks if the string ends with the string +ending+
   def ends?( ending )
     self[-ending.length, ending.length] == ending
   end
@@ -79,10 +81,10 @@ class String
     self.split "\n"
   end
 
-	#used to convert strings into slugs, just like the website uses.
-	def to_slug
-		self.gsub(/\W/, "").gsub(/\s/, "_").downcase
-	end
+  # used to convert strings into slugs, just like the website uses.
+  def to_slug
+    self.gsub(/\s/, "_").gsub(/\W/, "").downcase
+  end
 
   # rot 13 encoding
   def rot13
@@ -97,7 +99,7 @@ end
 
 
 #
-# = Numbers =
+# = Numbers 
 #
 # Enhancements to the basic number classes.
 #
@@ -160,7 +162,7 @@ class Time
 
       when 2..45    then "#{distance_in_minutes} minutes"
       when 46..90   then 'about 1 hour'
-      when 90..1440   then "about #{(distance_in_minutes.to_f / 60.0).round} hours"
+      when 91..1440   then "about #{(distance_in_minutes.to_f / 60.0).round} hours"
       when 1441..2880 then '1 day'
       else
         days = (distance_in_minutes / 1440).round
