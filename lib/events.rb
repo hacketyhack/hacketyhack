@@ -1,5 +1,6 @@
-class HH::EventConnection
+module HH; end
 
+class HH::EventConnection
 #  module Array
 #    def ===(other)
 #      return false unless other.is_a? ::Array
@@ -12,7 +13,8 @@ class HH::EventConnection
 #  end
 
   attr_reader :event
-  def initialize event, args_cond, blk
+  
+  def initialize event, args_cond, &blk
     @event, @args_cond, @blk = event, args_cond, blk
   end
 
@@ -22,7 +24,8 @@ class HH::EventConnection
     @blk.call *args if match? args
   end
 
-  # checks if the arguments match the conditions
+private
+  # checks if the arguments +args+ match the conditions +@args_cond+
   def match? args
     # match size
     return false if @args_cond.size != args.size
@@ -31,7 +34,6 @@ class HH::EventConnection
       return self.class.match_hash?(@args_cond[0], args[0])
     end
 
-    #debug "matching content"
     # else match each element
     (0...args.size).each do |i|
       cond = @args_cond[i]
@@ -41,7 +43,7 @@ class HH::EventConnection
   end
 
   def self.match_hash?(cond, hash)
-    #debug "matching hash #{@args_cond.inspect} vs #{hash}"
+    cond.is_a?(Hash) or raise ArgumentError
     return false unless hash.is_a?(Hash)
     cond.each do |key, cond|
       return false unless cond === hash[key]
@@ -49,10 +51,11 @@ class HH::EventConnection
     return true
   end
 
-  def observer
-    @blk.binding.eval("self")
-  end
+#  def observer
+#    @blk.binding.eval("self")
+#  end
 
+public
   def to_s
     "#<EventConnection :#{@event} #{@args_cond.inspect}] >"
   end
@@ -94,7 +97,7 @@ module HH::Observable
   def on_event event, *args_cond, &blk
     # in first call initialize @event_connections
     @event_connections = Hash.new(Set.new) if @event_connections.nil?
-    new_conn = HH::EventConnection.new(event, args_cond, blk)
+    new_conn = HH::EventConnection.new event, args_cond, &blk
     @event_connections[event] += [new_conn]
     #debug "#{new_conn} added"
     #emit :new_event_connection, new_conn

@@ -39,7 +39,7 @@ module HH::App
   end
 
   def finalization
-    # this gets called on close
+    # this method gets called on close
     HH::LessonSet.close_open_lesson
     gettab(:Editor).save_if_confirmed
 
