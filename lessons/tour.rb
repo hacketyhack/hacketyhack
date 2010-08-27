@@ -644,7 +644,8 @@ lesson_set "Hackety Hack" do
       '    box = edit_box "put your text here"' + "\n" +
       '    button "Encrypt/Decript" do' + "\n" +
       '      txt = box.text' + "\n" +
-        '    box.text = txt.rot13"' + "\n" +
+      '      box.text = txt.rot13' + "\n" +
+      "    end\n" +
       "  end\n" +
       "end"
 
