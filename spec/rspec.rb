@@ -1,3 +1,5 @@
+# a test trying to get rspec to run with Shoes
+
 Shoes.setup do
   gem 'rspec'
 end

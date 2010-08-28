@@ -418,3 +418,35 @@ describe Time, "#since" do
       Time.local(2010, 8, 25, 15, 29, 18).since
   end
 end
+
+
+describe Thread, "#new" do
+  it "should execute the block argument" do
+    block_called = false
+    t = Thread.new do
+      block_called = true
+    end
+    t.join
+    block_called.should == true
+  end
+  
+  it "should start a new thread" do
+    another_thread = false
+    topmost = Thread.current
+    t = Thread.new do
+      another_thread = true if Thread.current != topmost
+    end
+    t.join
+    another_thread.should == true
+  end
+
+  it "should pass the arguments to the block" do
+    Thread.new :arg1, 123 do |arg1, arg2|
+      arg1.should == :arg1
+      arg2.should == 123
+    end
+  end
+
+  # TODO: needs shoes
+  #it "should call error on exception"
+end
