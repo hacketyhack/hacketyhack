@@ -1,5 +1,5 @@
 # allow to track standard output
-require 'lib/events'
+require 'lib/dev/events'
 
 STDOUT.extend HH::Observable
 

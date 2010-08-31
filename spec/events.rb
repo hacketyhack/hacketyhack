@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'lib/events'
+require 'lib/dev/events'
 
 require 'spec/autorun'
 

@@ -15,7 +15,7 @@ $LOAD_PATH << HH::HOME
 
 # platform-specific directories
 case RUBY_PLATFORM when /win32/
-  require 'lib/win32'
+  require 'lib/dev/win32'
   HOME = ENV['USERPROFILE'].gsub(/\\/, '/')
   ENV['MYDOCUMENTS'] = HH.read_shell_folder('Personal')
   ENV['APPDATA'] = HH.read_shell_folder('AppData')

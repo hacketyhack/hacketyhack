@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'lib/stdout'
+require 'lib/dev/stdout'
 
 require 'spec/autorun'
 
