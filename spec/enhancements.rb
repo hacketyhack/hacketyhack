@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'lib/extensions'
+require 'lib/enhancements'
 
 require 'spec/autorun'
 

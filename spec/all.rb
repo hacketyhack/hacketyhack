@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'spec/extensions'
+require 'spec/enhancements'
 require 'spec/events'
 require 'spec/stdout'
