@@ -12,7 +12,6 @@ require 'app/lessons/lessons'
 
 require 'app/db/sequel'
 
-require 'app/ui/errors'
 require 'app/ui/widgets'
 require 'app/ui/completion'
 require 'app/ui/tabs/sidetabs'
