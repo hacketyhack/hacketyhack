@@ -797,6 +797,8 @@ lesson_set "Hackety Hack" do
       " method and its block hooked on to the ", code("books"), " array!"
   end
 
+
+
   page "More help" do
     flow do
       para "Hackety Hack is based on a library called Shoes. It is Shoes ",
@@ -809,6 +811,215 @@ lesson_set "Hackety Hack" do
       "You can easily find more information and help about Ruby by simply ",
       "searching with Google."
   end
+
+
+  lesson "Turtle"
+
+  page "Starting the Turtle" do
+    para "In Hackety Hack you can control a ", strong("turtle"),
+      " that will make nice drawings for you."
+
+    embed_code "Turtle.start do\n" +
+        "  forward\n  turnleft\n"*4 +
+      "end"
+
+    para code("Turtle.start"), " will tell the Turtle to start drawing. ",
+      "It will draw using the commands inside the block."
+
+    para "The nice thing about the Turtle is that you can make him move one ",
+      "command at a time, this way it will be more easy to understand exactly ",
+      "what happens, and to find mistakes in the code (sometimes called bugs)."
+
+    para "If you run the code, a window will open. That window is the ",
+      "playground of the turtle. There you can execute a single command at a ",
+      "time, or, if you prefer, execute the whole code ad any speed you like. ",
+      "Play a little with the buttons to understand how they work. If you ",
+      "wrote the code correctly the turtle should be drawing a square."
+  end
+
+  page "Turtle is growing" do
+    para "Think the square is too small? You might want to make it a little ",
+      "bigger:"
+
+    embed_code "Turtle.start do\n" +
+        "  forward 200\n  turnleft\n"*4 +
+      "end"
+
+    para "I'll admit: it's still not much of a drawing. But what I really ",
+      "wanted to show you is something else. To make only one change (making ",
+      "the square bigger) you had to change the code in ", em("four"),
+      " places."
+
+    para "You should never be doing repetitive things like this when using a ",
+      "computer. As a programmer you always want the computer to do the ",
+      "boring stuff for you. Computers have been ", em("made"), " to do ",
+      "boring and repetitive tasks in the place of humans."
+
+    para "Whenever you find yourself doing something boring on the computer, ",
+      "you probably are doing something wrong."
+  end
+
+
+  page "Be Lazy!" do
+    para "You could write the following instead:"
+
+    embed_code "Turtle.start do\n" +
+      "  4.times do\n" +
+      "    forward 200\n" +
+      "    turnleft\n" +
+      "  end\n" +
+      "end"
+
+    para "Looks much better right?"
+
+    para "Methods like ", code("times"), " that have a block which gets called ",
+      "multiple times are called ", strong("loops"), "."
+  end
+
+  page "Really Lazy" do
+
+    para "If you still aren't convinced, try writing the following program without a ",
+      "loop"
+
+      embed_code "Turtle.start do\n" +
+        "  36.times do\n" +
+        "    forward\n" +
+        "    turnleft 170\n" +
+        "  end\n" +
+        "end"
+
+    para "Sometimes it isn't even possible to not use a loop, here is an ",
+      "example:"
+
+    embed_code "Turtle.start do\n" +
+        "  # to_i changes to integer (a number)\n" +
+        "  n = ask(\"how many times?\").to_i\n" +
+        "  n.times do\n" +
+        "    forward\n" +
+        "    turnleft 172\n" +
+        "  end\n" +
+        "end"
+
+    para "In this case you cannot know in advance how ofter the loop wil be run."
+  end
+
+  page "What now?" do
+
+    para "Sometimes loops will not be enough to avoid code duplication. ",
+      "The following code draws two squares."
+
+    embed_code "Turtle.start do\n" +
+        "  goto 120, 120\n" +
+        "  4.times do\n" +
+        "    forward\n" +
+        "    turnleft\n" +
+        "  end\n" +
+        "  goto 480, 480\n" +
+        "  4.times do\n" +
+        "    forward\n" +
+        "    turnleft\n" +
+        "  end\n" +
+        "end"
+
+    para "We used a new method: ", code("goto"), ". With ", code("goto"),
+      " you can make the turtle go to any position you want. He will not draw ",
+      "anything while moving. The method takes two parameters, the first is ",
+      "the distance of the turtle from the left, while the second is the ",
+      "distance from the top. As an exercise try drawing the squares in the other ",
+      "two corners instead."
+  end
+
+  page "Our Newborn Method" do
+    para "There are many ways to avoid writing the same code twice. ",
+      "We will now explore just one more."
+
+    para "We need to avoid having to write the code for the square twice. ",
+      "We do this by creating a method of our own."
+
+    embed_code "def square\n" +
+        "  4.times do\n" +
+        "    forward\n" +
+        "    turnleft\n" +
+        "  end\n" +
+        "end\n" +
+        "\n" +
+        "Turtle.start do\n" +
+        "  goto 120, 120\n" +
+        "  square\n" +
+        "  goto 480, 480\n" +
+        "  square\n" +
+        "end"
+
+    para "To create a method the ", code("def"), " keyword is used. ",
+      code("def"), " means ", strong("define"), "."
+  end
+
+  page "The Method is Hungry" do
+    para "We can add a parameter to the method. ", "This means giving the ",
+      "method something to eat. This \"food\" will then be stored in a ",
+      "variable. In the example below the variable has been called ", 
+      code("size")
+
+    embed_code "def square(size)\n" +
+        "  4.times do\n" +
+        "    # the size of the square will\n" +
+        "    # depend on the parameter\n" +
+        "    forward size\n" +
+        "    turnleft\n" +
+        "  end\n" +
+        "end\n" +
+        "\n" +
+        "Turtle.start do\n" +
+        "  goto 220, 220\n" +
+        "  # big square\n" +
+        "  square(200)\n" +
+        "  goto 480, 480\n" +
+        "  # smaller square\n" +
+        "  square(100)\n" +
+        "end"
+
+    para "We now can use the same method to draw squares of different sizes. ",
+      "Unfortunately this still doesn't look too much like art. We really ",
+      "need to do something about this."
+  end
+
+  page "Cubism" do
+   embed_code "def square(size)\n" +
+        "  4.times do\n" +
+        "    forward size\n" +
+        "    turnleft\n" +
+        "  end\n" +
+        "end\n" +
+        "\n" +
+        "Turtle.start do\n" +
+        "  50.times do\n" +
+        "    goto rand(500), rand(500)\n" +
+        "    square rand(100)\n" +
+        "  end\n" +
+        "end"
+
+    para "Here we used the ", code("rand"), " method, which we haven't seen ",
+      "yet. ", code("rand"), " means ", strong("random"), ". Calling this method is like ",
+      "throwing a die. We use its parameter to tell ", code("rand"), " how ",
+      "many faces the die has. Computers start counting by 0 so if we say the ",
+      "die has 6 faces, it will be numbered from 0 to 5. Try running the ",
+      "following code in the try ruby console:"
+
+      embed_code "30.times{print rand(6)}"
+
+      next_when :try_ruby_command,
+        :code => /rand/, :answer => Numeric, :output => /[0-5]{5,}/
+  end
+
+  page "Ready to Draw" do
+    para "Okay."
+    para "You are now ready to try writing you own paintings! The ",
+      "turtle has many other methods you can use. Click here to see what else ",
+      "you can let him do."
+  end
+
+
+  lesson "The End"
 
   page "Game Over, Roll Credits" do
     para "You did so AWESOME!!"
