@@ -1,16 +1,18 @@
 lesson_set "Hackety Hack" do
   lesson "Your first program"
   page "Let's Get Going, Shall We?" do flow do
-    para "This whole dark area is the ", em("Hackety Hack Tutor"),
-          ". Okay, to take the tour click on the ", em("Next"), " button ("
+    para "Welcome to your very first lesson in hacking!"
+    para "This whole side of the screen is the ", em("Hackety Hack Tutor"),
+          ". You can move forward through the lessons by clicking the ", 
+          em("Next"), " button ("
     icon_button :arrow_right, nil do
       alert "You should click on the actual button, below! =)"
     end
-    para ")"
+    para "). Give it a shot!"
   end end
 
   page "The Tutor Controls" do
-    para "Before we get jump in, just take a minute to look at the controls in the bar below."
+    para "Before we jump right in, just take a minute to look at the controls in the bar below."
     flow do
       icon_button :arrow_left, nil
       para strong("back"), ": goes back one page"
@@ -27,23 +29,49 @@ lesson_set "Hackety Hack" do
       icon_button :x, nil
       para strong("close"), ": closes the tutor"
     end
+    para "Don't forget! Press "
+    icon_button :arrow_right, nil
+    para "to move to the next lesson. Have at it!"
   end
 
   # the flow is to have the image in the same line as the text
-  page "Coming Back to the Tutor" do flow do
-    para "Clicking the close button at the bottom will stop the tutor. ",
-      "To come back to it, no problem, just click the lightbulb ( "
+  page "Coming Back to your lesson" do flow do
+    para "Clicking the close button at the bottom will stop the lesson. ",
+      "To come back to it is easy as pie! Just click the lightbulb ( "
     image "#{HH::STATIC}/tab-tour.png", :margin => 6
-    para ") in the tabbar on your left. Then click on the Lesson Set you were ",
-      " following and you'll go back to the lesson where you left off.  ",
+    para ") in the sidebar on the far left. Then click on the Lesson Set you were ",
+      " following and you'll go back to the lesson, right where you left off!  ",
       strong("Give it a try right now")
   end end
+  
+  page "A small aside about programming" do
+    para "Let's have a small chat about programming before we write your ",
+         "first program."
+    para "When we build software, we often talk about ", em("writing"), " programs. ",
+         "This is no accident; computers speak ", em("languages"), "just like ",
+         "people do! Well, almost just like people. Computers are kind of stupid",
+         "and so their languages are much simpler than human languages. English ",
+         "is far more complicated than anything a computer can understand!"
+    para "In this tutorial, you'll be learning a computer language called ",
+          em("Ruby"), ". "
+  end
+  
+  page "A small aside about Ruby" do
+    para "Ruby was written by an upstanding guy named まつもとゆきひろ. Those of us",
+         " who don't speak Japanese call him Matz. When he was creating Ruby, ",
+         "Matz specifically wanted to make it a pleasant languages for people ",
+         "as well as for computers. I think he did a pretty solid job!"
+    para "Ruby is a very versatile language. You can make any kind of program ",
+         "that you can imagine, and several that you can't! People make lots ",
+         "of different things with it, including web sites, games, and tons of ",
+         "fun things! In fact, Hackety Hack itself is written using Ruby!"
+  end
 
   page "Your first program" do flow do
     para "Let's start with a very simple program.\n"
     para "Click on the "
     image "#{HH::STATIC}/tab-new.png", :margin => 6
-    para "icon in the tab bar on the left."
+    para "icon in the tab bar on the left to begin."
     next_when :tab_opened, :Editor
   end end
 
@@ -57,8 +85,7 @@ lesson_set "Hackety Hack" do
   end
 
   page "Okay, what happened?" do
-    para "The code you've written is for a language called ", em("Ruby"),
-      ", which is the language spoken inside Hackety Hack."
+    para "Congrats! See, that was a peice of cake!"
     para "Now, take a moment to look at the program. See if you can figure ",
       "out how it works.  What do you suppose the ", code("ask"),
       " command does? And what is that ", code("name"), " word for?"
@@ -109,6 +136,19 @@ lesson_set "Hackety Hack" do
       para strong("EXTRA CREDIT"), ": Try changing the question to something ",
         "a bit meaner. Make your program all crabby."
   end
+  
+  page "A small note about order" do
+    para "If you've paid close attention, you'll have noticed that the code ",
+         "works in order, top to bottom! It's sort of like a to-do list."
+    para "This is pretty similar to English. You have to start somewhere! ",
+         "And just like English, programming languages also have grammar and ",
+         "syntax rules that govern where commands, variables, and other things ",
+         "go. We're not going to study those rules directly, we'll just pick ",
+         "them up as we go. But if you loved English class, you could learn ",
+         "those things if you'd like."
+    para "However, we don't think about nouns and verbs when we talk in English, ",
+         "and so don't over-think it! You'll pick it up pretty easily, as we go along."
+  end
 
   page "Saying" do
     para "Now we're going to do something else with that name."
@@ -116,7 +156,7 @@ lesson_set "Hackety Hack" do
     para "Here's the new program (the first 2 lines are the same):"
     embed_code "# Asking and saying\n" +
       'name = ask("Your name please?")' + "\n" +
-      'puts("Your name is #{name.length()} letters long")'
+      'puts("Your name is #{name.length} letters long")'
 
     para "Type this one in carefully. You'll notice in the quotes that there ",
       "is a little number sign and some curly braces.  The curly braces are ",
@@ -137,7 +177,7 @@ lesson_set "Hackety Hack" do
 
     para "We'll skip explanation of the other stuff for now, but run the ",
       "program a few more times and see if you can tell for yourself:"
-    item "What does ", code('name.length()'), " do?"
+    item "What does ", code('name.length'), " do?"
     item "What's that thing surrounding it? ", code('#{....}')
   end
 
@@ -145,7 +185,7 @@ lesson_set "Hackety Hack" do
     para "Okay, again: keep the first two lines of the program and go like this:"
     embed_code "# Asking and saying\n" +
       'name = ask("Your name please?")' + "\n" +
-      "1.upto(name.length()) do |x|\n" +
+      "1.upto(name.length) do |x|\n" +
       '  puts "Your name has #{x} letters."' + "\n" +
       "end"
 
@@ -216,7 +256,7 @@ lesson_set "Hackety Hack" do
     para "That's pretty good, actually.  Take a rest, enjoy your accolades ",
       " and let your brain soak in what you've got so far."
 
-    # TODO: add an EXTRA CREDIT
+    # TODO: add an EXTRA CREDIT?
   end
 
 
@@ -224,8 +264,8 @@ lesson_set "Hackety Hack" do
 
   page "What now?" do
     para "In Lesson One, we asked some things and we said somethings.  Not bad, ",
-      "not bad.  But not incredibly useful, you know?  How about let's make ",
-      "the computer do something?"
+      "not bad.  But not incredibly useful, you know?  How about this: let's",
+      " make the computer do something."
 
     para "Specifically: let's get outdoors and start writing code that can ",
       "connect to the Web."
@@ -271,12 +311,13 @@ lesson_set "Hackety Hack" do
   end
 
   page "Your Hacks Folder"  do
-    # TODO: I don't think extensions are displayed on windows..
     para "You should see a group of files ending in .rb, as well as a folder ",
       "marked ", strong("Downloads"), ". Aha! Each of the .rb files is one of ",
       "your programs. These are genuine Ruby programs you can pass around to ",
       "other Hackety Hackers.  If a friend gives you a script, you can copy ",
       "it into this folder and it will appear in Hackety Hack!"
+    para "A small note! Sometimes, the .rb isn't displayed. This depends on ",
+         "the settings on your specific computer!"
 
     para "Now, check the ", strong("Downloads"), " folder.  Well, well, well. "
     "Fancy that. "
@@ -491,7 +532,7 @@ lesson_set "Hackety Hack" do
       "blogs, not bad."
 
     para "But this lesson's going to hopscotch all that other stuff.  In this ",
-      "lesson, you'll learn to create a program that let you encript and ",
+      "lesson, you'll learn to create a program that let you encrypt and ",
       "decrypt messages!! ",
       "And we'll start to figure out what all the little pieces are: ",
       "strings, numbers, blocks.  Stuff like that."
@@ -900,7 +941,7 @@ lesson_set "Hackety Hack" do
         "  end\n" +
         "end"
 
-    para "In this case you cannot know in advance how ofter the loop wil be run."
+    para "In this case you cannot know in advance how many times the loop will be run."
   end
 
   page "What now?" do
@@ -1027,6 +1068,6 @@ lesson_set "Hackety Hack" do
     para "So, where to now?  Well, you might try to go to the Hackety Hack ",
       "website, or look at the samples displayed in the home tab. Or just ",
       "try experimenting.  You've got help pages.  And you know where the ",
-      "cheat sheet is.  Hack away."
+      "cheat sheet is.  Hack away!"
   end
 end
