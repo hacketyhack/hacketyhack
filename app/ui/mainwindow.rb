@@ -101,8 +101,8 @@ window :title => "Hackety Hack", :width => w, :height => h do
   
   opentab :Home
 
-#  # splash screen
-#  stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
-#    splash
-#  end
+  # splash screen
+  stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
+    splash
+  end
 end
