@@ -48,8 +48,8 @@ lesson_set "Hackety Hack" do
     para "Let's have a small chat about programming before we write your ",
          "first program."
     para "When we build software, we often talk about ", em("writing"), " programs. ",
-         "This is no accident; computers speak ", em("languages"), "just like ",
-         "people do! Well, almost just like people. Computers are kind of stupid",
+         "This is no accident; computers speak ", em("languages"), " just like ",
+         "people do! Well, almost just like people. Computers are kind of stupid ",
          "and so their languages are much simpler than human languages. English ",
          "is far more complicated than anything a computer can understand!"
     para "In this tutorial, you'll be learning a computer language called ",
@@ -57,8 +57,7 @@ lesson_set "Hackety Hack" do
   end
   
   page "A small aside about Ruby" do
-    para "Ruby was written by an upstanding guy named まつもとゆきひろ. Those of us",
-         " who don't speak Japanese call him Matz. When he was creating Ruby, ",
+    para "Ruby was written by an upstanding guy named Matz. When he was creating Ruby, ",
          "Matz specifically wanted to make it a pleasant languages for people ",
          "as well as for computers. I think he did a pretty solid job!"
     para "Ruby is a very versatile language. You can make any kind of program ",
@@ -104,8 +103,7 @@ lesson_set "Hackety Hack" do
 
   page "Your Saved Programs" do
     para "Notice that the program is listed under ", em("Programs"),
-      " You should see the name ", em("Asking"), " and, underneath it, ",
-      "the short description ", em("Asking and saying"), ". Well done!"
+      " You should see the name ", em("Asking"), ". Well done!"
   end
 
   page "A Note About Saving" do
@@ -113,8 +111,7 @@ lesson_set "Hackety Hack" do
       "Comments start with the number sign.  That criss-cross ",
       "chex mix thing.  Comments are ignored by Ruby."
     para "However, Hackety Hack will check the beginning of your program for a",
-      " comment.  If one is found, it will be used as the description. ",
-      strong("Thank you so much Hackety Hack!!")
+      " comment.  If one is found, it will be used as the description. "
   end
 
   page "How Asking Works" do
@@ -156,7 +153,7 @@ lesson_set "Hackety Hack" do
     para "Here's the new program (the first 2 lines are the same):"
     embed_code "# Asking and saying\n" +
       'name = ask("Your name please?")' + "\n" +
-      'puts("Your name is #{name.length} letters long")'
+      'puts("Your name is #{name.length()} letters long")'
 
     para "Type this one in carefully. You'll notice in the quotes that there ",
       "is a little number sign and some curly braces.  The curly braces are ",
@@ -177,7 +174,7 @@ lesson_set "Hackety Hack" do
 
     para "We'll skip explanation of the other stuff for now, but run the ",
       "program a few more times and see if you can tell for yourself:"
-    item "What does ", code('name.length'), " do?"
+    item "What does ", code('name.length()'), " do?"
     item "What's that thing surrounding it? ", code('#{....}')
   end
 
@@ -185,7 +182,7 @@ lesson_set "Hackety Hack" do
     para "Okay, again: keep the first two lines of the program and go like this:"
     embed_code "# Asking and saying\n" +
       'name = ask("Your name please?")' + "\n" +
-      "1.upto(name.length) do |x|\n" +
+      "1.upto(name.length()) do |x|\n" +
       '  puts "Your name has #{x} letters."' + "\n" +
       "end"
 
@@ -232,7 +229,7 @@ lesson_set "Hackety Hack" do
   end
 
   page "What Went Wrong?" do
-    para "Info about error messages can be show by pressing ", em("Shift+/"),
+    para "Info about error messages can be show by pressing ", em("Shift + /"),
       ". So if you think or know something went wrong, like now, ",
       "you can give it a try."
   end
@@ -518,7 +515,7 @@ lesson_set "Hackety Hack" do
     item "Web feeds are just ", strong("a list of items"), "."
     item "A list is also called ", strong("an Array"), "."
 
-    para "Very, very good.  I do say.  Take a break, eat a gigantic Dagwood "
+    para "Very, very good.  I do say.  Take a break, eat a gigantic Dagwood ",
       "sandwich, and please return when you are duly refreshed."
   end
 
@@ -652,7 +649,7 @@ lesson_set "Hackety Hack" do
       "  stack do\n" +
       '    title "Cypher"' + "\n" +
       '    edit_box "put your text here"' + "\n" +
-      '    button "Encrypt/Decript"' + "\n" +
+      '    button "Encrypt/Decrypt"' + "\n" +
       "  end\n" +
       "end"
 
@@ -712,7 +709,7 @@ lesson_set "Hackety Hack" do
     item "You used ", strong(code("window")), " to make a little application ",
       "with its own window."
     item "Methods like ", code("edit_box"), " and ", code("button"),
-      "were used to add content to the window."
+      " were used to add content to the window."
     item strong("Strings"), " are letters inside quotes.  (Clipped to a ",
       "clothesline.)"
     item strong("Blocks"), " are like lungs, they can get one or more puffs ",
@@ -1055,8 +1052,7 @@ lesson_set "Hackety Hack" do
   page "Ready to Draw" do
     para "Okay."
     para "You are now ready to try writing you own paintings! The ",
-      "turtle has many other methods you can use. Click here to see what else ",
-      "you can let him do."
+      "turtle has many other methods you can use."
   end
 
 
