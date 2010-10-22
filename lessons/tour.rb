@@ -692,14 +692,14 @@ lesson_set "Hackety Hack" do
       ", while content of the box is changed with ", code("box.text ="), "."
 
     para "In Hackety Hack strings have the method ", code("rot13"),
-      " that can be used to encrypt and decript their content."
+      " that can be used to encrypt and decrypt their content."
 
     para strong("ROT 13"), ' means "rotate by 13 places" and is a simple ',
-      "encription method where each letter is replaced by the letter 13 ",
-      "positions beyond it in the alphabet (when your reach the Z you ",
+      "encryption method where each letter is replaced by the letter 13 ",
+      "positions beyond it in the alphabet (when you reach the Z you ",
       "to continue with the A). So A becomes N, B becomes O, and so on... ",
-      "Because the letters in the English alphabet are 26 by encrypting ",
-      "again you will get the original text back."
+      "Because there are 26 letters in the English language, you'll ",
+      "get the original text back."
   end
 
   page "Lesson Three is In The Bag" do
