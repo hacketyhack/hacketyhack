@@ -194,7 +194,7 @@ lesson_set "Hackety Hack" do
   end
 
   page "upto" do
-    para "Just like ", code("ask"), " and ", code("say"), " are commands, so also ",
+    para "Just like ", code("ask"), " and ", code("puts"), " are commands, so also ",
       "is ", code("upto"), " a command. But why does it have a dot before it?  ",
       "Why is it attached to the number 1?"
 
@@ -229,8 +229,8 @@ lesson_set "Hackety Hack" do
   end
 
   page "What Went Wrong?" do
-    para "Info about error messages can be show by pressing ", em("Shift + /"),
-      ". So if you think or know something went wrong, like now, ",
+    para "Info about error messages can be shown by pressing ", em("Shift + /"),
+      " (on some keyboards try ", em("Alt + /"), "). So if you think or know something went wrong, like now, ",
       "you can give it a try."
   end
 
@@ -247,8 +247,7 @@ lesson_set "Hackety Hack" do
     item "Commands are owned by the thing on the left-side of the dot."
     item "Commands eat useful things in ", strong("parentheses"),
       ", as if they were biscuits."
-    item "The commands ", code("ask"), ", ", code("say"), ", ", code("sleep"),
-      " and ", code("upto"), " were explored a bit."
+    item "The commands ", code("ask"), ", ", code("puts"), " and ", code("upto"), " were explored a bit."
 
     para "That's pretty good, actually.  Take a rest, enjoy your accolades ",
       " and let your brain soak in what you've got so far."
@@ -260,7 +259,7 @@ lesson_set "Hackety Hack" do
   lesson "Getting Outdoors"
 
   page "What now?" do
-    para "In Lesson One, we asked some things and we said somethings.  Not bad, ",
+    para "In Lesson One, we asked some things and we said some things.  Not bad, ",
       "not bad.  But not incredibly useful, you know?  How about this: let's",
       " make the computer do something."
 
@@ -341,7 +340,7 @@ lesson_set "Hackety Hack" do
     para strong("EXTRA CREDIT"), ": Hackety Hack comes with a command ",
       code("ask_save_file()"), " which is a special kind of ", code("ask"),
       ". See if you can change the third line of your program to use this ",
-      "command."
+      "command (TIP: a command can have no arguments)."
   end
 
   page "Fetching (Not Saving!)" do
@@ -390,7 +389,7 @@ lesson_set "Hackety Hack" do
       'url = "http://xml.metafilter.com/rss.xml"' + "\n" +
       'Web.fetch(url) do |feed|' + "\n" +
       "  feed.items().reject!() do |item|\n" +
-      "    item.description().length() > 200\n" +
+      "    item.description().length() > 500\n" +
       "  end\n" +
       "  puts( feed.items() )\n" +
       "end"
