@@ -262,6 +262,8 @@ class HH::SideTabs::Editor
     def onkey(k)
       case k when :shift_home, :shift_end, :shift_up, :shift_left, :shift_down, :shift_right
         @t.marker = @t.cursor unless @t.marker
+      when :home, :end, :up, :left, :down, :right
+        @t.marker = nil
       end
 
       case k
