@@ -162,7 +162,6 @@ class HH::SideTabs::Home < HH::SideTab
         end
       end
       stack do
-        background rgb(233, 239, 224)..rgb(233, 239, 224, 0.85)
         @homepane = stack do
           home_scripts
         end
