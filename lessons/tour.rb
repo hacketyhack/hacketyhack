@@ -165,7 +165,7 @@ lesson_set "Hackety Hack" do
 
   page "What's it Good For?" do
     para "The ", code("puts"), " command is nice, because you can tell the ",
-      "person at the computer what's going on or just tell him somehting. ",
+      "person at the computer what's going on or just tell him something. ",
       "You can ",
       "say ", strong("sending e-mail"), " or ", strong("downloading mp3"),
       " or ", strong("just crunching away..."), " depending on what your ",
@@ -437,7 +437,7 @@ lesson_set "Hackety Hack" do
       "things, we can start treating it like one.  The ", code("reject!"),
       " method will delete stuff from the list that we don't want. ",
       "It has an exclamation point ", strong("because it's dangerous!!"),
-      " Kablewy. It deletes that stuff for good. "
+      " Kablooey. It deletes that stuff for good. "
 
     embed_code "# Read the Metafilter feed.\n" +
       'url = "http://xml.metafilter.com/rss.xml"' + "\n" +
@@ -528,7 +528,7 @@ lesson_set "Hackety Hack" do
       "blogs, not bad."
 
     para "But this lesson's going to hopscotch all that other stuff.  In this ",
-      "lesson, you'll learn to create a program that let you encrypt and ",
+      "lesson, you'll learn to create a program that lets you encrypt and ",
       "decrypt messages!! ",
       "And we'll start to figure out what all the little pieces are: ",
       "strings, numbers, blocks.  Stuff like that."
@@ -662,14 +662,14 @@ lesson_set "Hackety Hack" do
 
     para  "Let's change the line defining the button, giving it a block:"
 
-    embed_code '    button "Encrypt/Decript" do' + "\n" +
+    embed_code '    button "Encrypt/Decrypt" do' + "\n" +
       '      puts "the button got pressed!"' + "\n" +
       '    end'
 
     para "That tells Hackety Hack to attach the button to the ",
      "block that contains the ", code("puts")," command. Try running it again ",
      "and press the button a few times. Watch the output on the Hackety ",
-     "Hack window. So what happens? Every time the button gets presset it ",
+     "Hack window. So what happens? Every time the button gets pressed it ",
      "gives a puff of air to the block and its code get executed."
   end
 
@@ -679,7 +679,7 @@ lesson_set "Hackety Hack" do
       "  stack do\n" +
       '    title "Cypher"' + "\n" +
       '    box = edit_box "put your text here"' + "\n" +
-      '    button "Encrypt/Decript" do' + "\n" +
+      '    button "Encrypt/Decrypt" do' + "\n" +
       '      txt = box.text' + "\n" +
       '      box.text = txt.rot13' + "\n" +
       "    end\n" +
