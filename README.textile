@@ -93,3 +93,42 @@ h2. Acknowledgements
 * Fela Winkelmolen, for devoting an entire summer to get Hackety to v1.0!
 
 * Everybody who's been putting hard work into Shoes. You guys are awesome.
+
+Hackety Hack
+============
+
+* Go through the whole thing
+* Look for issues
+* Log them
+* See if can fix any of them
+* Play with shoes
+
+Hackety Hack Problems:
+
+* Mac
+  
+* Windows
+* Linux
+* All
+  - lesson 1.13 Counting
+    - the example here is a little dumb
+      - "your name has #{x} letters"
+  - lesson 2.2, 2.3 etc.
+    - saving the files to .hacketyhack sucks on a mac
+      - how does a newbie find that?
+    - I understand you are trying to show the kids how that works, but maybe that's a different thing?
+    - maybe ask_save_file is the thing to do here
+  - some kind of weird highlighting/select that I can't get rid of
+
+
+* Shoes
+
+Hackety Hack Suggestions:
+-------------------------
+
+* Can the displayed program not go over the black area, so you can read the lesson as the program runs?
+
+* Can we copy from the lesson?  eg. 2.3 Running the Program, being able to copy the url would be nice.
+
+
+
