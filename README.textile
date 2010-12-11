@@ -93,3 +93,4 @@ h2. Acknowledgements
 * Fela Winkelmolen, for devoting an entire summer to get Hackety to v1.0!
 
 * Everybody who's been putting hard work into Shoes. You guys are awesome.
+
