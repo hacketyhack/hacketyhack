@@ -292,6 +292,10 @@ class HH::SideTabs::Console < HH::SideTab
       when :alt_v
         @cmd += self.clipboard
       end
+      # this is a horrible, dirty hack to get rid of the @#$% ghosting in Vista
+      # not sure why it works, please feel free to fix it
+      @say.show
+      # hack ends
       @console.replace *(@str + syntax(@cmd, true))
       @scroll.scroll_top = @scroll.scroll_max
     end
