@@ -14,7 +14,7 @@ HH::LESSONS = HH::HOME + "/lessons"
 $LOAD_PATH << HH::HOME
 
 # platform-specific directories
-case RUBY_PLATFORM when /win32/
+case RUBY_PLATFORM when /win32/, /i386-mingw32/
   require 'lib/dev/win32'
   HOME = ENV['USERPROFILE'].gsub(/\\/, '/')
   ENV['MYDOCUMENTS'] = HH.read_shell_folder('Personal')
