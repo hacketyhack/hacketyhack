@@ -1,10 +1,5 @@
 # the code editor tab contents
 
-require 'app/ui/editor/artist'
-require 'app/ui/editor/dingbattery'
-require 'app/ui/editor/foley'
-require 'app/ui/editor/program_runner'
-
 class HH::SideTabs::Editor < HH::SideTab
   # common code between InsertionAction and DeletionAction
   # on_insert_text and on_delete_text should be called before any subclass
@@ -113,10 +108,6 @@ end # module HH::Editor
 
 class HH::SideTabs::Editor
   include HH::Markup
-  include HH::Artist
-  include HH::Dingbat
-  include HH::Foley
-  include HH::ProgramRunner
   include UndoRedo
 
   def content
@@ -190,13 +181,6 @@ class HH::SideTabs::Editor
             end
           end
         end
-        @compl = stack :top => -100, :left => 0, :width => 20, :height => 20, :hidden => true do
-          background white(0.8), :curve => 4
-          image "#{HH::STATIC}/icon-art.png", :margin => 2 do
-            artist { |code| onkey(code) }
-            @compl.hide
-          end
-        end
         motion do |x, y|
           c = @t.hit_sloppy(x, y)
           if c
@@ -249,7 +233,7 @@ class HH::SideTabs::Editor
 					alert("Uploaded!")
 				end
       glossb "Run", :width => 52, :top => 2, :left => 130 do
-        run_program(@str)
+        eval(@str, HH.anonymous_binding)
       end
     end
 
@@ -290,16 +274,7 @@ class HH::SideTabs::Editor
         sel[1] = 1 if sel[1] == 0
         handle_text_deletion(*sel)
       when :tab
-        case @compmode
-        when :art
-          artist { |code| onkey(code) }
-        when :dingbat
-          dingbattery { |code| onkey(code) }
-        when :sound
-          foley { |code| onkey(code) }
-        else
-          handle_text_insertion("  ")
-        end
+        handle_text_insertion("  ")
 #      when :alt_q
 #        @action.clear { home }
       when :control_a, :alt_a
@@ -375,36 +350,7 @@ class HH::SideTabs::Editor
       elsif @t.cursor_top + 92 > @scroll.scroll_top + @scroll.height
         @scroll.scroll_top = (@t.cursor_top + 92) - @scroll.height
       end
-      compmode = nil
-      case k when "t"
-        if @str[@t.cursor - 3, 3] == "art"
-          if @t.cursor == 3 || spaces.include?(@str[@t.cursor - 4])
-            compmode = :art
-          end
-        elsif @str[@t.cursor - 7, 7] == "dingbat"
-          if @t.cursor == 7 || spaces.include?(@str[@t.cursor - 8])
-            compmode = :dingbat
-          end
-        end
-      when "d"
-        if @str[@t.cursor - 5, 5] == "sound"
-          if @t.cursor == 5 || spaces.include?(@str[@t.cursor - 6])
-            compmode = :sound
-          end
-        end
-      end
 
-      if @compmode != compmode
-        if compmode
-          @compl.top = @t.cursor_top
-          @compl.left = @t.cursor_left
-          @compl.contents[1].path = "#{HH::STATIC}/icon-#{compmode}.png"
-          @compl.show
-        else
-          @compl.hide
-        end
-        @compmode = compmode
-      end
     end
 
     # for samples do not allow to upload to cloud when just opened
