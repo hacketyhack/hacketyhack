@@ -39,8 +39,6 @@ class HH::SideTabs::Prefs < HH::SideTab
         :stroke => "#377"
       if user
         para "Hello, #{user}! ",
-          link("Click here") { @prefpane.toggle },
-          " to alter your settings.", :size => 10
       else
         para "Let's set up Hackety Hack to use on the Internet okay? ",
           "Be sure you have an account from ",
@@ -48,7 +46,7 @@ class HH::SideTabs::Prefs < HH::SideTab
       end
 
       @prefpane =
-      stack :hidden => !user.blank? do
+      stack do
         stack :margin => 20, :width => 400 do
           para "Your username", :size => 10, :margin => 2, :stroke => "#352"
           @user = edit_line user, :width => 1.0
@@ -60,7 +58,7 @@ class HH::SideTabs::Prefs < HH::SideTab
             HH::PREFS['username'] = @user.text
             HH::PREFS['password'] = @pass.text
             HH.save_prefs
-            reset
+            alert("Saved, thanks!")
           end
         end
       end
