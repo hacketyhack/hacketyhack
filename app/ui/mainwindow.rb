@@ -71,7 +71,6 @@ window :title => "Hackety Hack", :width => w, :height => h do
   
   addtab :Home, :icon => "tab-home.png"
   addtab :Editor, :icon => "tab-new.png"
-  addtab :Console, :hover => "Try Ruby", :icon => "tab-try.png"
   addtab :Lessons, :icon => "tab-tour.png"
   addtab :Help, :icon => "tab-help.png" do
     Shoes.show_manual

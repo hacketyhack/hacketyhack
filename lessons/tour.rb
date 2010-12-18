@@ -744,17 +744,6 @@ lesson_set "Hackety Hack" do
       "programs in the main window."
   end
 
-  page "Try Ruby" do
-    flow do
-      para "When you want to try out some code, just to see what happens, ",
-        "and you don't need to save anything, you can use the ",
-        strong("Try Ruby"), " tab. To open it click on the "
-      image "#{HH::STATIC}/tab-try.png", :margin => 6
-      para "icon."
-    end
-    next_when :tab_opened, :Console
-  end
-
   page "Numbers" do
     para "Let's read the second box on the Cheat Sheet, which talks about ",
       "Numbers. ", em("Any Series of Digits.")
@@ -771,11 +760,10 @@ lesson_set "Hackety Hack" do
       "a block."
 
     para "In the main window, start a new program.  Let's get multiplication ",
-      "working.  Type in the following into the Try Ruby box: "
+      "working.  Type in the following: "
 
     embed_code "days = years * 365"
 
-    next_when :try_ruby_command_error, :error => NameError
   end
 
   page "Days and Years" do
@@ -787,9 +775,6 @@ lesson_set "Hackety Hack" do
 
     para "Any luck?"
     
-    on_event :try_ruby_command, :code => /=/, :answer => Numeric do
-      next_when :try_ruby_command, :code => /puts/, :answer => nil
-    end
   end
 
   page "On to the Times" do
@@ -797,8 +782,6 @@ lesson_set "Hackety Hack" do
 
     embed_code '5.times { puts "Odelay!" }'
 
-    next_when :try_ruby_command,
-      :code => /\.times/, :output => /.+/, :answer => (2..20)
   end
 
   page "Numbers are done" do
@@ -818,10 +801,6 @@ lesson_set "Hackety Hack" do
 
     para "Then ", code("puts"),  " the variable you're storing the Array in!"
 
-    on_event :try_ruby_command, :code => /=/, :answer => Array do
-      next_when :try_ruby_command, 
-        :code => /puts/, :answer => nil, :output => /./
-    end
   end
 
   page "Briefly, More Arrays" do
@@ -1040,12 +1019,10 @@ lesson_set "Hackety Hack" do
       "throwing a die. We use its parameter to tell ", code("rand"), " how ",
       "many faces the die has. Computers start counting by 0 so if we say the ",
       "die has 6 faces, it will be numbered from 0 to 5. Try running the ",
-      "following code in the try ruby console:"
+      "following code:"
 
       embed_code "30.times{print rand(6)}"
 
-      next_when :try_ruby_command,
-        :code => /rand/, :answer => Numeric, :output => /[0-5]{5,}/
   end
 
   page "Ready to Draw" do
