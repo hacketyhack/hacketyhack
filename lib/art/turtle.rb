@@ -221,8 +221,6 @@ private
         method = m
       end
     end
-    #puts '-----------------------------'
-    #puts bt
     @next_command.replace(method)
   end
 

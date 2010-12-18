@@ -23,7 +23,6 @@ module HH::InputCompletor
   ]
 
   def self.complete input, bind
-    #      puts "input: #{input}"
     case input
     when /^(\/[^\/]*\/)\.([^.]*)$/
       # Regexp

@@ -19,7 +19,6 @@ end
 #      style[:cap].should == nil
 #      style[:strokewidth].should == 1.0
 #    end
-#    puts "ended"
 #  end
 #end
 

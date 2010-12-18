@@ -22,7 +22,7 @@ module HH::Sequel
     def select(*args); dataset.select(*args); end
 
     # Returns a new dataset with the from parameter set. For example,
-    #   db[:posts].each {|p| puts p[:title]}
+    #   db[:posts].each {|p| alert p[:title]}
     def [](table)
       dataset.from(table)
     end

@@ -1,38 +1,14 @@
 # Extensions to existing classes
 
-
-
-#
-# = Kernel =
-#
-# Additional Kernel methods.
-#
-#module Kernel
-#  alias :puts :debug
-#end
 module Kernel
   def say arg
     HH::APP.say arg
   end
-
-#  # workaround for alert not working correctly in threads
-#  # see issue 39 of Shoes: http://github.com/shoes/shoes/issues#issue/39
-#  alias alert_orig alert
-#  def alert *args, &blk
-#    HH::APP.timer(0.01) do
-#      alert_orig *args, &blk
-#    end
-#  end
 end
 
 
-#
-# = Object =
-#
-# enhancements to the Object class
-#
 class Object
-  # rails like blank?
+  # rails-like blank? method
   def blank?
     if respond_to? :empty?
       empty?
@@ -41,11 +17,6 @@ class Object
     else
       !self
     end
-  end
-
-  def tap
-    yield self
-    self
   end
 
   def try(method, *args)
@@ -57,12 +28,6 @@ class Object
   undef link if defined? link
 end
 
-
-#
-# = String =
-#
-# Enhancements to strings.
-#
 class String
   # checks if the string starts with the string +beginning+
   def starts?( beginning )
@@ -177,12 +142,6 @@ class Time
   end
 end
 
-
-#
-# = Thread =
-#
-# Handle exceptions in threads the shoes way.
-#
 require 'thread'
 class Thread
   alias initialize_orig initialize

@@ -40,7 +40,7 @@ module HH::App
 
   def finalization
     # this method gets called on close
-    HH::LessonSet.close_open_lesson
+    HH::LessonSet.close_lesson
     gettab(:Editor).save_if_confirmed
 
     HH::PREFS['width'] = width

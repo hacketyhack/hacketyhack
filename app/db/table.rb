@@ -51,10 +51,8 @@ module HH::DbMixin
     end
     if obj['id']
       from(table).only(obj['id']).update(obj.merge(:updated => Time.now))
-      puts "Updated entry in the #{table} table"
     else
       from(table).insert(obj.merge(:created => Time.now, :updated => Time.now))
-      puts "Saved new entry to the #{table} table"
     end
   end
   def init
