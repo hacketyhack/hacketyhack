@@ -2,8 +2,8 @@
 # the current directory in set to HH::USER (~/.hacketyhack on unix systems)
 # (HH::APP is initialized in h-ety-h.rb instead)
 
-HH::NET = "hacketyhack.heroku.com"
-HH::REST = "http://hacketyhack.heroku.com"
+HH::NET = "hackety-hack.com"
+HH::REST = "http://hackety-hack.com"
 #for easy switching when developing
 #HH::NET = "localhost:3000"
 #HH::REST = "http://localhost:3000"
