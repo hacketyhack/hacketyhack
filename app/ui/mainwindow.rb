@@ -7,10 +7,10 @@ module HH::App
   # returns only once the lesson gets closed
   include HH::Markup
   def start_lessons name, blk
-      @main_content.style(:width => -400)
-      @lesson_stack.show
-      l = HH::LessonSet.new(name, blk).execute_in @lesson_stack
-      l.on_event :close do hide_lesson end
+    @main_content.style(:width => -400)
+    @lesson_stack.show
+    l = HH::LessonSet.new(name, blk).execute_in @lesson_stack
+    l.on_event :close do hide_lesson end
   end
 
   def hide_lesson
@@ -97,11 +97,34 @@ window :title => "Hackety Hack", :width => w, :height => h do
   end
   addtab :Prefs, :hover => "Preferences", :icon => "tab-properties.png",
     :position => :bottom
-  
   opentab :Home
+
+  @tour_notice =
+  stack :top => 46, :left => 22, :width => 250, :height => 54, :hidden => true do
+    fill black(0.6)
+    nostroke
+    shape 0, 20 do
+      line_to 23.6, 0
+      line_to 23.6, 10
+      line_to 0, 0
+    end
+    background black(0.6), :curve => 6, :left => 24, :width => 215
+    para "Check out the Hackety Hack Tour to get started!",
+      :stroke => "#FFF", :margin => 6, :size => 11, :margin_left => 22,
+      :align => "center"
+  end
+
 
   # splash screen
   stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
     splash
+    if HH::PREFS['first_run'].nil?
+      @tour_notice.toggle
+      @tour_notice.click { @tour_notice.hide }
+      HH::PREFS['first_run'] = true
+      HH::save_prefs
+    end
   end
+
+  
 end
