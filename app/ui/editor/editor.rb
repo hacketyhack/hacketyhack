@@ -187,7 +187,7 @@ class HH::SideTabs::Editor
             if self.cursor == :arrow
               self.cursor = :text
             end
-            if self.mouse[0] == 1
+            if self.mouse[0] == 1 and @clicked
               if @t.marker.nil?
                 @t.marker = c
               else
@@ -198,9 +198,13 @@ class HH::SideTabs::Editor
             self.cursor = :arrow
           end
         end
+        release do
+          @clicked = false
+        end
         click do |_, x, y|
           c = @t.hit_sloppy(x, y)
           if c
+            @clicked = true
             @t.marker = nil
             @t.cursor = c
           end
@@ -226,12 +230,12 @@ class HH::SideTabs::Editor
             end
           end
         end
-			@save_to_cloud_button =
+      @save_to_cloud_button =
         glossb "Upload", :width => 70, :top => 2, :left => 0 do
-					hacker = Hacker.new :username => HH::PREFS['username'], :password => HH::PREFS['password']
-					hacker.save_program_to_the_cloud script[:name].to_slug, @str
-					alert("Uploaded!")
-				end
+          hacker = Hacker.new :username => HH::PREFS['username'], :password => HH::PREFS['password']
+          hacker.save_program_to_the_cloud script[:name].to_slug, @str
+          alert("Uploaded!")
+        end
       glossb "Run", :width => 52, :top => 2, :left => 130 do
         eval(@str, HH.anonymous_binding)
       end
