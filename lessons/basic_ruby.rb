@@ -1,4 +1,4 @@
-lesson_set "Beginning programming" do
+lesson_set "Basic Ruby" do
 
   lesson "Hello there!"
   page "Temp" do
