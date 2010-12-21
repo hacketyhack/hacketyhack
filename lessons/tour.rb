@@ -1,7 +1,8 @@
 lesson_set "Hackety Hack Tour" do
   lesson "Welcome!"
-  page "Why hello there!" do flow do #the flow is needed for the right layout!
-    para "Welcome to your very first lesson in hacking!"
+  page "Why hello there!" do 
+    para "Welcome to the Hackety Hack tour!"
+    flow do
     para "This whole side of the screen is the ", em("Hackety Hack Tutor"),
           ". You can move forward through the lessons by clicking the ", 
           em("Next"), " button("
