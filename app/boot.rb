@@ -13,7 +13,6 @@ def HH.anonymous_binding
 end
 
 require 'lib/all'
-require 'app/web/all'
 require 'app/syntax/markup'
 
 require 'app/db/sequel'
