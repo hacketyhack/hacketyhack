@@ -19,7 +19,7 @@ class HH::SideTabs::Lessons < HH::SideTab
       title "Lessons"
       @@lessons = []
       Dir["#{HH::LESSONS}/*.rb"].each { |f| load f }
-      @@lessons.each do |name, blk|
+      @@lessons.sort{|a, b| a[0] <=> b[0]}.each do |name, blk|
         stack do
           britelink "icon-file.png", name do
             HH::APP.start_lessons name, blk

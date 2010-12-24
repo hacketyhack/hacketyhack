@@ -1,4 +1,4 @@
-lesson_set "A Tour of Hackety Hack" do
+lesson_set "1: A Tour of Hackety Hack" do
   lesson "Welcome!"
   page "Why hello there!" do 
     para "Welcome to the Hackety Hack tour!"
