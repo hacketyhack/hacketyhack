@@ -83,8 +83,8 @@ window :title => "Hackety Hack", :width => w, :height => h do
   addtab :About, :icon => "tab-hand.png" do
     about = app.slot.stack :top => 0, :left => 0,
                            :width => 1.0, :height => 1.0 do
-      background black(0.8)
-      image("#{HH::STATIC}/hhabout.png", :top => 120, :left => 0.2).
+      background white
+      image("#{HH::STATIC}/hhabout.png", :top => 30, :left => 100).
         click { about.remove }
       glossb "OK", :top => 500, :left => 0.45, :width => 70, :color => "dark" do
         about.remove

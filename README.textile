@@ -4,11 +4,9 @@ h1. Hackety Hack (for Mac OS X, Windows, and Linux)
  with helpful coding tools and built-in messaging (so you can
  pass scripts to friends easily.)
 
-h2. We're Currently Backstage
+h2. This is 1.0!
 
-Hackety Hack is currently at version 0.9, which means that it's not 100% ready for the general public yet. It's very useable, just don't get frustrated if some things don't work! We're working really hard on getting ready for version 1.0, which will have all the kinks worked out.
-
-On the plus side, it's a great time to help out with a project! No matter if you're a Ruby master, or are just starting out, we'd love to have your help making Hackety great! Check out "this wiki page":http://wiki.github.com/steveklabnik/hacketyhack/contributing-to-hackety-hack if you'd like to learn more.
+All the major pieces are in place. Hooray! There are still some kinks to work out, though. Nobody's perfect! Please "file an Issue":http://github.com/hacketyhack/hacketyhack/issues if you find something.
 
 h2. Building Hackety Hack
 
