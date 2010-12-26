@@ -258,13 +258,17 @@ end'
   lesson "Example: a guessing game"
   page "Guess!" do
     para "Let's put this all together:"
-    embed_code 'secret_number = 42
+    embed_code 'secret_number = 42.to_s
 guess = ask "I have a secret number. Take a guess, see if you can figure it out!"
 if guess == secret_number
   alert "Yes! You guessed right!"
 else
   alert "Sorry, you\'ll have to try again."
 end'
+    para "Can you guess what ", code("to_s"), " does, and why you need it? If you're ",
+         "stumped, try asking ", link("on the Hackety Hack site", 
+                                      :click => "http://hackety-hack.com/stream"), " ",
+         "and we'll give you a hand."
   end
 
   lesson "Summary"
