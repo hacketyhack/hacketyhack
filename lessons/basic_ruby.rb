@@ -168,18 +168,18 @@ lesson_set "3: Basic Ruby" do
 
   page "Adding numbers to words" do
     para "That's why"
-    embed_code 'puts "hey" + 2'
+    embed_code 'alert "hey" + 2'
     para 'doesn\'t really work: "hey" is a ', code("String"), " object, and 2 is a ",
          code("Fixnum"), " object. And adding ", code("String"), "s and ",
          code("Fixnum"), "s doesn't make any sense. We can make this code work, though!"
     para "All we need to do is turn the ", code("Fixnum"), " into a ", code("String"),
          ". We can do this by using the ", code("to_s"), " method."
-    embed_code 'puts "hey" + 2.to_s'
+    embed_code 'alert "hey" + 2.to_s'
   end
 
   page "Let's look at that again" do
-    embed_code 'puts "hey" + 2.to_s'
-    para "Okay, this isn't bad. We have our ", code("puts"), " method. We're giving it ",
+    embed_code 'alert "hey" + 2.to_s'
+    para "Okay, this isn't bad. We have our ", code("alert"), " method. We're giving it ",
          code('"hey" + 2.to_s'), ". The ", code("2.to_s"), " turns a ",
          code("Fixnum"), " 2, which is like the mathematical idea of a 2, into the ",
          code("String"), " 2, which is like when you write a 2 down on a piece of ",
