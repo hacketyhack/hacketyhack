@@ -45,10 +45,9 @@ lesson_set "1: A Tour of Hackety Hack" do
 
   page "A Lesson lesson." do
     para "When you click on the Lesson button, it'll bring you to a list of all of ",
-         "the lessons that come with Hackety. For now, there's two: This Tour, and ",
-         "a basic introduction to Ruby. More Lessons will be added, and eventually, ",
-         "you'll be able to write and share your own Lessons with other Hackety ",
-         "Hackers."
+         "the lessons that come with Hackety. For now, there's just a few. More ",
+         "Lessons will be added, and eventually, you'll be able to write and share ",
+         "your own Lessons with other Hackety Hackers."
     para "Lessons are just simple Ruby files. They're fun to make! You can even make ",
          "lessons advance automatically based on certain events. For example, click ",
          " on the Home button to move on."
