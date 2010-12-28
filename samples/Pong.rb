@@ -1,7 +1,7 @@
 #
 # Pong in Shoes
 # a clone of http://billmill.org/pong.html
-# and shoes is at http://shoooes.net
+# and shoes is at http://shoesrb.com/
 #
 # This is just for kicks -- I'm very fond of NodeBox as well.
 #
