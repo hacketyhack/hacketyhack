@@ -76,7 +76,7 @@ lesson_set "2: Basic Programming" do
   end
 
   lesson "Lists of Instructions"
-  page "A to-do list, not a shoping list" do
+  page "A to-do list, not a shopping list" do
     para "When I say that computers follow lists of instructions, I mean a to-do ",
       "list, not a shopping list. What I'm trying to say is that these lists have ",
       "an ", strong("order"), " to them that the computer follows. It does each ",
@@ -292,7 +292,7 @@ end"
   end
 
   lesson "Summary"
-  page "Congradulations!" do
+  page "Congratulations!" do
     para "Wow, you're awesome. Pat yourself on the back. High five someone. You've ",
          "got these basics down!"
     para "Check out the ", em("Basic Ruby"), " lesson to pick up some totally ",
