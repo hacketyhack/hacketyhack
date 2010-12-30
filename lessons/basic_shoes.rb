@@ -110,12 +110,12 @@ end'
          "to make whatever kind of layout you want. For example: "
     embed_code 'Shoes.app do
  flow do
-    stack :width => "50" do
+    stack :width => 50 do
       para "Hello!"
       para "Hello!"
       para "Hello!"
     end
-    stack :width => "50" do
+    stack :width => 50 do
       para "Goodbye!"
       para "Goodbye!"
       para "Goodbye!"
