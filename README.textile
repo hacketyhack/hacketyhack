@@ -24,11 +24,11 @@ There are two options to getting Shoes: download a pre-built version, or build i
 
 h4. Pre-assembled Shoes
 
-You can try downloading the latest version of Shoes from the "Recent Builds Page":http://wiki.github.com/shoes/shoes/recentbuilds on the Shoes Wiki.
+You can try downloading the latest version of Shoes from the "Downloads Page":http://shoesrb.com/downloads on the Shoes website.
 
 h4. Some-assembly-required Shoes
 
-If you like living on the bleeding edge, or there isn't a Shoes made for your platform, you can check out the "Building Shoes":http://wiki.github.com/shoes/shoes/buildingshoes page to find out how to build Shoes on your platform.
+If you like living on the bleeding edge, or there isn't a Shoes made for your platform, you can check out the "Building Shoes":http://github.com/shoes/shoes/wiki/Building-Shoes page to find out how to build Shoes on your platform.
 
 h3. 'Got Shoes Strapped on my Feet
 
