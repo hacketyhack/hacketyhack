@@ -150,12 +150,13 @@ lesson_set "2: Basic Programming" do
          "English has rules! You can think of ", code("Turtle"), " like a subject, ",
          "and ", code("draw"), " as a verb. Together, they make a sentence: hey ",
          "turtle, draw me something!"
-    para "Once you've typed that in, go ahead and click the 'Run' button. You'll see ",
-         "the turtle flash on the screen for just a brief moment, then dissapear."
+    para "Once you've typed that in, go ahead and click the 'Run' button. The turtle ",
+         "moves so quickly in ", code("draw"), " mode that you won't even see him, ",
+         "but I assure you, he's there!"
   end
 
   page "Do... what I tell you to" do
-    para "Awesome! We've got the turtle to appear, at least. Now we need to tell ",
+    para "Awesome! We've got the turtle going, at least. Now we need to tell ",
          "it what we want to draw!"
     para "Remember when we said that all programs are lists of instructions? In this ",
          "case, our program only has one instruction: ", code("Turtle"), ", draw ",
