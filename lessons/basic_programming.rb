@@ -267,7 +267,7 @@ end"
 
   page "Repeating repeating ourselves ourselves" do
     para "Check it out: our ", code("Turtle"), " actually knows numbers. For ",
-         "exaple:"
+         "example:"
     embed_code "Turtle.draw do
   background lightslategray
   pencolor honeydew
