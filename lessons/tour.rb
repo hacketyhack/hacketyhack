@@ -171,7 +171,7 @@ alert "Hello, " + name + "."'
     para "This concludes the Hackety Hack tour. Good job! Now you know everything ",
          "that Hackety Hack can do. It's pretty simple!"
     para "This isn't the only lesson that we have for you, though. Give the ",
-         "'Beginning Programming' lesson a shot to actually start learning how to ",
+         "'Basic Programming' lesson a shot to actually start learning how to ",
          "make programs of your own."
     para "What are you waiting for? Get going!"
   end
