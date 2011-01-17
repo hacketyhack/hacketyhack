@@ -131,9 +131,8 @@ class HH::SideTabs::Editor
   def save_if_confirmed
     if not @save_button.hidden
       name = @script[:name] || "unnamed program"
-      question = "Do you want to save modifications to \"#{name}\"?\n" +
-        "Warning: by pressing \"Cancel\" you will lose any \n" +
-        "unsaved modifications."
+      question = "I'm going to save modifications to \"#{name}\". Is that okay?\n" +
+        "Press OK if it is, and cancel if it's not."
       if confirm(question)
         save @script[:name]
         true
