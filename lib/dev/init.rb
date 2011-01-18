@@ -5,8 +5,8 @@
 HH::NET = "hackety-hack.com"
 HH::REST = "http://hackety-hack.com"
 #for easy switching when developing
-#HH::NET = "localhost:3000"
-#HH::REST = "http://localhost:3000"
+#HH::NET = "localhost:9292"
+#HH::REST = "http://localhost:9292"
 HH::HOME = Dir.pwd
 HH::STATIC = HH::HOME + "/static"
 HH::FONTS = HH::HOME + "/fonts"
