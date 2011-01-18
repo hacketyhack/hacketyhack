@@ -29,9 +29,11 @@ class Hacker
     http('GET', "/programs/#{@name}.json", :username => @name, :password => @password, &blk)
   end
 
-  def save_program_to_the_cloud name, code
+  def save_program_to_the_cloud name, code, &blk
     url = "/programs/#{@name}/#{name}.json"
-    http('PUT', url, {:creator_username => @name, :title => name, :code => code, :username => @name, :password => @password}) {|u| true }
+    http('PUT', url, {:creator_username => @name, :title => name, :code => code, :username => @name, :password => @password}) do |result|
+      blk[result.response]
+    end
   end
 
 end

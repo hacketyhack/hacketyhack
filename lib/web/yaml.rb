@@ -33,7 +33,7 @@ module HH::YAML
     # end
     headers['Authorization'] = 'Basic ' + ["#{HH::PREFS['username']}:#{HH::PREFS['password']}"].pack("m").strip
     HH::APP.download url, :method => meth, :body => body, :headers => headers do |dl|
-      blk[YAML.load(dl.response.body)] if blk
+      blk[dl] if blk
     end
   end
 

@@ -232,8 +232,13 @@ class HH::SideTabs::Editor
       @save_to_cloud_button =
         glossb "Upload", :width => 70, :top => 2, :left => 0 do
           hacker = Hacker.new :username => HH::PREFS['username'], :password => HH::PREFS['password']
-          hacker.save_program_to_the_cloud script[:name].to_slug, @str
-          alert("Uploaded!")
+          hacker.save_program_to_the_cloud(script[:name].to_slug, @str) do |response|
+            if response.status == 200
+              alert("Uploaded!")
+            else 
+              alert("There was a problem, sorry!")
+            end
+          end
         end
       glossb "Run", :width => 52, :top => 2, :left => 130 do
         eval(@str, HH.anonymous_binding)
