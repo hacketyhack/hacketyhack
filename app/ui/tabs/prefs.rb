@@ -55,10 +55,18 @@ class HH::SideTabs::Prefs < HH::SideTab
           @pass = edit_line HH::PREFS['password'], :width => 1.0, :secret => true
 
           button "Save", :margin_top => 10 do
-            HH::PREFS['username'] = @user.text
-            HH::PREFS['password'] = @pass.text
-            HH.save_prefs
-            alert("Saved, thanks!")
+            hacker = Hacker.new :username => @user.text, :password => @pass.text 
+            hacker.auth_check do |response|
+              if response.status == 200
+                HH::PREFS['username'] = @user.text
+                HH::PREFS['password'] = @pass.text
+                HH.save_prefs
+
+                alert("Saved, thanks!")
+              else
+                alert("Sorry, I couldn't authenticate you. Did you sign up for an account at http://hackety-hack.com/ ? Please double check what you've typed.")
+              end
+            end
           end
         end
       end
