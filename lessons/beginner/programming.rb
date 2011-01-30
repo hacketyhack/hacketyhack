@@ -1,4 +1,4 @@
-lesson_set "2: Basic Programming" do
+lesson_set "Beginner Programming" do
 
   lesson "Hello there!"
   page "Round One" do

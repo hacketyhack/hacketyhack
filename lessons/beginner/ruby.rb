@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-lesson_set "3: Basic Ruby" do
+lesson_set "Beginner Ruby" do
 
   lesson "Hello there!"
   page "Let's get started" do

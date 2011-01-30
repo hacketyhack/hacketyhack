@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-lesson_set "4: Basic Shoes" do
+lesson_set "Beginner Shoes" do
 
   lesson "Hello there!"
   page "Let's get started" do
