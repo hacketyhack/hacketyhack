@@ -12,6 +12,7 @@ HH::STATIC = HH::HOME + "/static"
 HH::FONTS = HH::HOME + "/fonts"
 HH::LESSONS = HH::HOME + "/lessons"
 $LOAD_PATH << HH::HOME
+HH::VERSION = 1.0
 
 # platform-specific directories
 case RUBY_PLATFORM when /win32/, /i386-mingw32/

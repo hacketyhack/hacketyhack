@@ -1,26 +1,26 @@
 # the home tab content
-# partly unfinished: some features have just started being implemented
 
 class HH::SideTabs::Home < HH::SideTab
-# unfinished method that asks if the user wants to upgrade
-#  def home_bulletin
-#    stack do
-#      background "#FF9".."#FFF"
-#      subtitle "Upgrade to 0.7?", :font => "Phonetica", :align => "center", :margin => 8
-#      para "A New Hackety Hack is Here!", :align => "center", :margin_bottom => 50
-#      glossb "Upgrade", :top => 90, :left => 0.42, :width => 100, :color => "red" do
-#        alert("No upgrades yet.")
-#      end
-#    end
-#    stack do
-#      background black(0.4)..black(0.0)
-#      image 1, 10
-#    end
-#  end
+  def home_bulletin(new_version)
+    @bulletin_stack.clear do
+      stack do
+        background "#FF9"
+        subtitle "Upgrade to #{new_version}!", :font => "Phonetica", :align => "center", :margin => 8
+        para "A New Hackety Hack is Here!", :align => "center"
+        para "Go to ", link("hackety-hack.com", :click => "http://hackety-hack.com/download"), " to get it!", :align => "center", :margin_bottom => 20
+      end
+    end
+  end
   def initialize *args, &blk
     super *args, &blk
     # never changes so is most efficient to load here
     @samples = HH.samples
+    Upgrade::check_latest_version do |version|
+      warn "version #{version['current_version']}"
+      if version['current_version'] != HH::VERSION
+        home_bulletin(version['current_version'])
+      end
+    end
   end
 
   # auxiliary method to displays the arrows, for example in case
@@ -109,8 +109,6 @@ class HH::SideTabs::Home < HH::SideTab
     para "You have no lessons.", :margin_left => 12, :font => "Lacuna Regular"
   end
 
-  # add a tab at the top of the homepane, for now there is only one tab:
-  # (Programs)
   def hometab name, bg, starts = false, &blk
     tab =
       stack :margin_top => (starts ? 6 : 10), :margin_left => 14, :width => 120 do
@@ -169,6 +167,8 @@ class HH::SideTabs::Home < HH::SideTab
       stack :margin_left => 12 do
         background rgb(233, 239, 224, 0.85)..rgb(233, 239, 224, 0.0)
         image 10, 70
+      end
+      @bulletin_stack = stack do
       end
     end
   end

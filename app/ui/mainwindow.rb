@@ -1,5 +1,6 @@
 require 'app/boot'
 
+require 'json'
 
 # methods for the main app
 module HH::App
