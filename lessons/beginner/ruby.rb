@@ -149,7 +149,7 @@ lesson_set "Beginner Ruby" do
   page "Errors" do
     para "You know how nothing happened when you hit the Run button earlier? That ",
          "was because there was an error. You can see any errors that run by hitting ",
-         "either Control-/ or Command-/, depending on what kind of computer you're using."
+         "either Alt-/ or Command-/, depending on what kind of computer you're using."
     para "The error that results from ", code('alert "hey" + 2'), " is "
     embed_code "can't convert Fixnum into String"
     para "What is that?"
