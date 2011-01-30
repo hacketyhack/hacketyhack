@@ -16,7 +16,6 @@ class HH::SideTabs::Home < HH::SideTab
     # never changes so is most efficient to load here
     @samples = HH.samples
     Upgrade::check_latest_version do |version|
-      warn "version #{version['current_version']}"
       if version['current_version'] != HH::VERSION
         home_bulletin(version['current_version'])
       end
