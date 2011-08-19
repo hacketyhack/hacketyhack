@@ -40,14 +40,14 @@ class HH::SideTabs::Prefs < HH::SideTab
         para "Hello, #{user}! ",
       else
         @question_stack = stack do
-          para "You can connect with your account on ", 
+          para "You can connect with your account on ",
                link("hackety-hack.com", :click => "http://hackety-hack.com"),
                " to do all kinds of fun stuff. Do you have one?"
           button "Yes" do
             @question_stack.toggle
             @prefpane.toggle
           end
-          
+
           button "No" do
             @question_stack.toggle
             @signup_stack.toggle
@@ -64,7 +64,7 @@ class HH::SideTabs::Prefs < HH::SideTab
         @pass = edit_line HH::PREFS['password'], :width => 1.0, :secret => true
 
         button "Save", :margin_top => 10 do
-          hacker = Hacker.new :username => @user.text, :password => @pass.text 
+          hacker = Hacker.new :username => @user.text, :password => @pass.text
           hacker.auth_check do |response|
             if response.status == 200
               HH::PREFS['username'] = @user.text
@@ -84,22 +84,22 @@ class HH::SideTabs::Prefs < HH::SideTab
         para "Website Account Signup", :size => :large
         para "Let's get you set up with one! All fields are required."
         para "Username:", :size => 10, :margin => 2, :stroke => "#352"
-        @user = edit_line "", :width => 1.0
+        @user_signup = edit_line "", :width => 1.0
 
         para "Email:", :size => 10, :margin => 2, :stroke => "#352"
-        @email = edit_line "", :width => 1.0
+        @email_signup = edit_line "", :width => 1.0
 
         para "Password", :size => 10, :margin => 2, :stroke => "#352"
-        @pass = edit_line "", :width => 1.0, :secret => true
+        @pass_signup = edit_line "", :width => 1.0, :secret => true
 
         button "Sign up", :margin_top => 10 do
-          hacker = Hacker.new :username => @user.text, :email => @email.text, :password => @pass.text
+          hacker = Hacker.new :username => @user_signup.text, :email => @email_signup.text, :password => @pass_signup.text
           hacker.sign_up! do |response|
             if response.status == 200
               alert("Great! We've got you signed up.")
-              HH::PREFS['username'] = @user.text
-              HH::PREFS['password'] = @pass.text
-              HH::PREFS['email'] = @email.text
+              HH::PREFS['username'] = @user_signup.text
+              HH::PREFS['password'] = @pass_signup.text
+              HH::PREFS['email'] = @email_signup.text
               HH.save_prefs
               @signup_stack.toggle
               @prefpane.toggle
@@ -115,3 +115,4 @@ class HH::SideTabs::Prefs < HH::SideTab
     end
   end
 end
+
