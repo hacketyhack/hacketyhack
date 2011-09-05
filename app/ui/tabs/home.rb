@@ -88,22 +88,6 @@ class HH::SideTabs::Home < HH::SideTab
     reset
   end
 
-  # I think this was meant to show all tables currently in the database
-#  def home_tables start = 0
-#    if @tables.empty?
-#      para "You have no tables.", :margin_left => 12, :font => "Lacuna Regular"
-#    else
-#      @tables[start,5].each do |name|
-#        stack :margin_left => 8, :margin_top => 4 do
-#          britelink "icon-table.png", name do
-#            alert("No tables page yet.")
-#          end
-#        end
-#      end
-#      home_arrows :home_tables, start, @tables.length
-#    end
-#  end
-
   def home_lessons
     para "You have no lessons.", :margin_left => 12, :font => "Lacuna Regular"
   end
@@ -143,7 +127,7 @@ class HH::SideTabs::Home < HH::SideTab
   def content
     image "#{HH::STATIC}/hhhello.png", :bottom => -120, :right => 0
 
-    @tabs, @tables = [], HH::DB.tables
+    @tabs= []
     @scripts = HH.scripts
     stack :margin => 0, :margin_left => 0 do
       stack do

@@ -1,3 +1,10 @@
+require 'lib/database'
+require 'lib/preferences'
+
+module HH
+  PREFS = Preferences.new
+end
+
 require 'lib/web/all'
 require 'lib/dev/init'
 

@@ -49,5 +49,57 @@ class Hacker
       blk[result.response]
     end
   end
-
 end
+
+# I feel like these belong in Hacker. Trying to not do too much at once
+module HH
+  class << self
+    def scripts
+      Dir["#{HH::USER}/*.rb"].map { |path| get_script(path) }.
+        sort_by { |script| Time.now - script[:mtime] }
+    end
+
+    def get_script(path)
+      app = {:name => File.basename(path, '.rb'), :script => File.read(path)}
+      m, = *app[:script].match(/\A(([ \t]*#.+)(\r?\n|$))+/)
+        app[:mtime] = File.mtime(path)
+      app[:desc] = m.gsub(/^[ \t]*#+[ \t]*/, '').strip.gsub(/\n+/, ' ') if m
+        app
+    end
+    def samples
+      Dir["#{HH::HOME}/samples/*.rb"].map do |path|
+        s = get_script(path)
+        # set the creation time to nil
+        s[:mtime] = nil
+        s[:sample] = true
+        s
+      end.sort_by { |script| script[:name] }
+    end
+
+    def save_prefs
+      HH::PREFS.save
+    end
+
+    def script_exists?(name)
+      File.exists?(HH::USER + "/" + name + ".rb")
+    end
+
+    def save_script(name, code)
+      APP.emit :save, :name => name, :code => code
+      File.open(HH::USER + "/" + name + ".rb", "w") do |f|
+        f << code
+      end
+      return if PREFS['username'].blank?
+    end
+
+    def get_script(path)
+      app = {:name => File.basename(path, '.rb'), :script => File.read(path)}
+      m, = *app[:script].match(/\A(([ \t]*#.+)(\r?\n|$))+/)
+      app[:mtime] = File.mtime(path)
+      app[:desc] = m.gsub(/^[ \t]*#+[ \t]*/, '').strip.gsub(/\n+/, ' ') if m
+      app
+    end
+
+  end
+end
+

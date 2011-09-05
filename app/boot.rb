@@ -15,8 +15,6 @@ end
 require 'lib/all'
 require 'app/syntax/markup'
 
-require 'app/db/sequel'
-
 require 'app/ui/lessons'
 require 'app/ui/widgets'
 require 'app/ui/completion'
@@ -26,7 +24,7 @@ require 'app/ui/tabs/sidetabs'
 if HH::PREFS['first_run'].nil?
   File.open(File.join(HH::USER, "Hello World.rb"), "w") do |f|
     f << 'alert "Hello, world!"'
-  end 
+  end
 
   #the first_run pref will get set by the tour notice in app/ui/mainwindow
 end
