@@ -64,7 +64,7 @@ end
 
 
 #
-# = Numbers 
+# = Numbers
 #
 # Enhancements to the basic number classes.
 #
@@ -141,18 +141,3 @@ class Time
     end
   end
 end
-
-require 'thread'
-class Thread
-  alias initialize_orig initialize
-  def initialize *args, &blk
-    initialize_orig *args do
-      begin
-        blk.call
-      rescue => ex
-        error ex
-      end
-    end
-  end
-end
-

@@ -7,7 +7,7 @@ class Shoes::TurtleCanvas < Shoes::Widget
   WIDTH = 500
   HEIGHT = 500
   SPEED = 4 # power of two
-  
+
   include Math
   DEG = PI / 180.0
 
@@ -169,7 +169,7 @@ class Shoes::TurtleCanvas < Shoes::Widget
     end
     @paused # return value
   end
-  
+
   def save filename
     _snapshot :filename => filename, :format => :pdf
   end
@@ -278,7 +278,7 @@ module Turtle
           end
         end
       end
-      
+
       if opts[:draw]
         draw_all
       else
