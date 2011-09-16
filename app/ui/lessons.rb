@@ -149,7 +149,7 @@ end
 # class to load and execute the level sets
 class HH::LessonSet
   include HH::Observable
-  
+
   def initialize name, blk
     # content of @lessons:
     # name, pages = @lessons[lesson_n]
@@ -195,21 +195,22 @@ class HH::LessonSet
         title name
 
         lesson_i = 0
-        lessons.each do |name, pages|
+        lessons.each do |lesson_obj|
           lesson = lesson_i
           lesson_i += 1
 
-          subtitle "#{lesson_i} #{name}"#, :stroke => gray(0.9)
+          subtitle "#{lesson_i} #{lesson_obj.name}"#, :stroke => gray(0.9)
           page_i = 0
-          pages.each do |title, _proc|
+          lesson_obj.pages.each do |page_obj|
             page = page_i
             page_i += 1
             open_page = proc do lesson_set.instance_eval do
               @lesson, @page = lesson, page
               execute_page
             end end
-            para link("#{title}", :stroke => gray(0.9), :click => open_page),
-                                                              :margin_left => 10
+            para link("#{page_obj.title}", :stroke => gray(0.9),
+                                           :click => open_page),
+                 :margin_left => 10
           end
         end
       end
@@ -230,22 +231,22 @@ class HH::LessonSet
     @container.set_content do
       background gray(0.1)
 
-      lesson_name, pages = lessons[lesson]
-      page_title, page_block = pages[page]
+      lesson_object = lessons[lesson]
+      page_object = lesson_object.pages[page]
 
       stack :margin => 10, :height => -32, :scroll => true do
         # if first page of a lesson display the lesson name
         if page == 0
-          title "#{lesson+1}. #{lesson_name}"
+          title "#{lesson+1}. #{lesson_object.name}"
         end
 
         # if first page of a lesson do not display page number
         page_num = page == 0 ? "" : "#{lesson+1}.#{page+1} "
-        subtitle "#{page_num}#{page_title}"
+        subtitle "#{page_num}#{page_object.title}"
 
-        instance_eval &page_block
+        instance_eval &(page_object.block)
       end
-      
+
       flow :height => 32,  :bottom => 0, :right => 0 do
         icon_button :arrow_left, "Previous", :left => 10 do
           lesson_set.previous_page
@@ -265,8 +266,8 @@ class HH::LessonSet
 
   def next_page
     @page += 1
-    _name, pages = @lessons[@lesson]
-    if @page >= pages.size
+    lesson = @lessons[@lesson]
+    if @page >= lesson.pages.size
       @page = 0
       @lesson += 1
       if @lesson >= @lessons.size
@@ -283,8 +284,8 @@ class HH::LessonSet
       if @lesson < 0
         @lesson = @lessons.size-1
       end
-    _name, pages = @lessons[@lesson]
-      @page = pages.size-1
+    lesson = @lessons[@lesson]
+      @page = lesson.pages.size-1
     end
     execute_page
   end
@@ -306,15 +307,36 @@ class HH::LessonSet
 
   # lesson DSL method
   def lesson name
-    @lessons << [name, []]
+    @lessons << HH::Lesson.new(name)
   end
 
   # lesson DSL method
   def page title, &blk
     if @lessons.empty?
-      lesson << "Lesson"
+      lesson "Lesson" # start an empty Lesson (pretty sure it doesn't happen.)
     end
-    _name, pages = @lessons.last
-    pages << [title, blk]
+    current_lesson = @lessons.last
+    current_lesson.add_page(HH::LessonPage.new(title, &blk))
+  end
+end
+
+class HH::Lesson
+  attr_reader :name, :pages
+
+  def initialize(name)
+    @name = name
+    @pages = []
+  end
+
+  def add_page(page)
+    @pages.push(page)
+  end
+end
+
+class HH::LessonPage
+  attr_reader :title, :block
+  def initialize(title, &block)
+    @title = title
+    @block = block
   end
 end
