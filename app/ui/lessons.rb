@@ -191,7 +191,7 @@ class HH::LessonSet
   def show_menu
     name, lessons = @name, @lessons
     lesson_set = self
-    @container.set_content do
+    @container.set_content do # NOTE: @container will instance_eval this block.
       background gray(0.1)
       stack :margin => 10, :height => -32, :scroll => true do
         title name
@@ -230,7 +230,7 @@ class HH::LessonSet
     lesson, page = @lesson, @page
     lesson_set = self
 
-    @container.set_content do
+    @container.set_content do # NOTE: @container will instance_eval this block.
       background gray(0.1)
 
       lesson_object = lessons[lesson]
@@ -246,7 +246,7 @@ class HH::LessonSet
         page_num = page == 0 ? "" : "#{lesson+1}.#{page+1} "
         subtitle "#{page_num}#{page_object.title}"
 
-        instance_eval &(page_object.block)
+        page_object.render_to self # Reminder: self == @container
       end
 
       flow :height => 32,  :bottom => 0, :right => 0 do
@@ -337,9 +337,14 @@ class HH::Lesson
 end
 
 class HH::LessonPage
-  attr_reader :title, :block
+  attr_reader :title
+
   def initialize(title, &block)
     @title = title
     @block = block
+  end
+
+  def render_to(container)
+    container.instance_eval &(@block)
   end
 end
