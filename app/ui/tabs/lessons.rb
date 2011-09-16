@@ -37,7 +37,6 @@ class HH::SideTabs::Lessons < HH::SideTab
           stack do
             britelink "icon-file.png", v[1] do  # v[1] = lesson_set name, from the lesson ruby files (or the Markdown h1)
               HH::APP.start_lessons v[1], v[2] # v[2] = the lesson_set block - the body of the lesson.
-                                                # name = 'Hackety Hack'
             end
           end
         end

@@ -170,8 +170,6 @@ class HH::LessonSet
     # loads saved lesson and page, of 0, 0, by default
     # differently from what is displayed in the UI,
     # internally @lesson and @page start at 0
-    puts "@name: >#{@name}<"
-    puts "tut_lesson_#@name -> " + (HH::PREFS["tut_lesson_#@name"] || '-missing-').to_s
     @lesson = (HH::PREFS["tut_lesson_#@name"] || "0").to_i
     @page = (HH::PREFS["tut_page_#@name"] || "0").to_i
     @container.slot = slot
@@ -301,7 +299,6 @@ class HH::LessonSet
 
   # called on close to save the current lesson and page
   def save_lesson
-    puts "saving the lesson, tut_lesson_#@name -> #{@lesson}, tut_page_#@name -> #{@page}"
     HH::PREFS["tut_lesson_#@name"] = @lesson
     HH::PREFS["tut_page_#@name"] = @page
     HH.save_prefs
