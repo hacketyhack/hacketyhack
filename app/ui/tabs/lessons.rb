@@ -32,7 +32,7 @@ class HH::SideTabs::Lessons < HH::SideTab
         value.each do |v|
           stack do
             britelink "icon-file.png", v[1] do
-              HH::APP.start_lessons name, v[2]
+              HH::APP.start_lessons v[1], v[2]
             end
           end
         end
