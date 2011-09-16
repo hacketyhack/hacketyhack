@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/tanoku/redcarpet.git
+  revision: 6ed6b917399557160903e13c442b9f6719d6a00b
+  branch: master
+  specs:
+    redcarpet (2.0.0b5)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -31,4 +38,5 @@ DEPENDENCIES
   cucumber
   hpricot
   rake
+  redcarpet!
   rspec
