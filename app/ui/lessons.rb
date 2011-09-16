@@ -121,7 +121,7 @@ class HH::LessonContainer
   # on the event specified in +args+ goes to the next page
   # if a block is specified it is used as additional condition
   # the event arguments are passed to the block
-  def next_when *args, &blk
+  def next_when *args, &blk  # This is ONLY ever used for :tab_opened, and we never pass a block
     if blk
       unless args.size == 1
         raise ArgumentError, "if a block is passed there should be no arguments"
@@ -157,10 +157,11 @@ class HH::LessonSet
     @lessons = []
     @name = name
     @container = HH::LessonContainer.new self
-    instance_eval &blk
+    instance_eval &blk  # &blk = the actual lesson contents
   end
 
   def init &blk
+    #raise 'init was called BAM'  # I suspect this method is never called...
     @container.instance_eval &blk
   end
 
@@ -169,6 +170,8 @@ class HH::LessonSet
     # loads saved lesson and page, of 0, 0, by default
     # differently from what is displayed in the UI,
     # internally @lesson and @page start at 0
+    puts "@name: >#{@name}<"
+    puts "tut_lesson_#@name -> " + (HH::PREFS["tut_lesson_#@name"] || '-missing-').to_s
     @lesson = (HH::PREFS["tut_lesson_#@name"] || "0").to_i
     @page = (HH::PREFS["tut_page_#@name"] || "0").to_i
     @container.slot = slot
@@ -298,6 +301,7 @@ class HH::LessonSet
 
   # called on close to save the current lesson and page
   def save_lesson
+    puts "saving the lesson, tut_lesson_#@name -> #{@lesson}, tut_page_#@name -> #{@page}"
     HH::PREFS["tut_lesson_#@name"] = @lesson
     HH::PREFS["tut_page_#@name"] = @page
     HH.save_prefs
