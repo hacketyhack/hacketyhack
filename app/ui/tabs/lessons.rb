@@ -63,7 +63,7 @@ class HH::SideTabs::Lessons < HH::SideTab
         para key.to_s
         value.each do |v|
           stack do
-            britelink "icon-file.png", v[1] do  # v[1] = lesson_set name, from the lesson ruby files (or the Markdown h1)
+            britelink "icon-file.png", ":| #{v[1]}" do  # v[1] = lesson_set name, from the lesson ruby files (or the Markdown h1)
               HH::APP.start_lessons_dsl v[1], v[2] # v[2] = the lesson_set block - the body of the lesson.
             end
           end
