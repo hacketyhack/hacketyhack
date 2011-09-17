@@ -158,12 +158,6 @@ class HH::LessonSet
     @container = HH::LessonContainer.new self
   end
 
-  def self.from_dsl name, blk
-    lesson_set = self.new name
-    lesson_set.instance_eval &blk
-    return lesson_set
-  end
-
   def init &blk
     #raise 'init was called BAM'  # I suspect this method is never called...
     @container.instance_eval &blk
