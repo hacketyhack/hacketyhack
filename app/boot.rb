@@ -1,6 +1,9 @@
 # requires and initializations needed for /h-ety-h.rb
 # more initializations are in h-ety-h/init.rb
 
+require "rubygems"
+require "bundler/setup"
+
 require 'hpricot'
 
 module ::HH end
@@ -21,6 +24,13 @@ require 'app/ui/lessons'
 require 'app/ui/widgets'
 require 'app/ui/completion'
 require 'app/ui/tabs/sidetabs'
+
+
+
+Shoes.setup do
+  gem "redcarpet ~> 2.0.0b5"
+end
+require 'redcarpet'
 
 #let's give them a simple program to start off with!
 if HH::PREFS['first_run'].nil?
