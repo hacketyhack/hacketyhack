@@ -303,20 +303,6 @@ class HH::LessonSet
     HH.save_prefs
   end
 
-  # lesson DSL method
-  def lesson name
-    @lessons << HH::Lesson.new(name)
-  end
-
-  # lesson DSL method
-  def page title, &blk
-    if @lessons.empty?
-      lesson "Lesson" # start an empty Lesson (pretty sure it doesn't happen.)
-    end
-    current_lesson = @lessons.last
-    current_lesson.add_page(HH::LessonPage.new(title, &blk))
-  end
-
   def add_lesson(name)
     HH::Lesson.new(name).tap do |lesson|
       @lessons << lesson
