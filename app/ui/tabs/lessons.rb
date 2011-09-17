@@ -18,16 +18,38 @@ class HH::SideTabs::Lessons < HH::SideTab
   def content
     stack :margin => 10 do
       title "Lessons", :font => "Phonetica"
+      para "So you want to learn some programming, eh? You've come to the right place!"
+
+      para "About Hackety"
+      Dir["#{HH::LESSONS}/*.md"].each do |f|
+        lesson_set = mark_up(f)
+        stack do
+          britelink "icon-file.png", lesson_set.name do
+            HH::APP.start_lessons lesson_set
+          end
+        end
+      end
+
+      %w[beginner intermediate advanced expert].each do |difficulty|
+        para difficulty.capitalize
+
+        Dir["#{HH::LESSONS}/#{difficulty}/*.md"].each do |f|
+          lesson_set = mark_up(f)
+          stack do
+            britelink "icon-file.png", lesson_set.name do
+              HH::APP.start_lessons lesson_set
+            end
+          end
+        end
+      end
+
       @@lessons = []
       @@difficulty = "About Hackety"
-      para "So you want to learn some programming, eh? You've come to the right place!"
       Dir["#{HH::LESSONS}/*.rb"].each { |f| load f }
-      Dir["#{HH::LESSONS}/*.md"].each { |f| mark_up f }
 
       %w[beginner intermediate advanced expert].each do |d|
         @@difficulty = d.capitalize
         Dir["#{HH::LESSONS}/#{d}/*.rb"].each { |f| load f }
-        Dir["#{HH::LESSONS}/#{d}/*.md"].each { |f| mark_up f }
       end
 
       # group_by difficulty
@@ -36,20 +58,116 @@ class HH::SideTabs::Lessons < HH::SideTab
         value.each do |v|
           stack do
             britelink "icon-file.png", v[1] do  # v[1] = lesson_set name, from the lesson ruby files (or the Markdown h1)
-              HH::APP.start_lessons v[1], v[2] # v[2] = the lesson_set block - the body of the lesson.
-                                                # name = 'Hackety Hack'
+              HH::APP.start_lessons_dsl v[1], v[2] # v[2] = the lesson_set block - the body of the lesson.
             end
           end
         end
       end
     end
   end
-  
+
   def mark_up(f)
+    mdp = MDP.new
+    md = Redcarpet::Markdown.new(mdp)
     src = File.read(f)
-    puts "read #{f}"
+    md.render(src)
+    return mdp.lesson_set
   end
 end
 
+class MDP < Redcarpet::Render::Base
+  attr_reader :lesson_set
+
+  def header(text, level)
+    case level
+    when 1
+      @lesson_set = HH::LessonSet.new(text)
+    when 2
+      @lesson_set.add_lesson(text)
+    when 3
+      @current_page = @lesson_set.add_page(text)
+    end
+    ''
+  end
+
+  def paragraph(text)
+    @current_page.add_action { para(text) }
+    ''
+  end
+
+  def emphasis(text)
+    @current_page.add_action { em(text) }
+    ''
+  end
+
+  def codespan(src)
+    @current_page.add_action { code(src) }
+    ''
+  end
+
+  def block_code(src, language) # TODO do something useful w/ language, like add 'run now'
+    @current_page.add_action { embed_code(src) }
+    ''
+  end
+
+  def image(link, title, alt_text)
+
+    block = if alt_text.nil? || alt_text.empty?
+              lambda {}
+            else
+              lambda { alert(alt_text) }
+            end
+
+    @current_page.add_action do
+      icon_button(link.to_sym, nil, &block)
+    end
+    ''
+  end
+end
+
+<<WHAT_SHOULD_WE_WRITE
+From Markdown:
+  block_code(code, language)
+  block_quote(quote)
+  block_html(raw_html)
+  header(text, header_level)
+  hrule()
+  list(contents, list_type)
+  list_item(text, list_type)
+  paragraph(text)
+  table(header, body)
+  table_row(content)
+  table_cell(content, alignment)
+
+  autolink(link, link_type)
+  codespan(code)
+  double_emphasis(text)
+  emphasis(text)
+  image(link, title, alt_text)
+  linebreak()
+  link(link, title, content)
+  raw_html(raw_html)
+  triple_emphasis(text)
+  strikethrough(text)
+  superscript(text)
+
+  entity(text)
+  normal_text(text)
 
 
+From the DSL:
+    lesson_set name
+    lesson name
+    page name
+  flow
+    para *lines
+    em text
+  strong text
+  icon_button(name_symbol, not_sure_but_is_nil, &block)
+  alert(txt)
+  image(path, opts={}, &block)
+  next_when(tab_opened, tab_name)
+    embed_code(code, opts={})
+  link(text, opts={})
+    code(text)
+WHAT_SHOULD_WE_WRITE

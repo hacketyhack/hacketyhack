@@ -325,6 +325,18 @@ class HH::LessonSet
     current_lesson = @lessons.last
     current_lesson.add_page(HH::LessonPage.new(title, &blk))
   end
+
+  def add_lesson(name)
+    HH::Lesson.new(name).tap do |lesson|
+      @lessons << lesson
+    end
+  end
+
+  def add_page(title)
+    HH::LessonPage.new(title).tap do |page|
+      @lessons.last.add_page(page)
+    end
+  end
 end
 
 class HH::Lesson
@@ -345,10 +357,17 @@ class HH::LessonPage
 
   def initialize(title, &block)
     @title = title
-    @block = block
+    @actions = []
+    @actions << block unless block.nil?
   end
 
   def render_to(container)
-    container.instance_eval &(@block)
+    @actions.each do |action|
+      container.instance_eval &(action)
+    end
+  end
+
+  def add_action(&blk)
+    @actions << blk
   end
 end

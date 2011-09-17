@@ -7,11 +7,20 @@ module HH::App
   # starts a lesson
   # returns only once the lesson gets closed
   include HH::Markup
-  def start_lessons name, blk
+
+  def start_lessons_dsl name, blk
     @main_content.style(:width => -400)
     @lesson_stack.show
     l = HH::LessonSet.from_dsl(name, blk).execute_in @lesson_stack
     l.on_event :close do hide_lesson end
+  end
+
+  def start_lessons(lesson_set)
+    @main_content.style(:width => -400)
+    @lesson_stack.show
+
+    lesson_set.execute_in @lesson_stack
+    lesson_set.on_event :close do hide_lesson end
   end
 
   def hide_lesson
@@ -69,7 +78,7 @@ window :title => "Hackety Hack", :width => w, :height => h do
 
   extend HH::HasSideTabs
   init_tabs @main_content
-  
+
   addtab :Home, :icon => "tab-home.png"
   addtab :Editor, :icon => "tab-new.png"
   addtab :Lessons, :icon => "tab-tour.png"
@@ -127,5 +136,5 @@ window :title => "Hackety Hack", :width => w, :height => h do
     end
   end
 
-  
+
 end
