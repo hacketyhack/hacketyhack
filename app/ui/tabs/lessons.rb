@@ -27,7 +27,7 @@ class HH::SideTabs::Lessons < HH::SideTab
           lessons.each do |lesson|
             stack do
               britelink "icon-file.png", lesson.name do
-                HH::APP.start_lessons lesson
+                HH::APP.start_lesson_set lesson
               end
             end
           end

@@ -8,7 +8,7 @@ module HH::App
   # returns only once the lesson gets closed
   include HH::Markup
 
-  def start_lessons(lesson_set)
+  def start_lesson_set(lesson_set)
     @main_content.style(:width => -400)
     @lesson_stack.show
 
