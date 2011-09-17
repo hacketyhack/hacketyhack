@@ -332,10 +332,9 @@ end
 class HH::LessonPage
   attr_reader :title
 
-  def initialize(title, &block)
+  def initialize(title)
     @title = title
     @actions = []
-    @actions << block unless block.nil?
   end
 
   def render_to(container)
