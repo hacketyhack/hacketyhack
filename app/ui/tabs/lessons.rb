@@ -127,6 +127,7 @@ class MDP < Redcarpet::Render::Base
     # HH::STATIC                 -> /home/dan/projects/hacketyhack/static
     # #{HH::STATIC}/tab-home.png -> /home/dan/projects/hacketyhack/static/tab-home.png
 
+    # This is a good example of the kind of necessary-muck I want to minimize.
     block = if alt_text.nil? || alt_text.empty?
               Proc.new {}
             else
