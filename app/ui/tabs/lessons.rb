@@ -20,24 +20,30 @@ class HH::SideTabs::Lessons < HH::SideTab
       title "Lessons", :font => "Phonetica"
       para "So you want to learn some programming, eh? You've come to the right place!"
 
-      para "About Hackety"
+      lesson_sets = {}
+
+      lesson_sets['About Hackety'] = []
       Dir["#{HH::LESSONS}/*.md"].each do |f|
         lesson_set = mark_up(f)
-        stack do
-          britelink "icon-file.png", lesson_set.name do
-            HH::APP.start_lessons lesson_set
-          end
-        end
+        lesson_sets['About Hackety'].push lesson_set
       end
 
       %w[beginner intermediate advanced expert].each do |difficulty|
-        para difficulty.capitalize
-
+        lesson_sets[difficulty.capitalize] = []
         Dir["#{HH::LESSONS}/#{difficulty}/*.md"].each do |f|
           lesson_set = mark_up(f)
-          stack do
-            britelink "icon-file.png", lesson_set.name do
-              HH::APP.start_lessons lesson_set
+          lesson_sets[difficulty.capitalize].push lesson_set
+        end
+      end
+
+      lesson_sets.each do |difficulty, lessons|
+        unless lessons.empty?
+          para difficulty
+          lessons.each do |lesson|
+            stack do
+              britelink "icon-file.png", lesson.name do
+                HH::APP.start_lessons lesson
+              end
             end
           end
         end
