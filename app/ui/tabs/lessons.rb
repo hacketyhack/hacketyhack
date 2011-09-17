@@ -128,9 +128,9 @@ class MDP < Redcarpet::Render::Base
     # #{HH::STATIC}/tab-home.png -> /home/dan/projects/hacketyhack/static/tab-home.png
 
     block = if alt_text.nil? || alt_text.empty?
-              lambda {}
+              Proc.new {}
             else
-              lambda { alert(alt_text) }
+              Proc.new { alert(alt_text) }
             end
 
     if path.start_with? "/icon_button/"
