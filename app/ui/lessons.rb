@@ -158,11 +158,6 @@ class HH::LessonSet
     @container = HH::LessonContainer.new self
   end
 
-  def init &blk
-    #raise 'init was called BAM'  # I suspect this method is never called...
-    @container.instance_eval &blk
-  end
-
   # returns only when close gets called
   def execute_in slot
     # loads saved lesson and page, of 0, 0, by default
