@@ -1,3 +1,5 @@
+# TODO don't forget to delete this file, and all the old DSL lesson .rb files.
+
 module HH
   class STATIC
     def self.to_s
