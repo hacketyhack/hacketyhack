@@ -80,7 +80,8 @@ class MDP < Redcarpet::Render::Base
     ''
   end
 
-  def block_code(src, language) # TODO do something useful w/ language, like add 'run now'
+  # TODO do something useful w/ language, like add 'run now'
+  def block_code(src, language)
     @current_page.add_action { embed_code(src) }
     ''
   end
