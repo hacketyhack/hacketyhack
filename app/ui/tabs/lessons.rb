@@ -140,8 +140,6 @@ class MDP < Redcarpet::Render::Base
       end
 
     else
-      puts "Dir.pwd: #{HH::HOME}"
-      puts "File.join(HH::HOME, path): #{File.join(HH::HOME, path)}"
       path = File.join(HH::HOME, path)  # TODO unless it's a URL
       @current_page.add_action do
         image(path, {}, &block)
