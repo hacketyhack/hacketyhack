@@ -1,7 +1,8 @@
 module HH
   class STATIC
     def self.to_s
-      '/static'
+      #Dir.pwd + '/static'
+      'static'
     end
   end
 end
@@ -41,7 +42,7 @@ module MarkdownTranslator
 
   def icon_button(name_symbol, not_sure_but_is_nil, &block)
     msg = yield if block_given?
-    puts "![#{msg || ''}](#{name_symbol})"
+    puts "![#{msg || ''}](/icon_button/#{name_symbol})"
   end
 
   def alert(txt)
@@ -99,5 +100,7 @@ class MarkdownEmitter
 end
 
 def run
-  Dir.glob('**/*.rb').map { |lesson| MarkdownEmitter.new(lesson) }
+  Dir.glob("#{File.dirname(__FILE__)}/**/*.rb").each do |lesson|
+    MarkdownEmitter.new(lesson)
+  end
 end

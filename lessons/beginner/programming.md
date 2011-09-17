@@ -11,7 +11,7 @@ I want to get you started off on the best possible foot with making programs, so
 
 
 (click the little 
-![Not this one! The one below!](arrow_right)
+![Not this one! The one below!](/icon_button/arrow_right)
 
  on the bottom of the screen to get started)
 
@@ -19,24 +19,24 @@ I want to get you started off on the best possible foot with making programs, so
 
 Before we move on, Here's a refresher on the controls you can use to move around in the Lesson.
 
-![](arrow_left)
+![](/icon_button/arrow_left)
 
 __back__: goes back one page
 
-![](arrow_right)
+![](/icon_button/arrow_right)
 
 __continue__: goes to the next page
 
-![](menu)
+![](/icon_button/menu)
 
 __menu__: makes it easy to jump around to any lesson
 
-![](x)
+![](/icon_button/x)
 
 __close__: closes the tutor
 
 Don't forget! Press 
-![](arrow_right)
+![](/icon_button/arrow_right)
 
 to move to the next part. Have at it!
 
@@ -115,7 +115,7 @@ We have to tell Hackety Hack that we want to tell the Turtle what to do. To do t
 
 
 Click on the editor tab (
-![Not this one, silly! the one on the left!](/static/tab-new.png)
+![Not this one, silly! the one on the left!](static/tab-new.png)
 
 ) to get started.
 <<Also, on this page ONLY, wire up the Editor tab to advance to the next page.>>

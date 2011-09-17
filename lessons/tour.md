@@ -9,7 +9,7 @@ Welcome to the Hackety Hack tour!
 
 
 This whole side of the screen is the _Hackety Hack Tutor_. You can move forward through the lessons by clicking the _Next_ button(
-![You should click on the actual button, below! =)](arrow_right)
+![You should click on the actual button, below! =)](/icon_button/arrow_right)
 
 ). Give it a shot!
 
@@ -21,24 +21,24 @@ You can access the different functions of Hackety through the buttons on the lef
 
 Before we move on, just take a minute to look at the controls in the bar below.
 
-![](arrow_left)
+![](/icon_button/arrow_left)
 
 __back__: goes back one page
 
-![](arrow_right)
+![](/icon_button/arrow_right)
 
 __continue__: goes to the next page
 
-![](menu)
+![](/icon_button/menu)
 
 __menu__: makes it easy to jump around to any lesson
 
-![](x)
+![](/icon_button/x)
 
 __close__: closes the tutor
 
 Don't forget! Press 
-![](arrow_right)
+![](/icon_button/arrow_right)
 
 to move to the next part. Have at it!
 
@@ -51,7 +51,7 @@ When you click on the Lesson button, it'll bring you to a list of all of the les
 Lessons are just simple Ruby files. They're fun to make! You can even make lessons advance automatically based on certain events. For example, click  on the Home button to move on.
 
 The home button looks like this:
-![Not this one, silly! the one on the left!](/static/tab-home.png)
+![Not this one, silly! the one on the left!](static/tab-home.png)
 <<Also, on this page ONLY, wire up the Home tab to advance to the next page.>>
 
 ## Home
@@ -72,7 +72,7 @@ This is an actual Ruby program, click the button to try it out! You'll learn mor
 If you click on the 'Samples' tab, you can see a bunch of sample programs that we've included for some inspiration. There's a few interesting animations, some games, and a few other things.
 
 That's all there really is to say about the homepage. Try opening the Editor. Here's its icon:
-![Not this one, silly! the one on the left!](/static/tab-new.png)
+![Not this one, silly! the one on the left!](static/tab-new.png)
 <<Also, on this page ONLY, wire up the Editor tab to advance to the next page.>>
 
 ## Editor
@@ -101,7 +101,7 @@ Once you've saved your program, two new buttons appear: 'Copy' and 'Upload.' Cop
 
 
 The next tab is the Help tab. It looks like this: 
-![Not this one, silly! the one on the left!](/static/tab-help.png)
+![Not this one, silly! the one on the left!](static/tab-help.png)
 
  Click it, and it'll open up a new window. Browse around and come back, I'll be here.
 <<Also, on this page ONLY, wire up the Help tab to advance to the next page.>>
@@ -109,7 +109,7 @@ The next tab is the Help tab. It looks like this:
 ### Okay, well... Shoes.
 
 That's a lot of help! Hackety Hack is built with Shoes, which is a toolkit for creating GUI programs in Ruby. All of the programs that you make in Hackety Hack are built with Shoes. That manual contains the entire Shoes reference, and there's a lot! Luckily, there's also a much shorter cheat sheet too. Go ahead click it:
-![Not this one, silly! the one on the left!](/static/tab-cheat.png)
+![Not this one, silly! the one on the left!](static/tab-cheat.png)
 <<Also, on this page ONLY, wire up the Cheat tab to advance to the next page.>>
 
 ## Cheat
@@ -118,7 +118,7 @@ That's a lot of help! Hackety Hack is built with Shoes, which is a toolkit for c
 
 
 The Cheat Sheet is much simpler. It just contains some helpful bits that you should find useful. A quick reference of often used bits. And a short sheet deserves a short explanation. Check out the About (
-![Not this one, silly! the one on the left!](/static/tab-hand.png)
+![Not this one, silly! the one on the left!](static/tab-hand.png)
 
 ) tab next.
 <<Also, on this page ONLY, wire up the About tab to advance to the next page.>>
