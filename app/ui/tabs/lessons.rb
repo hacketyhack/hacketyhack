@@ -106,6 +106,11 @@ class MDP < Redcarpet::Render::Base
     ''
   end
 
+  def double_emphasis(text)
+    @current_page.add_action { strong(text) }
+    ''
+  end
+
   def codespan(src)
     @current_page.add_action { code(src) }
     ''
@@ -116,7 +121,11 @@ class MDP < Redcarpet::Render::Base
     ''
   end
 
-  def image(link, title, alt_text)
+  def image(path, title, alt_text)
+
+    # HH::STATIC  ->  HH::HOME + "/static"  ->  Dir.pwd + "/static"
+    # HH::STATIC                 -> /home/dan/projects/hacketyhack/static
+    # #{HH::STATIC}/tab-home.png -> /home/dan/projects/hacketyhack/static/tab-home.png
 
     block = if alt_text.nil? || alt_text.empty?
               lambda {}
@@ -124,9 +133,21 @@ class MDP < Redcarpet::Render::Base
               lambda { alert(alt_text) }
             end
 
-    @current_page.add_action do
-      icon_button(link.to_sym, nil, &block)
+    if path.start_with? "/icon_button/"
+      path.sub! '/icon_button/', ''
+      @current_page.add_action do
+        icon_button(path.to_sym, nil, &block)
+      end
+
+    else
+      puts "Dir.pwd: #{HH::HOME}"
+      puts "File.join(HH::HOME, path): #{File.join(HH::HOME, path)}"
+      path = File.join(HH::HOME, path)  # TODO unless it's a URL
+      @current_page.add_action do
+        image(path, {}, &block)
+      end
     end
+
     ''
   end
 end
@@ -168,10 +189,10 @@ From the DSL:
   flow
     para *lines
     em text
-  strong text
+    strong text
   icon_button(name_symbol, not_sure_but_is_nil, &block)
   alert(txt)
-  image(path, opts={}, &block)
+    image(path, opts={}, &block)
   next_when(tab_opened, tab_name)
     embed_code(code, opts={})
   link(text, opts={})

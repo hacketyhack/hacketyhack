@@ -11,7 +11,7 @@ If you didn't know, Shoes is a Ruby toolkit that lets you build GUI programs rea
 
 
 (click the little 
-![Not this one! The one below!](arrow_right)
+![Not this one! The one below!](/icon_button/arrow_right)
 
  on the bottom of the screen to get started)
 
@@ -19,24 +19,24 @@ If you didn't know, Shoes is a Ruby toolkit that lets you build GUI programs rea
 
 Before we move on, Here's a refresher on the controls you can use to move around in the Lesson.
 
-![](arrow_left)
+![](/icon_button/arrow_left)
 
 __back__: goes back one page
 
-![](arrow_right)
+![](/icon_button/arrow_right)
 
 __continue__: goes to the next page
 
-![](menu)
+![](/icon_button/menu)
 
 __menu__: makes it easy to jump around to any lesson
 
-![](x)
+![](/icon_button/x)
 
 __close__: closes the tutor
 
 Don't forget! Press 
-![](arrow_right)
+![](/icon_button/arrow_right)
 
 to move to the next part. Have at it!
 

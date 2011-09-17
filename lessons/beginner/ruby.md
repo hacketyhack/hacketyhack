@@ -11,7 +11,7 @@ Ruby is a great programming language that you can use to make all kinds of thing
 
 
 (click the little 
-![Not this one! The one below!](arrow_right)
+![Not this one! The one below!](/icon_button/arrow_right)
 
  on the bottom of the screen to get started)
 
@@ -19,24 +19,24 @@ Ruby is a great programming language that you can use to make all kinds of thing
 
 Before we move on, Here's a refresher on the controls you can use to move around in the Lesson.
 
-![](arrow_left)
+![](/icon_button/arrow_left)
 
 __back__: goes back one page
 
-![](arrow_right)
+![](/icon_button/arrow_right)
 
 __continue__: goes to the next page
 
-![](menu)
+![](/icon_button/menu)
 
 __menu__: makes it easy to jump around to any lesson
 
-![](x)
+![](/icon_button/x)
 
 __close__: closes the tutor
 
 Don't forget! Press 
-![](arrow_right)
+![](/icon_button/arrow_right)
 
 to move to the next part. Have at it!
 
@@ -50,7 +50,7 @@ _Ruby_ was created by
 まつもと ゆきひろ{:font=>"TakaoGothic"}
 
  (you can just call him Matz) in 1995. If you couldn't guess, Matz is from Japan. Here he is:
-![](/static/matz.jpg)
+![](static/matz.jpg)
 
 ### Ruby is enjoyable
 
@@ -69,7 +69,7 @@ Okay! The very first thing that you need to know is how to show something on the
 
 
 In order to start coding, we need to bring up the Editor. Click the (
-![Not this one, silly! the one on the left!](/static/tab-new.png)
+![Not this one, silly! the one on the left!](static/tab-new.png)
 
 ) to open it up.
 <<Also, on this page ONLY, wire up the Editor tab to advance to the next page.>>
