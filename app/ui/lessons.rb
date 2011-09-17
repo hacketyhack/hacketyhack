@@ -150,14 +150,18 @@ end
 class HH::LessonSet
   include HH::Observable
 
-  def initialize name, blk
-    # content of @lessons:
-    # name, pages = @lessons[lesson_n]
-    # title, block = pages[page_n]
+  attr_reader :name
+
+  def initialize name
     @lessons = []
     @name = name
     @container = HH::LessonContainer.new self
-    instance_eval &blk  # &blk = the actual lesson contents
+  end
+
+  def self.from_dsl name, blk
+    lesson_set = self.new name
+    lesson_set.instance_eval &blk
+    return lesson_set
   end
 
   def init &blk

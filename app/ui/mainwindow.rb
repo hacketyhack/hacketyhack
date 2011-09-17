@@ -10,7 +10,7 @@ module HH::App
   def start_lessons name, blk
     @main_content.style(:width => -400)
     @lesson_stack.show
-    l = HH::LessonSet.new(name, blk).execute_in @lesson_stack
+    l = HH::LessonSet.from_dsl(name, blk).execute_in @lesson_stack
     l.on_event :close do hide_lesson end
   end
 
