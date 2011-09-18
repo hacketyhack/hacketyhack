@@ -3,7 +3,7 @@
 # (HH::APP is initialized in h-ety-h.rb instead)
 
 HH::NET = "hackety-hack.com"
-HH::REST = "http://hackety-hack.com"
+HH::REST = "http://api.hackety-hack.com"
 #for easy switching when developing
 #HH::NET = "localhost:9292"
 #HH::REST = "http://localhost:9292"
