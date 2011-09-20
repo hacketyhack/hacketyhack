@@ -5,28 +5,28 @@ class HH::SideTabs::Lessons < HH::SideTab
       title "Lessons", :font => "Phonetica"
       para "So you want to learn some programming, eh? You've come to the right place!"
 
-      lesson_sets = {}
+      lessons_by_level = {}
 
-      lesson_sets['About Hackety'] = []
+      lessons_by_level['About Hackety'] = []
       Dir["#{HH::LESSONS}/*.md"].each do |f|
         src = File.read(f)
-        lesson_sets['About Hackety'].push src
+        lessons_by_level['About Hackety'].push src
       end
 
-      %w[beginner intermediate advanced expert].each do |difficulty|
-        lesson_sets[difficulty.capitalize] = []
-        Dir["#{HH::LESSONS}/#{difficulty}/*.md"].each do |f|
+      %w[beginner intermediate advanced expert].each do |level|
+        lessons_by_level[level.capitalize] = []
+        Dir["#{HH::LESSONS}/#{level}/*.md"].each do |f|
           src = File.read(f)
-          lesson_sets[difficulty.capitalize].push src
+          lessons_by_level[level.capitalize].push src
         end
       end
 
       title_getter = LessonTitleGetter.new
       markdown = Redcarpet::Markdown.new(title_getter)
       
-      lesson_sets.each do |difficulty, srcs|
+      lessons_by_level.each do |level, srcs|
         unless srcs.empty?
-          para difficulty
+          para level
           srcs.each do |src|
             markdown.render(src)
             lesson_title = title_getter.title
