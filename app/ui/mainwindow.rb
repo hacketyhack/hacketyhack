@@ -8,9 +8,12 @@ module HH::App
   # returns only once the lesson gets closed
   include HH::Markup
 
-  def start_lesson_set(lesson_set)
+  def start_lesson_set(lesson_file)
     @main_content.style(:width => -400)
     @lesson_stack.show
+
+    @lesson_loader ||= HH::LessonLoader.new
+    lesson_set = @lesson_loader.load_lesson(lesson_file)
 
     lesson_set.execute_in @lesson_stack
     lesson_set.on_event :close do hide_lesson end
