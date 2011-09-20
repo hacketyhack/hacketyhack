@@ -9,25 +9,31 @@ class HH::SideTabs::Lessons < HH::SideTab
 
       lesson_sets['About Hackety'] = []
       Dir["#{HH::LESSONS}/*.md"].each do |f|
-        lesson_set = mark_up(f)
-        lesson_sets['About Hackety'].push lesson_set
+        src = File.read(f)
+        lesson_sets['About Hackety'].push src
       end
 
       %w[beginner intermediate advanced expert].each do |difficulty|
         lesson_sets[difficulty.capitalize] = []
         Dir["#{HH::LESSONS}/#{difficulty}/*.md"].each do |f|
-          lesson_set = mark_up(f)
-          lesson_sets[difficulty.capitalize].push lesson_set
+          src = File.read(f)
+          lesson_sets[difficulty.capitalize].push src
         end
       end
 
-      lesson_sets.each do |difficulty, lessons|
-        unless lessons.empty?
+      title_getter = LessonTitleGetter.new
+      markdown = Redcarpet::Markdown.new(title_getter)
+      
+      lesson_sets.each do |difficulty, srcs|
+        unless srcs.empty?
           para difficulty
-          lessons.each do |lesson|
+          srcs.each do |src|
+            markdown.render(src)
+            lesson_title = title_getter.title
+            
             stack do
-              britelink "icon-file.png", lesson.name do
-                HH::APP.start_lesson_set lesson
+              britelink "icon-file.png", lesson_title do
+                #HH::APP.start_lesson_set lesson # TODO really call this now.
               end
             end
           end
@@ -45,7 +51,17 @@ class HH::SideTabs::Lessons < HH::SideTab
   end
 end
 
-class MDP < Redcarpet::Render::Base
+class LessonTitleGetter < Redcarpet::Render::Base
+
+  attr_reader :title
+
+  def header(text, level)
+    @title = text if level == 1
+  end
+  
+end
+
+class LessonRenderer < Redcarpet::Render::Base
   attr_reader :lesson_set
 
   def header(text, level)
