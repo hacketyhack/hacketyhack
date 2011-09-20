@@ -345,3 +345,94 @@ class HH::LessonPage
     @actions << blk
   end
 end
+
+class HH::LessonLoader
+  def initialize
+    @lesson_cache = {}
+  end
+
+  def load_lesson(lesson_file)
+    unless @lesson_cache.has_key?(lesson_file)
+
+      lesson_src = File.read(lesson_file)
+      renderer = HH::LessonRenderer.new
+      markdown = Redcarpet::Markdown.new(renderer)
+      markdown.render(lesson_src)
+
+      @lesson_cache[lesson_file] = renderer.lesson_set
+    end
+
+    @lesson_cache[lesson_file]
+  end
+end
+
+class HH::LessonRenderer < Redcarpet::Render::Base
+  attr_reader :lesson_set
+
+  def header(text, level)
+    case level
+    when 1
+      @lesson_set = HH::LessonSet.new(text)
+    when 2
+      @lesson_set.add_lesson(text)
+    when 3
+      @current_page = @lesson_set.add_page(text)
+    end
+    ''
+  end
+
+  def paragraph(text)
+    @current_page.add_action { para(text) }
+    ''
+  end
+
+  def emphasis(text)
+    @current_page.add_action { em(text) }
+    ''
+  end
+
+  def double_emphasis(text)
+    @current_page.add_action { strong(text) }
+    ''
+  end
+
+  def codespan(src)
+    @current_page.add_action { code(src) }
+    ''
+  end
+
+  # TODO do something useful w/ language, like add 'run now'
+  def block_code(src, language)
+    @current_page.add_action { embed_code(src) }
+    ''
+  end
+
+  def image(path, title, alt_text)
+
+    # HH::STATIC  ->  HH::HOME + "/static"  ->  Dir.pwd + "/static"
+    # HH::STATIC                 -> /home/dan/projects/hacketyhack/static
+    # #{HH::STATIC}/tab-home.png -> /home/dan/projects/hacketyhack/static/tab-home.png
+
+    # This is a good example of the kind of necessary-muck I want to minimize.
+    block = if alt_text.nil? || alt_text.empty?
+              Proc.new {}
+            else
+              Proc.new { alert(alt_text) }
+            end
+
+    if path.start_with? "/icon_button/"
+      path.sub! '/icon_button/', ''
+      @current_page.add_action do
+        icon_button(path.to_sym, nil, &block)
+      end
+
+    else
+      path = File.join(HH::HOME, path)  # TODO unless it's a URL
+      @current_page.add_action do
+        image(path, {}, &block)
+      end
+    end
+
+    ''
+  end
+end
