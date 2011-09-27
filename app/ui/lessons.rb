@@ -385,6 +385,24 @@ class HH::LessonRenderer < Redcarpet::Render::Base
     ''
   end
   
+  def list(contents, list_type)
+    count = 0
+    
+    contents = contents.lines.map do |line|
+      if list_type == :ordered
+        "#{count += 1}. #{line.chomp}"
+      else
+        "- #{line.chomp}"
+      end
+    end
+    
+    defer { |container| container.para(contents.join("\n")) }
+  end
+  
+  def list_item(text, list_type)
+    text
+  end
+  
   def block_code(src, language)
     defer { |container| container.embed_code(src.chomp) }
   end
