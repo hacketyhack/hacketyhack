@@ -78,12 +78,12 @@ that's __bold__ or _italicized_, adding images, and stuff like that.
 
 This is the home screen, which shows you two very important things: your own
 programs, and the sample programs. Everyone starts off with one simple program:
-Hello, world! I won't even ask you to open it, check it out:
+Hello, world! Check it out:
 
     alert "Hello, world!"
 
-This is an actual Ruby program, click the button to try it out! You'll learn
-more about Ruby itself in the Beginning Ruby Lesson.
+This is an actual Ruby program! You'll learn more about Ruby itself in the
+Beginning Ruby Lesson.
 
 ### Samples
 
