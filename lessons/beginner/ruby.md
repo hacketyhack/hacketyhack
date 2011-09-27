@@ -52,8 +52,7 @@ Matz has this to say about Ruby:
 
 _I hope to see Ruby help every programmer in the world to be productive, and to
 enjoy programming, and to be happy. That is the primary purpose of Ruby
-language.
-_
+language._
 
 One more thing about Ruby: Rubyists (that's what people who like Ruby call
 themselves) have a saying: __MINSWAN__. This stands for __M__atz __I__s __N__ice
