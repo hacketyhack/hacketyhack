@@ -236,7 +236,7 @@ class HH::SideTabs::Editor
           else
             hacker = Hacker.new :username => HH::PREFS['username'], :password => HH::PREFS['password']
             hacker.save_program_to_the_cloud(script[:name].to_slug, @str) do |response|
-              if response.status == 200
+              if response.code == "200" || response.code == "302"
                 alert("Uploaded!")
               else
                 alert("There was a problem, sorry!")
