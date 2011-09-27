@@ -9,6 +9,8 @@ Welcome to the Hackety Hack tour!
 
 
 This whole side of the screen is the _Hackety Hack Tutor_. You can move forward through the lessons by clicking the _Next_ button(
+
+
 ![You should click on the actual button, below! =)](/icon_button/arrow_right)
 
 ). Give it a shot!
@@ -21,23 +23,33 @@ You can access the different functions of Hackety through the buttons on the lef
 
 Before we move on, just take a minute to look at the controls in the bar below.
 
+
+
 ![](/icon_button/arrow_left)
 
 __back__: goes back one page
+
+
 
 ![](/icon_button/arrow_right)
 
 __continue__: goes to the next page
 
+
+
 ![](/icon_button/menu)
 
 __menu__: makes it easy to jump around to any lesson
+
+
 
 ![](/icon_button/x)
 
 __close__: closes the tutor
 
 Don't forget! Press 
+
+
 ![](/icon_button/arrow_right)
 
 to move to the next part. Have at it!

@@ -11,6 +11,8 @@ I want to get you started off on the best possible foot with making programs, so
 
 
 (click the little 
+
+
 ![Not this one! The one below!](/icon_button/arrow_right)
 
  on the bottom of the screen to get started)
@@ -19,23 +21,33 @@ I want to get you started off on the best possible foot with making programs, so
 
 Before we move on, Here's a refresher on the controls you can use to move around in the Lesson.
 
+
+
 ![](/icon_button/arrow_left)
 
 __back__: goes back one page
+
+
 
 ![](/icon_button/arrow_right)
 
 __continue__: goes to the next page
 
+
+
 ![](/icon_button/menu)
 
 __menu__: makes it easy to jump around to any lesson
+
+
 
 ![](/icon_button/x)
 
 __close__: closes the tutor
 
 Don't forget! Press 
+
+
 ![](/icon_button/arrow_right)
 
 to move to the next part. Have at it!
