@@ -440,6 +440,10 @@ class HH::LessonPageRenderer < Redcarpet::Render::Base
   def double_emphasis(text)
     store @container.strong(text)
   end
+  
+  def link(link, title, content)
+    store @container.link(content, :click => link)
+  end
 
   def store(shoes_bit)
     @args << shoes_bit
