@@ -350,7 +350,7 @@ class HH::LessonLoader
 
       lesson_src = File.read(lesson_file)
       renderer = HH::LessonRenderer.new
-      markdown = Redcarpet::Markdown.new(renderer)
+      markdown = Redcarpet::Markdown.new(renderer, fenced_code_blocks: true)
       markdown.render(lesson_src)
 
       @lesson_cache[lesson_file] = renderer.lesson_set
