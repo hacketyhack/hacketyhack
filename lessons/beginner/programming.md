@@ -14,13 +14,10 @@ we'll start off by talking a little bit about what programming is, and then
 we'll write some basic programs to draw fun things on the screen. Sound good?
 Off we go!
 
-
-(click the little 
+Click the icon like this (on the bottom of the screen) to get started:
 
 
 ![Not this one! The one below!](/icon_button/arrow_right)
-
- on the bottom of the screen to get started)
 
 ### Lesson Controls
 
@@ -51,12 +48,12 @@ __menu__: makes it easy to jump around to any lesson
 
 __close__: closes the tutor
 
-Don't forget! Press 
+Don't forget! Press this to move to the next part:
 
 
 ![](/icon_button/arrow_right)
 
-to move to the next part. Have at it!
+Have at it!
 
 ## Let's talk about programming
 
@@ -166,12 +163,10 @@ the turtle isn't doing what you expect!
 
 
 
-Click on the editor tab (
+Click on the editor tab to get started:
 
 
 ![Not this one, silly! the one on the left!](static/tab-new.png)
-
-) to get started.
 
 ### Type it in!
 

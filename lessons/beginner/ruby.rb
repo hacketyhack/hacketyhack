@@ -7,12 +7,9 @@ lesson_set "Beginner Ruby" do
     para "Welcome to your first lesson in Ruby! You're going to have a blast."
     para "Ruby is a great programming language that you can use to make all kinds of ",
          "things with. Let's get going!"
-    flow do
-      para "(click the little "
-      icon_button :arrow_right, nil do
-        alert "Not this one! The one below!"
-      end
-      para " on the bottom of the screen to get started)"
+    para "Click the icon like this (on the bottom of the screen) to get started:"
+    icon_button :arrow_right, nil do
+      alert "Not this one! The one below!"
     end
   end
 
@@ -35,9 +32,9 @@ lesson_set "Beginner Ruby" do
       icon_button :x, nil
       para strong("close"), ": closes the tutor"
     end
-    para "Don't forget! Press "
+    para "Don't forget! Press this to move to the next part:"
     icon_button :arrow_right, nil
-    para "to move to the next part. Have at it!"
+    para "Have at it!"
   end
 
   lesson "A bit more about Ruby"
@@ -68,11 +65,13 @@ lesson_set "Beginner Ruby" do
     para "Okay! The very first thing that you need to know is how to show something ",
          "on the screen. Otherwise, you won't know what's going on!"
     flow do
-      para "In order to start coding, we need to bring up the Editor. Click the ("
+      para "In order to start coding, we need to bring up the Editor. Its icon looks like this:"
+      
       image "#{HH::STATIC}/tab-new.png", :margin => 6 do
         alert("Not this one, silly! the one on the left!")
       end
-      para ") to open it up, and then we'll move on..."
+      
+      para "Click the icon to open the Editor up, and then we'll move on..."
     end
   end
 
@@ -132,13 +131,9 @@ lesson_set "Beginner Ruby" do
   page "Basic Math" do
     para "You can also do math with numbers, and it'll work out pretty well:"
     embed_code "alert 1 + 2"
-    para ""
     embed_code "alert 5 - 3"
-    para ""
     embed_code "alert 2 * 3"
-    para ""
     embed_code "alert 4 / 2"
-    para ""
     para "But if you try this, nothing happens:"
     embed_code 'alert "hey" + 2'
     para "This is kind of fun and silly, though:"

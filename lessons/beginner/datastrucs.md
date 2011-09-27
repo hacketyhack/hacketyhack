@@ -10,13 +10,10 @@ obtain data with Ruby you're also going to be able to store it in collections.
 Arrays and Hashes are two key classes in Ruby that are able to help with 
 storing your data!  Let's get going!
 
-
-(click the little 
+Click the icon like this (on the bottom of the screen) to get started:
 
 
 ![Not this one! The one below!](/icon_button/arrow_right)
-
- on the bottom of the screen to get started)
 
 ### Lesson Controls
 
@@ -47,12 +44,12 @@ __menu__: makes it easy to jump around to any lesson
 
 __close__: closes the tutor
 
-Don't forget! Press 
+Don't forget! Press this to move to the next part:
 
 
 ![](/icon_button/arrow_right)
 
-to move to the next part. Have at it!
+Have at it!
 
 ### What are Arrays?
 
@@ -69,12 +66,12 @@ going!
 Try typing this and press the Run button.
 
 You created an array with the numbers 1, 2, and the string 'shoes' in it. 
-Things in the array can be gotten by typing the array's variable name(my_array)
-and square brackets( [] ) with a number inside of the brackets.  This number can
-be though of as the address to that spot in the array.  It's good to remember
-that arrays start at 0 in Ruby.
+Things in the array can be gotten by typing the array's variable name
+(`my_array`) and square brackets (`[]`) with a number inside of the brackets. 
+This number can be though of as the address to that spot in the array.  It's
+good to remember that arrays start at 0 in Ruby.
 
-    alert a[0]
+    alert my_array[0]
 
 What thing in the array are you going to get back?  Type this in and press the
 'Run' button.
@@ -139,8 +136,8 @@ Try typing this all in and press the 'Run' button!
 ### Working with Hashes
 
 So what else are we able to do with hashes?  Let's try something will help us
-see if something is in the hash as a key or value  The methods 'has_key?' and
-'has_value?' are exactly what we're looking for!
+see if something is in the hash as a key or value  The methods `has_key?` and
+`has_value?` are exactly what we're looking for!
 
     new_hash = { "1" => "one", "2" => "two"}
 

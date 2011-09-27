@@ -11,13 +11,10 @@ basics that Shoes brings to everyone who programs.
 If you didn't know, Shoes is a Ruby toolkit that lets you build GUI programs
 really easy and fun!
 
-
-(click the little 
+Click the icon like this (on the bottom of the screen) to get started:
 
 
 ![Not this one! The one below!](/icon_button/arrow_right)
-
- on the bottom of the screen to get started)
 
 ### Lesson Controls
 
@@ -48,12 +45,12 @@ __menu__: makes it easy to jump around to any lesson
 
 __close__: closes the tutor
 
-Don't forget! Press 
+Don't forget! Press this to move to the next part:
 
 
 ![](/icon_button/arrow_right)
 
-to move to the next part. Have at it!
+Have at it!
 
 ## Apps
 

@@ -6,13 +6,9 @@ lesson_set "Beginner Data Structures" do
          "know how to obtain data with Ruby you're also going to be able to store it in collections.  ",
          "Arrays and Hashes are two key classes in Ruby that are able to help with ",
          " storing your data!  Let's get going!"
-      
-    flow do
-      para "(click the little "
-      icon_button :arrow_right, nil do
-        alert "Not this one! The one below!"
-      end
-      para " on the bottom of the screen to get started)"
+    para "Click the icon like this (on the bottom of the screen) to get started:"
+    icon_button :arrow_right, nil do
+      alert "Not this one! The one below!"
     end
   end
 
@@ -35,9 +31,9 @@ lesson_set "Beginner Data Structures" do
       icon_button :x, nil
       para strong("close"), ": closes the tutor"
     end
-    para "Don't forget! Press "
+    para "Don't forget! Press this to move to the next part:"
     icon_button :arrow_right, nil
-    para "to move to the next part. Have at it!"
+    para "Have at it!"
   end
 
   page "What are Arrays?" do
@@ -51,10 +47,10 @@ lesson_set "Beginner Data Structures" do
     embed_code 'my_array = [1,2,"shoes"]'
     para "Try typing this and press the Run button."
     para "You created an array with the numbers 1, 2, and the string 'shoes' in it.  Things in the array can be ",
-         "gotten by typing the array's variable name(my_array) and square brackets( [] ) with a number ",
+         "gotten by typing the array's variable name (" + code("my_array")+ ") and square brackets (", code("[]"), ") with a number ",
          "inside of the brackets.  This number can be though of as the address to that spot in the array.  ",
          "It's good to remember that arrays start at 0 in Ruby."
-    embed_code 'alert a[0]'
+    embed_code 'alert my_array[0]'
     para "What thing in the array are you going to get back?  Type this in and press the 'Run' button."
   end
 
@@ -99,7 +95,7 @@ lesson "The Hash"
   page "Working with Hashes" do 
     para "So what else are we able to do with hashes?  ",
          "Let's try something will help us see if something is in the hash as a key or value",
-         "  The methods 'has_key?' and 'has_value?' are exactly what we're looking for!"
+         "  The methods " + code('has_key?') + " and " + code('has_value?') + " are exactly what we're looking for!"
     embed_code 'new_hash = { "1" => "one", "2" => "two"}'
     embed_code 'alert new_hash.has_key?("1")'
     embed_code 'alert new_hash.has_value?("one")'

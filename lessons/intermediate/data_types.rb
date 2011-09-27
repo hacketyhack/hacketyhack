@@ -7,12 +7,9 @@ lesson_set "Data Types" do
     para "Awesome! Glad to see you here! You're going to learn some great ",
          "things in this lesson. Ruby has a few different ways to manipulate ",
          "data, and you're going to play with them!"
-    flow do
-      para "(click the little "
-      icon_button :arrow_right, nil do
-        alert "Not this one! The one below!"
-      end
-      para " on the bottom of the screen to get started)"
+    para "Click the icon like this (on the bottom of the screen) to get started:"
+    icon_button :arrow_right, nil do
+      alert "Not this one! The one below!"
     end
   end
 
@@ -35,9 +32,9 @@ lesson_set "Data Types" do
       icon_button :x, nil
       para strong("close"), ": closes the tutor"
     end
-    para "Don't forget! Press "
+    para "Don't forget! Press this to move to the next part:"
     icon_button :arrow_right, nil
-    para "to move to the next part. Have at it!"
+    para "Have at it!"
   end
 
   lesson "Strings"
@@ -89,7 +86,7 @@ lesson_set "Data Types" do
 
   lesson "Arrays"
   page "The 411" do
-    para em("Ruby"), " was created by "
+    
   end
 
   page "Concatination" do
@@ -110,7 +107,7 @@ lesson_set "Data Types" do
 
   lesson "Hashes"
   page "A slightly different Array" do
-    para em("Ruby"), " was created by "
+  
   end
 
   lesson "Putting them together"
