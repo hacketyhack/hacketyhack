@@ -31,34 +31,37 @@ class Hacker
 
   def program_list &blk
     programs_rel = HH::API.root.at("//a[@rel='/rels/program-index']")
-    HH::API.http('GET', program_rel.attributes['href'], &blk)
+    HH::API.get(program_rel.attributes['href'], &blk)
   end
 
   def auth_check &blk
-    progs = open(HH::API_ROOT + '/programs') { |f| Hpricot(f)}
-    csrf = progs.at("//meta[@name='csrf-token']")
+    # Hacking around CSRF, This will go away when we switch to http digest auth
+    sign_in = HH::API.get('/users/sign_in') { |f| Hpricot(f.body)}
+    csrf = sign_in.at("//input[@name='authenticity_token']").attributes['value']
 
-    HH::API.http('POST', "/users/sign_in", {:authenticity_token => csrf, :user => {:username => @name, :password => @password, :remember_me => 1}}) do |result|
-      blk[result.response]
+    HH::API.post("/users/sign_in", {"authenticity_token" => csrf, "user[username]" => @name, "user[password]" => @password, "user[remember_me]" => 1}) do |response|
+      blk[response]
     end
   end
 
   def sign_up! &blk
-    progs = open(HH::API_ROOT + '/programs') { |f| Hpricot(f)}
-    csrf = progs.at("//meta[@name='csrf-token']")
+    # Hacking around CSRF, This will go away when we switch to http digest auth
+    sign_in = HH::API.get('/users/sign_up') { |f| Hpricot(f.body)}
+    csrf = sign_in.at("//input[@name='authenticity_token']").attributes['value']
 
-    HH::API.http('POST', "/users", {:authenticity_token => csrf, :user =>{:username => @name, :email => @email, :password => @password, :password_conformation => @password }}) do |result|
-      blk[result.response]
+    HH::API.post("/users", {"authenticity_token" => csrf, "user[username]" => @name, "user[email]" => @email, "user[password]" => @password, "user[password_conformation]" => @password}) do |response|
+      blk[response]
     end
   end
 
   def save_program_to_the_cloud name, code, &blk
+    # Hacking around CSRF, This will go away when we switch to http digest auth
     program_rel = HH::API.root.at("//a[@rel='/rels/program-new']")
-    new_program = open(HH::API_ROOT + program_rel.attributes['href']){ |f| Hpricot(f) }
+    new_program = HH::API.get(program_rel.attributes['href']){ |f| Hpricot(f.body) }
     csrf = new_program.at("//meta[@name='csrf-token']")
     form = new_program.at("//form")
-    HH::API.http(form.attributes['method'], form.attributes['action'], {:authenticity_token => csrf, :program => {:author_username => @name, :title => name, :source_code => code}}) do |result|
-      blk[result.response]
+    HH::API.post(form.attributes['action'], {"authenticity_token" => csrf, "program[author_username]" => @name, "program[title]" => name, "program[source_code]" => code}) do |response|
+      blk[response]
     end
   end
 end

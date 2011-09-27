@@ -1,4 +1,5 @@
 require 'lib/web/api'
+require 'net/http'
 
 module Upgrade
   class << self
@@ -6,9 +7,9 @@ module Upgrade
 
     def check_latest_version &blk
       version_rel = HH::API.root.at("//a[@rel='/rels/current-application-version']")
-      HH::API.http('GET', version_rel.attributes['href']) do |result|
-        response = JSON.parse(result.response.body)
-        blk[response]
+      HH::API.get(version_rel.attributes['href']) do |response|
+        body = JSON.parse(response.body)
+        blk[body]
       end
     end
   end

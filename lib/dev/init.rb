@@ -4,6 +4,7 @@
 
 HH::NET = "hackety-hack.com"
 HH::REST = "http://hackety-hack.com"
+# create a new root url to avoid breaking anything else
 HH::API_ROOT = "http://api.hackety-hack.com"
 #for easy switching when developing
 #HH::NET = "localhost:9292"
