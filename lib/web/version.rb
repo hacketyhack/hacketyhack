@@ -1,13 +1,15 @@
-require 'lib/web/yaml'
+require 'lib/web/api'
+require 'net/http'
 
 module Upgrade
   class << self
-    include HH::YAML
+    include HH::API
 
     def check_latest_version &blk
-      http('GET', "/version.json") do |result| 
-        response = JSON.parse(result.response.body)
-        blk[response]
+      version_rel = HH::API.root.at("//a[@rel='/rels/current-application-version']")
+      HH::API.get(version_rel.attributes['href']) do |response|
+        body = JSON.parse(response.body)
+        blk[body]
       end
     end
   end

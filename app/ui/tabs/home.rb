@@ -15,9 +15,8 @@ class HH::SideTabs::Home < HH::SideTab
     super *args, &blk
     # never changes so is most efficient to load here
     @samples = HH.samples
-    Upgrade::check_latest_version do |version|
-      if version['current_version'] != HH::VERSION
-        home_bulletin(version['current_version'])
+    Upgrade::check_latest_version do |version| if version['version'] != HH::VERSION
+        home_bulletin(version['version'])
       end
     end
   end

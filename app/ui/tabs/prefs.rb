@@ -66,7 +66,7 @@ class HH::SideTabs::Prefs < HH::SideTab
         button "Save", :margin_top => 10 do
           hacker = Hacker.new :username => @user.text, :password => @pass.text
           hacker.auth_check do |response|
-            if response.status == 200
+            if response.code == "200" || response.code == "302"
               HH::PREFS['username'] = @user.text
               HH::PREFS['password'] = @pass.text
               HH.save_prefs
