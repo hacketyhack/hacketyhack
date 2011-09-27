@@ -60,9 +60,7 @@ The home button looks like this:
 
 This is the home screen, which shows you two very important things: your own programs, and the sample programs. Everyone starts off with one simple program: Hello, world! I won't even ask you to open it, check it out:
 
-``` run_button
-alert "Hello, world!"
-```
+    alert "Hello, world!"
 
 This is an actual Ruby program, click the button to try it out! You'll learn more about Ruby itself in the Beginning Ruby Lesson.
 
@@ -81,10 +79,8 @@ That's all there really is to say about the homepage. Try opening the Editor. He
 
 This is where the magic happens: all of your programs will be created in the editor. Give it a shot: try typing this program in.
 
-``` 
-name = ask "What is your name?"
-alert "Hello, " + name + "."
-```
+    name = ask "What is your name?"
+    alert "Hello, " + name + "."
 
 
 After doing so, you can try running the program by pressing the 'Run' button in the lower right corner.

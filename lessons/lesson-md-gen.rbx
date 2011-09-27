@@ -66,8 +66,8 @@ module MarkdownTranslator
   end
 
   def embed_code(code, opts={})
-    lang = 'run_button' if opts[:run_button]
-    puts "\n``` #{lang || ''}\n#{code}\n```\n"
+    code = code.lines.map { |line| "    #{line}" } * ''
+    puts "\n#{code}\n"
   end
 
   def link(text, opts={})
