@@ -78,9 +78,7 @@ In order to start coding, we need to bring up the Editor. Click the (
 
 There are two ways of doing this. Here's the first: alert
 
-``` 
-alert "Hello, world!"
-```
+    alert "Hello, world!"
 
 Type this in and press the 'Run' button.
 
@@ -90,9 +88,7 @@ Okay, let's break this down: There's two main parts to this little program: you 
 
 We'll talk about the `"Hello, world!"` in just a second. Here's the other way of making this happen: 
 
-``` 
-puts "Hello, world!"
-```
+    puts "Hello, world!"
 
 But if you try that here, it won't work! The `puts` method doesn't display a dialog box, it puts text out to a command-line prompt. Since Hackety Hack is all graphical, this doesn't work here. So we'll be using `alert`s throughout these tutorials, but if you look at other Ruby tutorials, you may see `puts`.
 
@@ -102,15 +98,11 @@ But if you try that here, it won't work! The `puts` method doesn't display a dia
 
 Okay! Now that you've got that verb bit down, it's time to learn about _String_s. Strings are what we call a bunch of words between a pair of " characters. The "s are used to tell the computer what words you actually want to say. Let's think about our example:
 
-``` 
-alert "Hello, world!"
-```
+    alert "Hello, world!"
 
 If you didn't have the "s, the computer wouldn't know which words were methods and which ones were part of the string! And consider this:
 
-``` run_button
-alert "I am on high alert!"
-```
+    alert "I am on high alert!"
 
 Without making all of those words a string, how would Ruby know that the second alert was some text you wanted to say, rather than another alert box?
 
@@ -118,9 +110,7 @@ Without making all of those words a string, how would Ruby know that the second 
 
 Now, if you want to put two bits of strings together, you can use the `+` character to do it. Try typing this:
 
-``` 
-alert "Hello, " + "world!"
-```
+    alert "Hello, " + "world!"
 
 Same thing! The `+` sticks the two strings together. This will end up being super useful later!
 
@@ -130,51 +120,35 @@ Same thing! The `+` sticks the two strings together. This will end up being supe
 
 You can just use numbers, and Ruby understands them:
 
-``` 
-alert 2
-```
+    alert 2
 
 You can even use numbers that have a decimal point in them:
 
-``` 
-alert 1.5
-```
+    alert 1.5
 
 ### Basic Math
 
 You can also do math with numbers, and it'll work out pretty well:
 
-``` 
-alert 1 + 2
-```
+    alert 1 + 2
 
 
-``` 
-alert 5 - 3
-```
+    alert 5 - 3
 
 
-``` 
-alert 2 * 3
-```
+    alert 2 * 3
 
 
-``` 
-alert 4 / 2
-```
+    alert 4 / 2
 
 
 But if you try this, nothing happens:
 
-``` 
-alert "hey" + 2
-```
+    alert "hey" + 2
 
 This is kind of fun and silly, though:
 
-``` 
-alert "hey" * 2
-```
+    alert "hey" * 2
 
 ### Errors
 
@@ -182,9 +156,7 @@ You know how nothing happened when you hit the Run button earlier? That was beca
 
 The error that results from `alert "hey" + 2` is 
 
-``` 
-can't convert Fixnum into String
-```
+    can't convert Fixnum into String
 
 What is that?
 
@@ -200,23 +172,17 @@ We'll learn more about `Object`s in a future lesson, but there is one thing I'll
 
 That's why
 
-``` 
-alert "hey" + 2
-```
+    alert "hey" + 2
 
 doesn't really work: "hey" is a `String` object, and 2 is a `Fixnum` object. And adding `String`s and `Fixnum`s doesn't make any sense. We can make this code work, though!
 
 All we need to do is turn the `Fixnum` into a `String`. We can do this by using the `to_s` method.
 
-``` 
-alert "hey" + 2.to_s
-```
+    alert "hey" + 2.to_s
 
 ### Let's look at that again
 
-``` 
-alert "hey" + 2.to_s
-```
+    alert "hey" + 2.to_s
 
 Okay, this isn't bad. We have our `alert` method. We're giving it `"hey" + 2.to_s`. The `2.to_s` turns a `Fixnum` 2, which is like the mathematical idea of a 2, into the `String` 2, which is like when you write a 2 down on a piece of paper.
 
@@ -228,10 +194,8 @@ What happens if we want to keep something around? Most programs are not one line
 
 Let's try one out:
 
-``` 
-message = "Hello, world!"
-alert message
-```
+    message = "Hello, world!"
+    alert message
 
 Give that a run.
 
@@ -241,13 +205,11 @@ Cool stuff! We used an `=` to _assign_ the `String`"Hello, world!" into the vari
 
 As you can see, we can use variables in place of another value. Try this:
 
-``` 
-number = 5
-number = number * 2
-number = number - 8
-number = number + 1
-alert number
-```
+    number = 5
+    number = number * 2
+    number = number - 8
+    number = number + 1
+    alert number
 
 Make a guess before you run this program.
 
@@ -257,10 +219,8 @@ Make a guess before you run this program.
 
 We can ask the user of our program for some input, and then put their answer into a variable. It's easy! Check this program out:
 
-``` 
-name = ask "What is your name?"
-alert "Hello, " + name
-```
+    name = ask "What is your name?"
+    alert "Hello, " + name
 
 The `ask` method brings up a box and lets our users type something in. Fun! We put their answer into the `name` variable and then showed it with `alert`. Sweet!
 
@@ -272,23 +232,19 @@ Remember back to that Beginning Programming lesson... we talked about how progra
 
 Well, guess what? We can actually change this order by using certain bits of code. Compare these two programs:
 
-``` 
-number = 2
-if number == 2
-  alert "Yes!"
-else
-  alert "No!"
-end
-```
+    number = 2
+    if number == 2
+      alert "Yes!"
+    else
+      alert "No!"
+    end
 
-``` 
-number = 1
-if number == 2
-  alert "Yes!"
-else
-  alert "No!"
-end
-```
+    number = 1
+    if number == 2
+      alert "Yes!"
+    else
+      alert "No!"
+    end
 
 There are a few new things here.
 
@@ -296,14 +252,12 @@ There are a few new things here.
 
 Here it is again:
 
-``` 
-number = 2
-if number == 2
-  alert "Yes!"
-else
-  alert "No!"
-end
-```
+    number = 2
+    if number == 2
+      alert "Yes!"
+    else
+      alert "No!"
+    end
 
 The == command is just a bit different than the = command. == tests the `Object` on its right against the `Object` on its left. If the two are equal, then the code after the `if` will run. If they're not equal, you get the code after the `else`. The `end` lets us know we're done with our `if`.
 
@@ -313,15 +267,13 @@ The == command is just a bit different than the = command. == tests the `Object`
 
 Let's put this all together:
 
-``` 
-secret_number = 42.to_s
-guess = ask "I have a secret number. Take a guess, see if you can figure it out!"
-if guess == secret_number
-  alert "Yes! You guessed right!"
-else
-  alert "Sorry, you'll have to try again."
-end
-```
+    secret_number = 42.to_s
+    guess = ask "I have a secret number. Take a guess, see if you can figure it out!"
+    if guess == secret_number
+      alert "Yes! You guessed right!"
+    else
+      alert "Sorry, you'll have to try again."
+    end
 
 Can you guess what `to_s` does, and why you need it? If you're stumped, try asking [on the Hackety Hack site](http://hackety-hack.com/stream) and we'll give you a hand.
 

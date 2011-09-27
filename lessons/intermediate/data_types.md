@@ -46,10 +46,8 @@ _String_s are something you already know about! Let's refresh your memory.
 
 Basically, Strings let you manipulate a bunch of characters. It's sort of like writing something down: and often, Strings are used for handling input and output. Check it out:
 
-``` 
-name = "Steve"
-alert name
-```
+    name = "Steve"
+    alert name
 
 This should be familliar. If it isn't you may want to go review the Basic Ruby lesson before moving on. Gotta learn the basics before you can understand the hard stuff!
 
@@ -57,11 +55,9 @@ This should be familliar. If it isn't you may want to go review the Basic Ruby l
 
 Here's a big word for you: __concatenation__. It's a mouthful, but luckily for you, it means something really simple: 
 
-``` 
-first_name = "Steve"
-last_name = "Klabnik"
-alert first_name + last_name
-```
+    first_name = "Steve"
+    last_name = "Klabnik"
+    alert first_name + last_name
 
 See what I mean by addition? The _+_ lets us __concatenate__ the two Strings together. The first name goes up front, and the last name goes in the back. Nice and easy.
 
@@ -69,10 +65,8 @@ See what I mean by addition? The _+_ lets us __concatenate__ the two Strings tog
 
 Okay, since you did so well with that word, I'm going to throw another one at you, while you're still trying to recover: __interpolation__. It kinda means 'put into.' See if this makes sense:
 
-``` 
-first_name = "Steve"
-alert "The first name is #{first_name}".
-```
+    first_name = "Steve"
+    alert "The first name is #{first_name}".
 
 Whoah! What's up with that? Try running it, and see what it does.
 

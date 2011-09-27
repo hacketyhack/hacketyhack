@@ -124,9 +124,7 @@ Click on the editor tab (
 
 Cool. Now type this: 
 
-``` 
-Turtle.draw
-```
+    Turtle.draw
 
 The period in between the `Turtle` and the `draw` connects them together. Programming languages have rules, just like English has rules! You can think of `Turtle` like a subject, and `draw` as a verb. Together, they make a sentence: hey turtle, draw me something!
 
@@ -144,11 +142,9 @@ To do this, we'll use two words: `do` and `end`. These two words together make u
 
 Let's try this: we can tell the `Turtle` that we want to use a different background color by using the `background` command. Check it out:
 
-``` 
-Turtle.draw do
-  background maroon
-end
-```
+    Turtle.draw do
+      background maroon
+    end
 
 Type this in and click 'Run'!
 
@@ -168,13 +164,11 @@ Now that we've got a snazzy background color, how do we draw some lines? Well, t
 
 Okay, enough dilly-dallying. Let's tell the turtle to draw a line! Here's my line. Give this one a shot, then try your own colors and numbers!
 
-``` 
-Turtle.draw do
-  background lightslategray
-  pencolor honeydew
-  forward 50
-end
-```
+    Turtle.draw do
+      background lightslategray
+      pencolor honeydew
+      forward 50
+    end
 
 50 is the number of pixels to move foward, by the way.
 
@@ -182,15 +176,13 @@ end
 
 Great! So you've got a line. But what if you don't want the `Turtle` to move forward? Well, you can tell it to turn by using a `turnleft` or `turnright` command, like this:
 
-``` 
-Turtle.draw do
-  background lightslategray
-  pencolor honeydew
-  forward 50
-  turnright 90
-  forward 50
-end
-```
+    Turtle.draw do
+      background lightslategray
+      pencolor honeydew
+      forward 50
+      turnright 90
+      forward 50
+    end
 
 Give that a shot, then play with it a bit!
 
@@ -220,19 +212,17 @@ I'll wait. :)
 
 Here's how I did it:
 
-``` 
-Turtle.draw do
-  background lightslategray
-  pencolor honeydew
-  forward 50
-  turnright 90
-  forward 50
-  turnright 90
-  forward 50
-  turnright 90
-  forward 50
-end
-```
+    Turtle.draw do
+      background lightslategray
+      pencolor honeydew
+      forward 50
+      turnright 90
+      forward 50
+      turnright 90
+      forward 50
+      turnright 90
+      forward 50
+    end
 
 ## Repeating ourselves
 
@@ -246,16 +236,14 @@ I have good news, though: I mentioned something earlier about computers. It turn
 
 Check it out: our `Turtle` actually knows numbers. For example:
 
-``` 
-Turtle.draw do
-  background lightslategray
-  pencolor honeydew
-  4.times do
-    forward 50
-    turnright 90
-  end
-end
-```
+    Turtle.draw do
+      background lightslategray
+      pencolor honeydew
+      4.times do
+        forward 50
+        turnright 90
+      end
+    end
 
 Try running this example. It also draws a square! Wow!
 
