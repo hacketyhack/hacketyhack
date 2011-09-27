@@ -336,13 +336,25 @@ class HH::LessonPage
   end
 
   def render_to(container)
+    renderer = HH::LessonPageRenderer.new(container)
+    markdown = Redcarpet::Markdown.new(renderer)
+    
     @actions.each do |action|
-      container.instance_eval &(action)
+      case action
+        when String
+          markdown.render(action)
+        when Proc
+          action.call(container)
+      end
     end
   end
-
+  
   def add_action(&blk)
     @actions << blk
+  end
+
+  def add_para(markdown)
+    @actions.push(markdown)
   end
 end
 
@@ -382,57 +394,49 @@ class HH::LessonRenderer < Redcarpet::Render::Base
   end
 
   def paragraph(text)
-    @current_page.add_action { para(text) }
+    @current_page.add_para(text)
     ''
   end
-
-  def emphasis(text)
-    @current_page.add_action { em(text) }
-    ''
-  end
-
-  def double_emphasis(text)
-    @current_page.add_action { strong(text) }
-    ''
-  end
-
-  def codespan(src)
-    @current_page.add_action { code(src) }
-    ''
-  end
-
-  # TODO do something useful w/ language, like add 'run now'
+  
   def block_code(src, language)
-    @current_page.add_action { embed_code(src) }
+    @current_page.add_action { |container| container.embed_code(src) }
     ''
   end
+end
 
-  def image(path, title, alt_text)
+class HH::LessonPageRenderer < Redcarpet::Render::Base
+  
+  def initialize(container)
+    super()
+    @container = container
+    @args = []
+  end
+  
+  def emphasis(text)
+    store @container.em(text)
+  end
+  
+  def double_emphasis(text)
+    store @container.strong(text)
+  end
 
-    # HH::STATIC  ->  HH::HOME + "/static"  ->  Dir.pwd + "/static"
-    # HH::STATIC                 -> /home/dan/projects/hacketyhack/static
-    # #{HH::STATIC}/tab-home.png -> /home/dan/projects/hacketyhack/static/tab-home.png
-
-    # This is a good example of the kind of necessary-muck I want to minimize.
-    block = if alt_text.nil? || alt_text.empty?
-              Proc.new {}
-            else
-              Proc.new { alert(alt_text) }
-            end
-
-    if path.start_with? "/icon_button/"
-      path.sub! '/icon_button/', ''
-      @current_page.add_action do
-        icon_button(path.to_sym, nil, &block)
-      end
-
-    else
-      path = File.join(HH::HOME, path)  # TODO unless it's a URL
-      @current_page.add_action do
-        image(path, {}, &block)
-      end
-    end
-
+  def store(shoes_bit)
+    @args << shoes_bit
+    '[-]'
+  end
+  
+  def paragraph(text)
+    #puts text
+    
+    text = text.split('[-]')
+    para_bits = text.zip(@args).flatten[0..-2]
+    
+    #puts "para_bits: #{para_bits.inspect}"
+    @container.instance_eval { para *para_bits }
+    
+    @args.clear
+    
     ''
   end
+  
 end
