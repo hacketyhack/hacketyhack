@@ -167,6 +167,8 @@ the turtle isn't doing what you expect!
 
 
 Click on the editor tab (
+
+
 ![Not this one, silly! the one on the left!](static/tab-new.png)
 
 ) to get started.

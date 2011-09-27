@@ -59,7 +59,7 @@ module MarkdownTranslator
 
   def image(path, opts={}, &block)
     msg = yield if block_given?
-    puts "![#{msg || ''}](#{path})"
+    puts "\n\n![#{msg || ''}](#{path})\n"
   end
 
   # On a page, this is basically a way of saying,

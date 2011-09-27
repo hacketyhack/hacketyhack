@@ -65,6 +65,8 @@ _Ruby_ was created by
 
  (you can just call him Matz) in 1995. If you couldn't guess, Matz is from
 Japan. Here he is:
+
+
 ![](static/matz.jpg)
 
 ### Ruby is enjoyable
@@ -90,6 +92,8 @@ screen. Otherwise, you won't know what's going on!
 
 
 In order to start coding, we need to bring up the Editor. Click the (
+
+
 ![Not this one, silly! the one on the left!](static/tab-new.png)
 
 ) to open it up.
