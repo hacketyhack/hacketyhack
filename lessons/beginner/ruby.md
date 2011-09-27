@@ -1,4 +1,3 @@
-
 # Beginner Ruby
 
 ## Hello there!
@@ -11,8 +10,6 @@ Ruby is a great programming language that you can use to make all kinds of
 things with. Let's get going!
 
 Click the icon like this (on the bottom of the screen) to get started:
-
-
 ![Not this one! The one below!](/icon_button/arrow_right)
 
 ### Lesson Controls
@@ -20,34 +17,19 @@ Click the icon like this (on the bottom of the screen) to get started:
 Before we move on, Here's a refresher on the controls you can use to move around
 in the Lesson.
 
-
-
 ![](/icon_button/arrow_left)
-
 __back__: goes back one page
 
-
-
 ![](/icon_button/arrow_right)
-
 __continue__: goes to the next page
 
-
-
 ![](/icon_button/menu)
-
 __menu__: makes it easy to jump around to any lesson
 
-
-
 ![](/icon_button/x)
-
 __close__: closes the tutor
 
-Don't forget! Press this to move to the next part:
-
-
-![](/icon_button/arrow_right)
+Don't forget! Press this to move to the next part: ![](/icon_button/arrow_right)
 
 Have at it!
 
@@ -55,14 +37,12 @@ Have at it!
 
 ### Konnichiwa, Ruby!
 
-
 _Ruby_ was created by 
 
 まつもと ゆきひろ
 
- (you can just call him Matz) in 1995. If you couldn't guess, Matz is from
+(you can just call him Matz) in 1995. If you couldn't guess, Matz is from
 Japan. Here he is:
-
 
 ![](static/matz.jpg)
 
@@ -87,10 +67,8 @@ to everyone, and give them a hand when they need it!
 Okay! The very first thing that you need to know is how to show something on the
 screen. Otherwise, you won't know what's going on!
 
-
 In order to start coding, we need to bring up the Editor. Its icon looks like
 this:
-
 
 ![Not this one, silly! the one on the left!](static/tab-new.png)
 
@@ -344,10 +322,10 @@ still have to learn, though!
 
 Here's what you've learned so far:
 
-* `alert` and `ask`
+`alert` and `ask`
 
-* `=`, variables, and `==`
+`=`, variables, and `==`
 
-* `if` and `else`
+`if` and `else`
 
 Awesome! You'll want to check out Basic Shoes next!
