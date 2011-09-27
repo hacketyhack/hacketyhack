@@ -433,6 +433,10 @@ class HH::LessonPageRenderer < Redcarpet::Render::Base
     @args = []
   end
   
+  def normal_text(text)
+    text.gsub(/\n/, ' ') unless text.nil?
+  end
+  
   def emphasis(text)
     store @container.em(text)
   end
@@ -457,7 +461,7 @@ class HH::LessonPageRenderer < Redcarpet::Render::Base
   def paragraph(text)
     #puts text
     
-    text.gsub!(/\n/, ' ')
+    #text.gsub!(/\n/, ' ')
     text = text.split('[-]')
     para_bits = text.zip(@args).flatten[0..-2]
     
