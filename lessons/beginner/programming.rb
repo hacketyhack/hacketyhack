@@ -138,8 +138,6 @@ lesson_set "Beginner Programming" do
       end
       para ") to get started."
     end
-
-    next_when :tab_opened, :Editor
   end
 
   page "Type it in!" do

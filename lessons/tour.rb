@@ -48,14 +48,12 @@ lesson_set "A Tour of Hackety Hack" do
          "the lessons that come with Hackety. For now, there's just a few. More ",
          "Lessons will be added, and eventually, you'll be able to write and share ",
          "your own Lessons with other Hackety Hackers."
-    para "Lessons are just simple Ruby files. They're fun to make! You can even make ",
-         "lessons advance automatically based on certain events. For example, click ",
-         " on the Home button to move on."
-    para "The home button looks like this:"
-    image "#{HH::STATIC}/tab-home.png", :margin => 6 do
-      alert("Not this one, silly! the one on the left!")
-    end
-    next_when :tab_opened, :Home
+    para "Lessons are just simple ", 
+         link("Markdown", :click=>'http://daringfireball.net/projects/markdown/syntax'), 
+         " files. ",
+         "Markdown looks just like writing normal text, but with some extra ",
+         "characters for text that's ", strong("bold"), " or ", em("italicized"),
+         ", adding images, and stuff like that."
   end
 
   lesson "Home"
@@ -77,7 +75,6 @@ lesson_set "A Tour of Hackety Hack" do
     image "#{HH::STATIC}/tab-new.png", :margin => 6 do
       alert("Not this one, silly! the one on the left!")
     end
-    next_when :tab_opened, :Editor
   end end
 
   lesson "Editor"
@@ -109,7 +106,6 @@ alert "Hello, " + name + "."'
     end
     para " Click it, and it'll open up a new window. Browse around and come back, ",
          "I'll be here."
-    next_when :tab_opened, :Help
   end end
 
   page "Okay, well... Shoes." do
@@ -117,36 +113,40 @@ alert "Hello, " + name + "."'
          "toolkit for creating GUI programs in Ruby. All of the programs that ",
          "you make in Hackety Hack are built with Shoes. That manual contains ",
          "the entire Shoes reference, and there's a lot! Luckily, there's also ",
-         "a much shorter cheat sheet too. Go ahead click it:"
-    image "#{HH::STATIC}/tab-cheat.png", :margin => 6 do
-      alert("Not this one, silly! the one on the left!")
-    end
-    next_when :tab_opened, :Cheat
+         "a much shorter cheat sheet too..."
   end
 
   lesson "Cheat"
-  page "Short and sweet." do flow do
-    para "The Cheat Sheet is much simpler. It just contains some helpful bits ",
-         "that you should find useful. A quick reference of often used bits. ",
-         "And a short sheet deserves a short explanation. Check out the About ("
-    image "#{HH::STATIC}/tab-hand.png", :margin => 6 do
+  page "Short and sweet." do 
+    para "Peek at the Cheat Sheet by clicking the icon like this:"
+    image "#{HH::STATIC}/tab-cheat.png", :margin => 6 do
       alert("Not this one, silly! the one on the left!")
     end
-    para ") tab next."
-    next_when :tab_opened, :About
-  end end
+    para "The Cheat Sheet is much simpler. It just contains some helpful bits ",
+         "that you should find useful. A quick reference of often used bits. ",
+         "And a short sheet deserves a short explanation."
+  end
 
   lesson "About"
   page "About Hackety" do
     para "The classic About box. These have been around basically since the ",
          "beginning of time. It's just a fun little image that tells you what ",
          "version of Hackety Hack you're using. It'll change with every release."
-    para "Time for the last one: open up the Preferences tab."
-    next_when :tab_opened, :Prefs
+   
+    image "#{HH::STATIC}/tab-hand.png", :margin => 6 do
+      alert("Not this one, silly! the one on the left!")
+    end
+   
+    para "Time for the last one..."
   end
 
   lesson "Preferences"
   page "I do prefer..." do
+    para "The Preferences icon is towards the ",
+         "bottom, and looks like this:"
+    image "#{HH::STATIC}/tab-properties.png" do
+      alert("Not this one, silly! the one on the left!")
+    end
     para "This lets you adjust your preferences for Hackety Hack. Right now, there's ",
          "only one preference: linking Hackety with your account on ",
          link("hackety-hack.com", :click => "http://hackety-hack.com"), ". You ",
@@ -155,15 +155,17 @@ alert "Hello, " + name + "."'
          "and easily share them with others! More interesting features will be ",
          "developed along these lines, so sign up, stick your info in, and prepare ",
          "for all kinds of awesome."
-    para "I won't make you click the button to advance this time... instead, just ",
-         "click the arrow to advance."
   end
 
   lesson "Quit"
   page "Self-explanatory" do
-    para "If you did click the quit button, well, you wouldn't be here anymore. ",
+    para "If you did click the quit icon, well, you wouldn't be here anymore. ",
          "And that'd be unfortunate. So, don't click it until you're good and ready. ",
-         "When it's your time to go, it'll be there waiting for you. Come back soon!"
+         "When it's your time to go, it'll be there waiting for you."
+    image "#{HH::STATIC}/tab-quit.png" do
+      alert("Not this one, silly! the one on the left!")
+    end
+    para "Come back soon!"
   end
 
   lesson "... and beyond!"

@@ -62,15 +62,6 @@ module MarkdownTranslator
     puts "\n\n![#{msg || ''}](#{path})\n"
   end
 
-  # On a page, this is basically a way of saying,
-  # "Hey, when someone's on this page right here,
-  # if they click the TAB that I'm naming here,
-  # you should advance the lesson to the next page,
-  # whatever it is."
-  def next_when(tab_opened, tab_name)
-    puts "<<Also, on this page ONLY, wire up the #{tab_name} tab to advance to the next page.>>"
-  end
-
   def embed_code(code, opts={})
     code = code.lines.map { |line| "    #{line}" } * ''
     puts "\n#{code}\n"

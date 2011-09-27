@@ -72,9 +72,8 @@ lesson_set "Beginner Ruby" do
       image "#{HH::STATIC}/tab-new.png", :margin => 6 do
         alert("Not this one, silly! the one on the left!")
       end
-      para ") to open it up."
+      para ") to open it up, and then we'll move on..."
     end
-    next_when :tab_opened, :Editor
   end
 
   page "Hello, World!" do
