@@ -1,4 +1,3 @@
-
 # Beginner Shoes
 
 ## Hello there!
@@ -13,7 +12,6 @@ really easy and fun!
 
 Click the icon like this (on the bottom of the screen) to get started:
 
-
 ![Not this one! The one below!](/icon_button/arrow_right)
 
 ### Lesson Controls
@@ -21,32 +19,19 @@ Click the icon like this (on the bottom of the screen) to get started:
 Before we move on, Here's a refresher on the controls you can use to move around
 in the Lesson.
 
-
-
 ![](/icon_button/arrow_left)
-
 __back__: goes back one page
 
-
-
 ![](/icon_button/arrow_right)
-
 __continue__: goes to the next page
 
-
-
 ![](/icon_button/menu)
-
 __menu__: makes it easy to jump around to any lesson
 
-
-
 ![](/icon_button/x)
-
 __close__: closes the tutor
 
 Don't forget! Press this to move to the next part:
-
 
 ![](/icon_button/arrow_right)
 
