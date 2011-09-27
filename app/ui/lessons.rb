@@ -444,6 +444,10 @@ class HH::LessonPageRenderer < Redcarpet::Render::Base
   def link(link, title, content)
     store @container.link(content, :click => link)
   end
+  
+  def codespan(code)
+    store @container.code(code)
+  end
 
   def store(shoes_bit)
     @args << shoes_bit
