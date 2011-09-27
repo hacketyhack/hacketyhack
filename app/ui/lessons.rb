@@ -446,15 +446,33 @@ class HH::LessonPageRenderer < Redcarpet::Render::Base
   def paragraph(text)
     #puts text
     
-    text = text.split('[-]')
-    para_bits = text.zip(@args).flatten.compact
-    
+    para_bits = interpolate(text, @args)
     #puts "para_bits: #{para_bits.inspect}"
+    
     @container.instance_eval { para *para_bits }
-    
     @args.clear
-    
     ''
+  end
+  
+  # The markdown string "I'd _love_ a cupcake!" comes to us looking like this:
+  # "Hello, I'd [-] a cupcake!"
+  # ...and @args looks like this:
+  # [Shoes::Em]
+  # #interpolate turns them into this:
+  # ["Hello, I'd ", Shoes::Em, " a cupcake!"]
+  # These are the args that'll be passed to Shoes#para.
+  # It also turns "_I_ like _chocolate!_" into
+  # [Shoes::Em, " like ", Shoes::Em]
+  def interpolate(text, args)
+    results = []
+    while text.include?('[-]')
+      head, text = *text.split('[-]', 2)
+      results << head << args.shift
+    end
+    results << text 
+    results << args unless args.empty?
+      
+    return results.compact
   end
   
 end
