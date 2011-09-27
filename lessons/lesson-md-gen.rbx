@@ -29,9 +29,15 @@ module MarkdownTranslator
     puts
     yield
   end
+  
+  def wrap_text(txt, col = 80)
+    txt.gsub(/(.{1,#{col}})( +|$\n?)|(.{1,#{col}})/,
+      "\\1\\3\n") 
+  end
 
   def para *lines
-    puts "\n" + lines.to_a.map { |line| line.to_s } * ''
+    lines = lines.to_a.map { |line| line.to_s } * ''
+    puts "\n" + wrap_text(lines)
   end
 
   def em text
