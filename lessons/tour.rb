@@ -63,9 +63,9 @@ lesson_set "A Tour of Hackety Hack" do
   page "Welcome Home" do
     para "This is the home screen, which shows you two very important things: your ",
          "own programs, and the sample programs. Everyone starts off with one simple ",
-         "program: Hello, world! I won't even ask you to open it, check it out:\n"
+         "program: Hello, world! Check it out:\n"
     embed_code 'alert "Hello, world!"', :run_button => true
-    para "This is an actual Ruby program, click the button to try it out! You'll ",
+    para "This is an actual Ruby program! You'll ",
          "learn more about Ruby itself in the Beginning Ruby Lesson."
   end
 
