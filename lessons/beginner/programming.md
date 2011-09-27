@@ -121,19 +121,13 @@ of the square is? If you didn't good job!
 Here's how I'd do it, by the way. This isn't the only right answer, it's just an
 example:
 
-1. Put your pen down on the paper.
-
-2. Draw right one inch.
-
-3. Draw down one inch.
-
-4. Draw left one inch.
-
-5. Draw up one inch.
-
-6. Take your pen off of the paper.
-
-7. You're done!
+    1. Put your pen down on the paper.
+    2. Draw right one inch.
+    3. Draw down one inch.
+    4. Draw left one inch.
+    5. Draw up one inch.
+    6. Take your pen off of the paper.
+    7. Finished!
 
 ## Turtles, all the way down.
 
