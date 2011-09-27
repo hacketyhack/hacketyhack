@@ -450,7 +450,7 @@ class HH::LessonPageRenderer < Redcarpet::Render::Base
     #puts text
     
     text = text.split('[-]')
-    para_bits = text.zip(@args).flatten[0..-2]
+    para_bits = text.zip(@args).flatten.compact
     
     #puts "para_bits: #{para_bits.inspect}"
     @container.instance_eval { para *para_bits }
