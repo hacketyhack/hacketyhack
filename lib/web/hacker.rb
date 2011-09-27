@@ -1,6 +1,5 @@
 # website integration
 
-require 'lib/web/yaml'
 require 'lib/web/api'
 
 def Hacker name
@@ -8,7 +7,6 @@ def Hacker name
 end
 
 class Hacker
-  include HH::YAML
   include HH::API
 
   attr :name
