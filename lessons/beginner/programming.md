@@ -172,7 +172,6 @@ Click on the editor tab (
 ![Not this one, silly! the one on the left!](static/tab-new.png)
 
 ) to get started.
-<<Also, on this page ONLY, wire up the Editor tab to advance to the next page.>>
 
 ### Type it in!
 

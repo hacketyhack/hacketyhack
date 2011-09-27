@@ -118,21 +118,6 @@ class HH::LessonContainer
     conn
   end
 
-  # on the event specified in +args+ goes to the next page
-  # if a block is specified it is used as additional condition
-  # the event arguments are passed to the block
-  def next_when *args, &blk  # This is ONLY ever used for :tab_opened, and we never pass a block
-    if blk
-      unless args.size == 1
-        raise ArgumentError, "if a block is passed there should be no arguments"
-      end
-      cond = HH::EventCondition.new &blk
-      on_event(args[0], cond) {next_page}
-    else
-      on_event(*args) {next_page}
-    end
-  end
-
   def delete_event_connections
     @event_connections.each do |ec|
       app.delete_event_connection ec
@@ -461,7 +446,6 @@ class HH::LessonPageRenderer < Redcarpet::Render::Base
   def paragraph(text)
     #puts text
     
-    #text.gsub!(/\n/, ' ')
     text = text.split('[-]')
     para_bits = text.zip(@args).flatten[0..-2]
     

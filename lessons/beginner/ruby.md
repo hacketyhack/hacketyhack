@@ -96,8 +96,7 @@ In order to start coding, we need to bring up the Editor. Click the (
 
 ![Not this one, silly! the one on the left!](static/tab-new.png)
 
-) to open it up.
-<<Also, on this page ONLY, wire up the Editor tab to advance to the next page.>>
+) to open it up, and then we'll move on...
 
 ### Hello, World!
 
