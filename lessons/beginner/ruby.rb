@@ -41,7 +41,7 @@ lesson_set "Beginner Ruby" do
   page "Konnichiwa, Ruby!" do # can't do 日本語 without a bunch of work...
     flow do # due to multiple fonts...
       para em("Ruby"), " was created by "
-      para "まつもと ゆきひろ", :font => "TakaoGothic"
+      para "まつもと ゆきひろ"
       para " (you can just call him Matz) in 1995. If you couldn't guess, Matz is ",
            "from Japan. Here he is:"
     end

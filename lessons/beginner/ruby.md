@@ -58,7 +58,7 @@ Have at it!
 
 _Ruby_ was created by 
 
-まつもと ゆきひろ{:font=>"TakaoGothic"}
+まつもと ゆきひろ
 
  (you can just call him Matz) in 1995. If you couldn't guess, Matz is from
 Japan. Here he is:
