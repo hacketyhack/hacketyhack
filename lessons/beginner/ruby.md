@@ -7,7 +7,8 @@
 
 Welcome to your first lesson in Ruby! You're going to have a blast.
 
-Ruby is a great programming language that you can use to make all kinds of things with. Let's get going!
+Ruby is a great programming language that you can use to make all kinds of
+things with. Let's get going!
 
 
 (click the little 
@@ -19,7 +20,8 @@ Ruby is a great programming language that you can use to make all kinds of thing
 
 ### Lesson Controls
 
-Before we move on, Here's a refresher on the controls you can use to move around in the Lesson.
+Before we move on, Here's a refresher on the controls you can use to move around
+in the Lesson.
 
 
 
@@ -61,23 +63,30 @@ _Ruby_ was created by
 
 まつもと ゆきひろ{:font=>"TakaoGothic"}
 
- (you can just call him Matz) in 1995. If you couldn't guess, Matz is from Japan. Here he is:
+ (you can just call him Matz) in 1995. If you couldn't guess, Matz is from
+Japan. Here he is:
 ![](static/matz.jpg)
 
 ### Ruby is enjoyable
 
 Matz has this to say about Ruby:
 
-_I hope to see Ruby help every programmer in the world to be productive, and to enjoy programming, and to be happy. That is the primary purpose of Ruby language.
+_I hope to see Ruby help every programmer in the world to be productive, and to
+enjoy programming, and to be happy. That is the primary purpose of Ruby
+language.
 _
 
-One more thing about Ruby: Rubyists (that's what people who like Ruby call themselves) have a saying: __MINSWAN__. This stands for __M__atz __I__s __N__ice __S__o __W__e __A__re __N__ice. Which is a pretty nice saying, itself. Be nice to everyone, and give them a hand when they need it!
+One more thing about Ruby: Rubyists (that's what people who like Ruby call
+themselves) have a saying: __MINSWAN__. This stands for __M__atz __I__s __N__ice
+__S__o __W__e __A__re __N__ice. Which is a pretty nice saying, itself. Be nice
+to everyone, and give them a hand when they need it!
 
 ## Displaying Things
 
 ### Let's do this!
 
-Okay! The very first thing that you need to know is how to show something on the screen. Otherwise, you won't know what's going on!
+Okay! The very first thing that you need to know is how to show something on the
+screen. Otherwise, you won't know what's going on!
 
 
 In order to start coding, we need to bring up the Editor. Click the (
@@ -96,35 +105,50 @@ Type this in and press the 'Run' button.
 
 ### alert
 
-Okay, let's break this down: There's two main parts to this little program: you have an `alert`, and a `"Hello, world!"`. These two parts work just like an English sentence: The `alert` is a verb and the stuff in the ""s is an object. In Ruby, we call verbs __methods__. The `alert` verb says 'Put an alert box on the screen, and the content of the box is whatever thing you give me.'
+Okay, let's break this down: There's two main parts to this little program: you
+have an `alert`, and a `"Hello, world!"`. These two parts work just like an
+English sentence: The `alert` is a verb and the stuff in the ""s is an object.
+In Ruby, we call verbs __methods__. The `alert` verb says 'Put an alert box on
+the screen, and the content of the box is whatever thing you give me.'
 
-We'll talk about the `"Hello, world!"` in just a second. Here's the other way of making this happen: 
+We'll talk about the `"Hello, world!"` in just a second. Here's the other way of
+making this happen: 
 
     puts "Hello, world!"
 
-But if you try that here, it won't work! The `puts` method doesn't display a dialog box, it puts text out to a command-line prompt. Since Hackety Hack is all graphical, this doesn't work here. So we'll be using `alert`s throughout these tutorials, but if you look at other Ruby tutorials, you may see `puts`.
+But if you try that here, it won't work! The `puts` method doesn't display a
+dialog box, it puts text out to a command-line prompt. Since Hackety Hack is all
+graphical, this doesn't work here. So we'll be using `alert`s throughout these
+tutorials, but if you look at other Ruby tutorials, you may see `puts`.
 
 ## Letters, words, and sentences
 
 ### Strings
 
-Okay! Now that you've got that verb bit down, it's time to learn about _String_s. Strings are what we call a bunch of words between a pair of " characters. The "s are used to tell the computer what words you actually want to say. Let's think about our example:
+Okay! Now that you've got that verb bit down, it's time to learn about
+_String_s. Strings are what we call a bunch of words between a pair of "
+characters. The "s are used to tell the computer what words you actually want to
+say. Let's think about our example:
 
     alert "Hello, world!"
 
-If you didn't have the "s, the computer wouldn't know which words were methods and which ones were part of the string! And consider this:
+If you didn't have the "s, the computer wouldn't know which words were methods
+and which ones were part of the string! And consider this:
 
     alert "I am on high alert!"
 
-Without making all of those words a string, how would Ruby know that the second alert was some text you wanted to say, rather than another alert box?
+Without making all of those words a string, how would Ruby know that the second
+alert was some text you wanted to say, rather than another alert box?
 
 ### Adding Strings
 
-Now, if you want to put two bits of strings together, you can use the `+` character to do it. Try typing this:
+Now, if you want to put two bits of strings together, you can use the `+`
+character to do it. Try typing this:
 
     alert "Hello, " + "world!"
 
-Same thing! The `+` sticks the two strings together. This will end up being super useful later!
+Same thing! The `+` sticks the two strings together. This will end up being
+super useful later!
 
 ## Numbers and Math
 
@@ -164,7 +188,9 @@ This is kind of fun and silly, though:
 
 ### Errors
 
-You know how nothing happened when you hit the Run button earlier? That was because there was an error. You can see any errors that run by hitting either Alt-/ or Command-/, depending on what kind of computer you're using.
+You know how nothing happened when you hit the Run button earlier? That was
+because there was an error. You can see any errors that run by hitting either
+Alt-/ or Command-/, depending on what kind of computer you're using.
 
 The error that results from `alert "hey" + 2` is 
 
@@ -176,9 +202,13 @@ What is that?
 
 ### Why's it do that?
 
-Each part of a Ruby program is an `Object`. Right now, all you need to know about `Object`s is that it's sort of like saying "a thing." Your program is made up of a bunch of `Object`s working together.
+Each part of a Ruby program is an `Object`. Right now, all you need to know
+about `Object`s is that it's sort of like saying "a thing." Your program is made
+up of a bunch of `Object`s working together.
 
-We'll learn more about `Object`s in a future lesson, but there is one thing I'll tell you: `Object`s have a 'type.' This lets Ruby know what kind of `Object` it is.
+We'll learn more about `Object`s in a future lesson, but there is one thing I'll
+tell you: `Object`s have a 'type.' This lets Ruby know what kind of `Object` it
+is.
 
 ### Adding numbers to words
 
@@ -186,9 +216,12 @@ That's why
 
     alert "hey" + 2
 
-doesn't really work: "hey" is a `String` object, and 2 is a `Fixnum` object. And adding `String`s and `Fixnum`s doesn't make any sense. We can make this code work, though!
+doesn't really work: "hey" is a `String` object, and 2 is a `Fixnum` object. And
+adding `String`s and `Fixnum`s doesn't make any sense. We can make this code
+work, though!
 
-All we need to do is turn the `Fixnum` into a `String`. We can do this by using the `to_s` method.
+All we need to do is turn the `Fixnum` into a `String`. We can do this by using
+the `to_s` method.
 
     alert "hey" + 2.to_s
 
@@ -196,13 +229,18 @@ All we need to do is turn the `Fixnum` into a `String`. We can do this by using 
 
     alert "hey" + 2.to_s
 
-Okay, this isn't bad. We have our `alert` method. We're giving it `"hey" + 2.to_s`. The `2.to_s` turns a `Fixnum` 2, which is like the mathematical idea of a 2, into the `String` 2, which is like when you write a 2 down on a piece of paper.
+Okay, this isn't bad. We have our `alert` method. We're giving it `"hey" +
+2.to_s`. The `2.to_s` turns a `Fixnum` 2, which is like the mathematical idea of
+a 2, into the `String` 2, which is like when you write a 2 down on a piece of
+paper.
 
 ## Variables
 
 ### They're like boxes
 
-What happens if we want to keep something around? Most programs are not one line, I assure you. You can use a _variable_ to hold a value and use it later. It's like a box that you put things in.
+What happens if we want to keep something around? Most programs are not one
+line, I assure you. You can use a _variable_ to hold a value and use it later.
+It's like a box that you put things in.
 
 Let's try one out:
 
@@ -213,7 +251,8 @@ Give that a run.
 
 ### Assignment
 
-Cool stuff! We used an `=` to _assign_ the `String`"Hello, world!" into the variable `message`. We then passed that `message` to the `alert` method.
+Cool stuff! We used an `=` to _assign_ the `String`"Hello, world!" into the
+variable `message`. We then passed that `message` to the `alert` method.
 
 As you can see, we can use variables in place of another value. Try this:
 
@@ -229,20 +268,25 @@ Make a guess before you run this program.
 
 ### ask-ing for it.
 
-We can ask the user of our program for some input, and then put their answer into a variable. It's easy! Check this program out:
+We can ask the user of our program for some input, and then put their answer
+into a variable. It's easy! Check this program out:
 
     name = ask "What is your name?"
     alert "Hello, " + name
 
-The `ask` method brings up a box and lets our users type something in. Fun! We put their answer into the `name` variable and then showed it with `alert`. Sweet!
+The `ask` method brings up a box and lets our users type something in. Fun! We
+put their answer into the `name` variable and then showed it with `alert`.
+Sweet!
 
 ## Basic flow control
 
 ### if...
 
-Remember back to that Beginning Programming lesson... we talked about how programs are one big list, that the computer follows in order.
+Remember back to that Beginning Programming lesson... we talked about how
+programs are one big list, that the computer follows in order.
 
-Well, guess what? We can actually change this order by using certain bits of code. Compare these two programs:
+Well, guess what? We can actually change this order by using certain bits of
+code. Compare these two programs:
 
     number = 2
     if number == 2
@@ -271,7 +315,10 @@ Here it is again:
       alert "No!"
     end
 
-The == command is just a bit different than the = command. == tests the `Object` on its right against the `Object` on its left. If the two are equal, then the code after the `if` will run. If they're not equal, you get the code after the `else`. The `end` lets us know we're done with our `if`.
+The == command is just a bit different than the = command. == tests the `Object`
+on its right against the `Object` on its left. If the two are equal, then the
+code after the `if` will run. If they're not equal, you get the code after the
+`else`. The `end` lets us know we're done with our `if`.
 
 ## Example: a guessing game
 
@@ -287,13 +334,16 @@ Let's put this all together:
       alert "Sorry, you'll have to try again."
     end
 
-Can you guess what `to_s` does, and why you need it? If you're stumped, try asking [on the Hackety Hack site](http://hackety-hack.com/stream) and we'll give you a hand.
+Can you guess what `to_s` does, and why you need it? If you're stumped, try
+asking [on the Hackety Hack site](http://hackety-hack.com/stream) and we'll give
+you a hand.
 
 ## Summary
 
 ### Good job!
 
-Congrats! You've picked up all of the basics of Ruby. There's a lot more you still have to learn, though!
+Congrats! You've picked up all of the basics of Ruby. There's a lot more you
+still have to learn, though!
 
 Here's what you've learned so far:
 

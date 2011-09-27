@@ -453,6 +453,7 @@ class HH::LessonPageRenderer < Redcarpet::Render::Base
   def paragraph(text)
     #puts text
     
+    text.gsub!(/\n/, ' ')
     text = text.split('[-]')
     para_bits = text.zip(@args).flatten[0..-2]
     
