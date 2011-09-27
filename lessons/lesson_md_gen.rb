@@ -109,6 +109,8 @@ end
 
 def run
   Dir.glob("#{File.dirname(__FILE__)}/**/*.rb").each do |lesson|
-    MarkdownEmitter.new(lesson)
+    MarkdownEmitter.new(lesson) unless lesson.include?(__FILE__)
   end
 end
+
+run
