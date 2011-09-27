@@ -401,7 +401,7 @@ class HH::LessonRenderer < Redcarpet::Render::Base
   end
   
   def block_code(src, language)
-    defer { |container| container.embed_code(src) }
+    defer { |container| container.embed_code(src.chomp) }
   end
 
   def image(path, title, alt_text)
