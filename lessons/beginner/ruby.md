@@ -10,6 +10,7 @@ Ruby is a great programming language that you can use to make all kinds of
 things with. Let's get going!
 
 Click the icon like this (on the bottom of the screen) to get started:
+
 ![Not this one! The one below!](/icon_button/arrow_right)
 
 ### Lesson Controls
@@ -29,7 +30,9 @@ __menu__: makes it easy to jump around to any lesson
 ![](/icon_button/x)
 __close__: closes the tutor
 
-Don't forget! Press this to move to the next part: ![](/icon_button/arrow_right)
+Don't forget! Press this to move to the next part:
+
+![](/icon_button/arrow_right)
 
 Have at it!
 
@@ -145,11 +148,8 @@ You can even use numbers that have a decimal point in them:
 You can also do math with numbers, and it'll work out pretty well:
 
     alert 1 + 2
-
     alert 5 - 3
-
     alert 2 * 3
-
     alert 4 / 2
 
 But if you try this, nothing happens:
@@ -300,13 +300,15 @@ code after the `if` will run. If they're not equal, you get the code after the
 
 Let's put this all together:
 
-    secret_number = 42.to_s
-    guess = ask "I have a secret number. Take a guess, see if you can figure it out!"
-    if guess == secret_number
-      alert "Yes! You guessed right!"
-    else
-      alert "Sorry, you'll have to try again."
-    end
+```
+secret_number = 42.to_s
+guess = ask "I have a secret number. Take a guess, see if you can figure it out!"
+if guess == secret_number
+  alert "Yes! You guessed right!"
+else
+  alert "Sorry, you'll have to try again."
+end
+```
 
 Can you guess what `to_s` does, and why you need it? If you're stumped, try
 asking [on the Hackety Hack site](http://hackety-hack.com/stream) and we'll give

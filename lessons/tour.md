@@ -1,4 +1,3 @@
-
 # A Tour of Hackety Hack
 
 ## Welcome!
@@ -7,10 +6,8 @@
 
 Welcome to the Hackety Hack tour!
 
-
 This whole side of the screen is the _Hackety Hack Tutor_. You can move forward
 through the lessons by clicking the _Next_ button:
-
 
 ![You should click on the actual button, below! =)](/icon_button/arrow_right)
 
@@ -27,32 +24,19 @@ about them first.
 
 Before we move on, just take a minute to look at the controls in the bar below.
 
-
-
 ![](/icon_button/arrow_left)
-
 __back__: goes back one page
 
-
-
 ![](/icon_button/arrow_right)
-
 __continue__: goes to the next page
 
-
-
 ![](/icon_button/menu)
-
 __menu__: makes it easy to jump around to any lesson
 
-
-
 ![](/icon_button/x)
-
 __close__: closes the tutor
 
 Don't forget! Press this to move to the next part:
-
 
 ![](/icon_button/arrow_right)
 
@@ -87,14 +71,12 @@ Beginning Ruby Lesson.
 
 ### Samples
 
-
 If you click on the 'Samples' tab, you can see a bunch of sample programs that
 we've included for some inspiration. There's a few interesting animations, some
 games, and a few other things.
 
 That's all there really is to say about the homepage. Try opening the Editor.
 Here's its icon:
-
 
 ![Not this one, silly! the one on the left!](static/tab-new.png)
 
@@ -107,7 +89,6 @@ editor. Give it a shot: try typing this program in.
 
     name = ask "What is your name?"
     alert "Hello, " + name + "."
-
 
 After doing so, you can try running the program by pressing the 'Run' button in
 the lower right corner.
@@ -127,13 +108,11 @@ off to other Hackety Hackers. :) More about this when we talk about Preferences.
 
 ### Getting Help
 
-
 The next tab is the Help tab. It looks like this: 
-
 
 ![Not this one, silly! the one on the left!](static/tab-help.png)
 
- Click it, and it'll open up a new window. Browse around and come back, I'll be
+Click it, and it'll open up a new window. Browse around and come back, I'll be
 here.
 
 ### Okay, well... Shoes.
@@ -149,7 +128,6 @@ there's a lot! Luckily, there's also a much shorter cheat sheet too...
 
 Peek at the Cheat Sheet by clicking the icon like this:
 
-
 ![Not this one, silly! the one on the left!](static/tab-cheat.png)
 
 The Cheat Sheet is much simpler. It just contains some helpful bits that you
@@ -164,7 +142,6 @@ The classic About box. These have been around basically since the beginning of
 time. It's just a fun little image that tells you what version of Hackety Hack
 you're using. It'll change with every release.
 
-
 ![Not this one, silly! the one on the left!](static/tab-hand.png)
 
 Time for the last one...
@@ -174,7 +151,6 @@ Time for the last one...
 ### I do prefer...
 
 The Preferences icon is towards the bottom, and looks like this:
-
 
 ![Not this one, silly! the one on the left!](static/tab-properties.png)
 
@@ -194,7 +170,6 @@ lines, so sign up, stick your info in, and prepare for all kinds of awesome.
 If you did click the quit icon, well, you wouldn't be here anymore. And that'd
 be unfortunate. So, don't click it until you're good and ready. When it's your
 time to go, it'll be there waiting for you.
-
 
 ![Not this one, silly! the one on the left!](static/tab-quit.png)
 
