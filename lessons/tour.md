@@ -72,6 +72,8 @@ lessons advance automatically based on certain events. For example, click  on
 the Home button to move on.
 
 The home button looks like this:
+
+
 ![Not this one, silly! the one on the left!](static/tab-home.png)
 <<Also, on this page ONLY, wire up the Home tab to advance to the next page.>>
 
@@ -97,6 +99,8 @@ games, and a few other things.
 
 That's all there really is to say about the homepage. Try opening the Editor.
 Here's its icon:
+
+
 ![Not this one, silly! the one on the left!](static/tab-new.png)
 <<Also, on this page ONLY, wire up the Editor tab to advance to the next page.>>
 
@@ -131,6 +135,8 @@ off to other Hackety Hackers. :) More about this when we talk about Preferences.
 
 
 The next tab is the Help tab. It looks like this: 
+
+
 ![Not this one, silly! the one on the left!](static/tab-help.png)
 
  Click it, and it'll open up a new window. Browse around and come back, I'll be
@@ -144,6 +150,8 @@ creating GUI programs in Ruby. All of the programs that you make in Hackety Hack
 are built with Shoes. That manual contains the entire Shoes reference, and
 there's a lot! Luckily, there's also a much shorter cheat sheet too. Go ahead
 click it:
+
+
 ![Not this one, silly! the one on the left!](static/tab-cheat.png)
 <<Also, on this page ONLY, wire up the Cheat tab to advance to the next page.>>
 
@@ -155,6 +163,8 @@ click it:
 The Cheat Sheet is much simpler. It just contains some helpful bits that you
 should find useful. A quick reference of often used bits. And a short sheet
 deserves a short explanation. Check out the About (
+
+
 ![Not this one, silly! the one on the left!](static/tab-hand.png)
 
 ) tab next.
