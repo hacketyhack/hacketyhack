@@ -398,9 +398,33 @@ class HH::LessonRenderer < Redcarpet::Render::Base
     ''
   end
   
-  def block_code(src, language)
-    @current_page.add_action { |container| container.embed_code(src) }
+  def defer(&blk)
+    @current_page.add_action(&blk)
     ''
+  end
+  
+  def block_code(src, language)
+    defer { |container| container.embed_code(src) }
+  end
+
+  def image(path, title, alt_text)
+
+    # HH::STATIC  ->  HH::HOME + "/static"  ->  Dir.pwd + "/static"
+    # This is a good example of the kind of necessary-muck I want to minimize.
+    on_click = if alt_text.nil? || alt_text.empty?
+                 Proc.new {}
+               else
+                 Proc.new { alert(alt_text) }
+               end
+
+    if path.start_with? "/icon_button/"
+      path.sub! '/icon_button/', ''
+      defer { |container| container.icon_button(path.to_sym, nil, &on_click) }
+
+    else
+      path = File.join(HH::HOME, path)  # TODO unless it's a URL
+      defer { |container| container.image(path, {}, &on_click) }
+    end
   end
 end
 

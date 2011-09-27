@@ -44,7 +44,7 @@ module MarkdownTranslator
 
   def icon_button(name_symbol, not_sure_but_is_nil, &block)
     msg = yield if block_given?
-    puts "![#{msg || ''}](/icon_button/#{name_symbol})"
+    puts "\n\n![#{msg || ''}](/icon_button/#{name_symbol})\n"
   end
 
   def alert(txt)
