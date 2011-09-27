@@ -9,13 +9,10 @@ Awesome! Glad to see you here! You're going to learn some great things in this
 lesson. Ruby has a few different ways to manipulate data, and you're going to
 play with them!
 
-
-(click the little 
+Click the icon like this (on the bottom of the screen) to get started:
 
 
 ![Not this one! The one below!](/icon_button/arrow_right)
-
- on the bottom of the screen to get started)
 
 ### Lesson Controls
 
@@ -46,12 +43,12 @@ __menu__: makes it easy to jump around to any lesson
 
 __close__: closes the tutor
 
-Don't forget! Press 
+Don't forget! Press this to move to the next part:
 
 
 ![](/icon_button/arrow_right)
 
-to move to the next part. Have at it!
+Have at it!
 
 ## Strings
 
@@ -110,8 +107,6 @@ __interpolation__.
 
 ### The 411
 
-_Ruby_ was created by 
-
 ### Concatination
 
 ### A short shout-out to Modules
@@ -123,8 +118,6 @@ _Ruby_ was created by
 ## Hashes
 
 ### A slightly different Array
-
-_Ruby_ was created by 
 
 ## Putting them together
 

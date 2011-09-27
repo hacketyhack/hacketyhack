@@ -9,12 +9,12 @@ Welcome to the Hackety Hack tour!
 
 
 This whole side of the screen is the _Hackety Hack Tutor_. You can move forward
-through the lessons by clicking the _Next_ button(
+through the lessons by clicking the _Next_ button:
 
 
 ![You should click on the actual button, below! =)](/icon_button/arrow_right)
 
-). Give it a shot!
+Give it a shot!
 
 ### Good Job!
 
@@ -51,12 +51,12 @@ __menu__: makes it easy to jump around to any lesson
 
 __close__: closes the tutor
 
-Don't forget! Press 
+Don't forget! Press this to move to the next part:
 
 
 ![](/icon_button/arrow_right)
 
-to move to the next part. Have at it!
+Have at it!
 
 ## Lessons
 

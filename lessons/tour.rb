@@ -3,14 +3,17 @@ lesson_set "A Tour of Hackety Hack" do
   page "Why hello there!" do 
     para "Welcome to the Hackety Hack tour!"
     flow do
-    para "This whole side of the screen is the ", em("Hackety Hack Tutor"),
-          ". You can move forward through the lessons by clicking the ", 
-          em("Next"), " button("
-    icon_button :arrow_right, nil do
-      alert "You should click on the actual button, below! =)"
+      para "This whole side of the screen is the ", em("Hackety Hack Tutor"),
+            ". You can move forward through the lessons by clicking the ", 
+            em("Next"), " button:"
+            
+      icon_button :arrow_right, nil do
+        alert "You should click on the actual button, below! =)"
+      end
     end
-    para "). Give it a shot!"
-  end end
+    
+    para "Give it a shot!"
+  end
 
   page "Good Job!" do
 
@@ -36,9 +39,9 @@ lesson_set "A Tour of Hackety Hack" do
       icon_button :x, nil
       para strong("close"), ": closes the tutor"
     end
-    para "Don't forget! Press "
+    para "Don't forget! Press this to move to the next part:"
     icon_button :arrow_right, nil
-    para "to move to the next part. Have at it!"
+    para "Have at it!"
   end
 
   lesson "Lessons"

@@ -10,13 +10,10 @@ Welcome to your first lesson in Ruby! You're going to have a blast.
 Ruby is a great programming language that you can use to make all kinds of
 things with. Let's get going!
 
-
-(click the little 
+Click the icon like this (on the bottom of the screen) to get started:
 
 
 ![Not this one! The one below!](/icon_button/arrow_right)
-
- on the bottom of the screen to get started)
 
 ### Lesson Controls
 
@@ -47,12 +44,12 @@ __menu__: makes it easy to jump around to any lesson
 
 __close__: closes the tutor
 
-Don't forget! Press 
+Don't forget! Press this to move to the next part:
 
 
 ![](/icon_button/arrow_right)
 
-to move to the next part. Have at it!
+Have at it!
 
 ## A bit more about Ruby
 
@@ -91,12 +88,13 @@ Okay! The very first thing that you need to know is how to show something on the
 screen. Otherwise, you won't know what's going on!
 
 
-In order to start coding, we need to bring up the Editor. Click the (
+In order to start coding, we need to bring up the Editor. Its icon looks like
+this:
 
 
 ![Not this one, silly! the one on the left!](static/tab-new.png)
 
-) to open it up, and then we'll move on...
+Click the icon to open the Editor up, and then we'll move on...
 
 ### Hello, World!
 
@@ -171,15 +169,11 @@ You can also do math with numbers, and it'll work out pretty well:
 
     alert 1 + 2
 
-
     alert 5 - 3
-
 
     alert 2 * 3
 
-
     alert 4 / 2
-
 
 But if you try this, nothing happens:
 

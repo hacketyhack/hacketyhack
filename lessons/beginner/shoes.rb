@@ -8,12 +8,9 @@ lesson_set "Beginner Shoes" do
          "basics that Shoes brings to everyone who programs."
     para "If you didn't know, Shoes is a Ruby toolkit that lets you build GUI programs ",
          "really easy and fun!"
-    flow do
-      para "(click the little "
-      icon_button :arrow_right, nil do
-        alert "Not this one! The one below!"
-      end
-      para " on the bottom of the screen to get started)"
+    para "Click the icon like this (on the bottom of the screen) to get started:"
+    icon_button :arrow_right, nil do
+      alert "Not this one! The one below!"
     end
   end
 
@@ -36,9 +33,9 @@ lesson_set "Beginner Shoes" do
       icon_button :x, nil
       para strong("close"), ": closes the tutor"
     end
-    para "Don't forget! Press "
+    para "Don't forget! Press this to move to the next part:"
     icon_button :arrow_right, nil
-    para "to move to the next part. Have at it!"
+    para "Have at it!"
   end
 
   lesson "Apps"
