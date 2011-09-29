@@ -118,21 +118,6 @@ class HH::LessonContainer
     conn
   end
 
-  # on the event specified in +args+ goes to the next page
-  # if a block is specified it is used as additional condition
-  # the event arguments are passed to the block
-  def next_when *args, &blk
-    if blk
-      unless args.size == 1
-        raise ArgumentError, "if a block is passed there should be no arguments"
-      end
-      cond = HH::EventCondition.new &blk
-      on_event(args[0], cond) {next_page}
-    else
-      on_event(*args) {next_page}
-    end
-  end
-
   def delete_event_connections
     @event_connections.each do |ec|
       app.delete_event_connection ec
@@ -149,19 +134,13 @@ end
 # class to load and execute the level sets
 class HH::LessonSet
   include HH::Observable
-  
-  def initialize name, blk
-    # content of @lessons:
-    # name, pages = @lessons[lesson_n]
-    # title, block = pages[page_n]
+
+  attr_reader :name
+
+  def initialize name
     @lessons = []
     @name = name
     @container = HH::LessonContainer.new self
-    instance_eval &blk
-  end
-
-  def init &blk
-    @container.instance_eval &blk
   end
 
   # returns only when close gets called
@@ -169,6 +148,8 @@ class HH::LessonSet
     # loads saved lesson and page, of 0, 0, by default
     # differently from what is displayed in the UI,
     # internally @lesson and @page start at 0
+    puts "@name: >#{@name}<"
+    puts "tut_lesson_#@name -> " + (HH::PREFS["tut_lesson_#@name"] || '-missing-').to_s
     @lesson = (HH::PREFS["tut_lesson_#@name"] || "0").to_i
     @page = (HH::PREFS["tut_page_#@name"] || "0").to_i
     @container.slot = slot
@@ -188,27 +169,28 @@ class HH::LessonSet
   def show_menu
     name, lessons = @name, @lessons
     lesson_set = self
-    @container.set_content do
+    @container.set_content do # NOTE: @container will instance_eval this block.
       background gray(0.1)
       stack :margin => 10, :height => -32, :scroll => true do
         title name
 
         lesson_i = 0
-        lessons.each do |name, pages|
+        lessons.each do |lesson_obj|
           lesson = lesson_i
           lesson_i += 1
 
-          subtitle "#{lesson_i} #{name}"#, :stroke => gray(0.9)
+          subtitle "#{lesson_i} #{lesson_obj.name}"#, :stroke => gray(0.9)
           page_i = 0
-          pages.each do |title, _proc|
+          lesson_obj.pages.each do |page_obj|
             page = page_i
             page_i += 1
             open_page = proc do lesson_set.instance_eval do
               @lesson, @page = lesson, page
               execute_page
             end end
-            para link("#{title}", :stroke => gray(0.9), :click => open_page),
-                                                              :margin_left => 10
+            para link("#{page_obj.title}", :stroke => gray(0.9),
+                                           :click => open_page),
+                 :margin_left => 10
           end
         end
       end
@@ -226,25 +208,25 @@ class HH::LessonSet
     lesson, page = @lesson, @page
     lesson_set = self
 
-    @container.set_content do
+    @container.set_content do # NOTE: @container will instance_eval this block.
       background gray(0.1)
 
-      lesson_name, pages = lessons[lesson]
-      page_title, page_block = pages[page]
+      lesson_object = lessons[lesson]
+      page_object = lesson_object.pages[page]
 
       stack :margin => 10, :height => -32, :scroll => true do
         # if first page of a lesson display the lesson name
         if page == 0
-          title "#{lesson+1}. #{lesson_name}"
+          title "#{lesson+1}. #{lesson_object.name}"
         end
 
         # if first page of a lesson do not display page number
         page_num = page == 0 ? "" : "#{lesson+1}.#{page+1} "
-        subtitle "#{page_num}#{page_title}"
+        subtitle "#{page_num}#{page_object.title}"
 
-        instance_eval &page_block
+        page_object.render_to self # Reminder: self == @container
       end
-      
+
       flow :height => 32,  :bottom => 0, :right => 0 do
         icon_button :arrow_left, "Previous", :left => 10 do
           lesson_set.previous_page
@@ -264,8 +246,8 @@ class HH::LessonSet
 
   def next_page
     @page += 1
-    _name, pages = @lessons[@lesson]
-    if @page >= pages.size
+    lesson = @lessons[@lesson]
+    if @page >= lesson.pages.size
       @page = 0
       @lesson += 1
       if @lesson >= @lessons.size
@@ -282,8 +264,8 @@ class HH::LessonSet
       if @lesson < 0
         @lesson = @lessons.size-1
       end
-    _name, pages = @lessons[@lesson]
-      @page = pages.size-1
+    lesson = @lessons[@lesson]
+      @page = lesson.pages.size-1
     end
     execute_page
   end
@@ -298,22 +280,220 @@ class HH::LessonSet
 
   # called on close to save the current lesson and page
   def save_lesson
+    puts "saving the lesson, tut_lesson_#@name -> #{@lesson}, tut_page_#@name -> #{@page}"
     HH::PREFS["tut_lesson_#@name"] = @lesson
     HH::PREFS["tut_page_#@name"] = @page
     HH.save_prefs
   end
 
-  # lesson DSL method
-  def lesson name
-    @lessons << [name, []]
+  def add_lesson(name)
+    HH::Lesson.new(name).tap do |lesson|
+      @lessons << lesson
+    end
   end
 
-  # lesson DSL method
-  def page title, &blk
-    if @lessons.empty?
-      lesson << "Lesson"
+  def add_page(title)
+    HH::LessonPage.new(title).tap do |page|
+      @lessons.last.add_page(page)
     end
-    _name, pages = @lessons.last
-    pages << [title, blk]
   end
+end
+
+class HH::Lesson
+  attr_reader :name, :pages
+
+  def initialize(name)
+    @name = name
+    @pages = []
+  end
+
+  def add_page(page)
+    @pages.push(page)
+  end
+end
+
+class HH::LessonPage
+  attr_reader :title
+
+  def initialize(title)
+    @title = title
+    @actions = []
+  end
+
+  def render_to(container)
+    renderer = HH::LessonPageRenderer.new(container)
+    markdown = Redcarpet::Markdown.new(renderer)
+    
+    @actions.each do |action|
+      case action
+        when String
+          markdown.render(action)
+        when Proc
+          action.call(container)
+      end
+    end
+  end
+  
+  def add_action(&blk)
+    @actions << blk
+  end
+
+  def add_para(markdown)
+    @actions.push(markdown)
+  end
+end
+
+class HH::LessonLoader
+  def initialize
+    @lesson_cache = {}
+  end
+
+  def load_lesson(lesson_file)
+    unless @lesson_cache.has_key?(lesson_file)
+
+      lesson_src = File.read(lesson_file)
+      renderer = HH::LessonRenderer.new
+      markdown = Redcarpet::Markdown.new(renderer, fenced_code_blocks: true)
+      markdown.render(lesson_src)
+
+      @lesson_cache[lesson_file] = renderer.lesson_set
+    end
+
+    @lesson_cache[lesson_file]
+  end
+end
+
+class HH::LessonRenderer < Redcarpet::Render::Base
+  attr_reader :lesson_set
+
+  def header(text, level)
+    case level
+    when 1
+      @lesson_set = HH::LessonSet.new(text)
+    when 2
+      @lesson_set.add_lesson(text)
+    when 3
+      @current_page = @lesson_set.add_page(text)
+    end
+    ''
+  end
+
+  def paragraph(text)
+    @current_page.add_para(text)
+    ''
+  end
+  
+  def defer(&blk)
+    @current_page.add_action(&blk)
+    ''
+  end
+  
+  def list(contents, list_type)
+    count = 0
+    
+    contents = contents.lines.map do |line|
+      if list_type == :ordered
+        "#{count += 1}. #{line.chomp}"
+      else
+        "- #{line.chomp}"
+      end
+    end
+    
+    defer { |container| container.para(contents.join("\n")) }
+  end
+  
+  def list_item(text, list_type)
+    text
+  end
+  
+  def block_code(src, language)
+    defer { |container| container.embed_code(src.chomp) }
+  end
+
+  def image(path, title, alt_text)
+
+    # HH::STATIC  ->  HH::HOME + "/static"  ->  Dir.pwd + "/static"
+    # This is a good example of the kind of necessary-muck I want to minimize.
+    on_click = if alt_text.nil? || alt_text.empty?
+                 Proc.new {}
+               else
+                 Proc.new { alert(alt_text) }
+               end
+
+    if path.start_with? "/icon_button/"
+      path.sub! '/icon_button/', ''
+      defer { |container| container.icon_button(path.to_sym, nil, &on_click) }
+
+    else
+      path = File.join(HH::HOME, path)  # TODO unless it's a URL
+      defer { |container| container.image(path, {}, &on_click) }
+    end
+  end
+end
+
+class HH::LessonPageRenderer < Redcarpet::Render::Base
+  
+  def initialize(container)
+    super()
+    @container = container
+    @args = []
+  end
+  
+  def normal_text(text)
+    text.gsub(/\n/, ' ') unless text.nil?
+  end
+  
+  def emphasis(text)
+    store @container.em(text)
+  end
+  
+  def double_emphasis(text)
+    store @container.strong(text)
+  end
+  
+  def link(link, title, content)
+    store @container.link(content, :click => link)
+  end
+  
+  def codespan(code)
+    store @container.code(code)
+  end
+
+  def store(shoes_bit)
+    @args << shoes_bit
+    '[-]'
+  end
+  
+  def paragraph(text)
+    #puts text
+    
+    para_bits = interpolate(text, @args)
+    #puts "para_bits: #{para_bits.inspect}"
+    
+    @container.instance_eval { para *para_bits }
+    @args.clear
+    ''
+  end
+  
+  # The markdown string "I'd _love_ a cupcake!" comes to us looking like this:
+  # "Hello, I'd [-] a cupcake!"
+  # ...and @args looks like this:
+  # [Shoes::Em]
+  # #interpolate turns them into this:
+  # ["Hello, I'd ", Shoes::Em, " a cupcake!"]
+  # These are the args that'll be passed to Shoes#para.
+  # It also turns "_I_ like _chocolate!_" into
+  # [Shoes::Em, " like ", Shoes::Em]
+  def interpolate(text, args)
+    results = []
+    while text.include?('[-]')
+      head, text = *text.split('[-]', 2)
+      results << head << args.shift
+    end
+    results << text 
+    results << args unless args.empty?
+      
+    return results.compact
+  end
+  
 end
