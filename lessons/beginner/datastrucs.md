@@ -53,7 +53,7 @@ Try typing this and press the Run button.
 You created an array with the numbers 1, 2, and the string 'shoes' in it. 
 Things in the array can be gotten by typing the array's variable name
 (`my_array`) and square brackets (`[]`) with a number inside of the brackets. 
-This number can be though of as the address to that spot in the array.  It's
+This number can be thought of as the address to that spot in the array.  It's
 good to remember that arrays start at 0 in Ruby.
 
     alert my_array[0]
