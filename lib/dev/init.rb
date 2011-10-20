@@ -2,14 +2,14 @@
 # the current directory in set to HH::USER (~/.hacketyhack on unix systems)
 # (HH::APP is initialized in h-ety-h.rb instead)
 
-#HH::NET = "hackety-hack.com"
-#HH::REST = "http://hackety-hack.com"
-#HH::API_ROOT = "http://api.hackety-hack.com"
+HH::NET = "hackety-hack.com"
+HH::REST = "http://hackety-hack.com"
+HH::API_ROOT = "http://api.hackety-hack.com"
 
 #for easy switching when developing
-HH::NET = "api.hackety-hack.com.dev"
-HH::REST = "http://api.hackety-hack.com.dev"
-HH::API_ROOT = "http://api.hackety-hack.com.dev"
+#HH::NET = "api.hackety-hack.com.dev"
+#HH::REST = "http://api.hackety-hack.com.dev"
+#HH::API_ROOT = "http://api.hackety-hack.com.dev"
 
 HH::HOME = Dir.pwd
 HH::STATIC = HH::HOME + "/static"
