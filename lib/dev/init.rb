@@ -2,13 +2,15 @@
 # the current directory in set to HH::USER (~/.hacketyhack on unix systems)
 # (HH::APP is initialized in h-ety-h.rb instead)
 
-HH::NET = "hackety-hack.com"
-HH::REST = "http://hackety-hack.com"
-# create a new root url to avoid breaking anything else
-HH::API_ROOT = "http://api.hackety-hack.com"
+#HH::NET = "hackety-hack.com"
+#HH::REST = "http://hackety-hack.com"
+#HH::API_ROOT = "http://api.hackety-hack.com"
+
 #for easy switching when developing
-#HH::NET = "localhost:9292"
-#HH::REST = "http://localhost:9292"
+HH::NET = "api.hackety-hack.com.dev"
+HH::REST = "http://api.hackety-hack.com.dev"
+HH::API_ROOT = "http://api.hackety-hack.com.dev"
+
 HH::HOME = Dir.pwd
 HH::STATIC = HH::HOME + "/static"
 HH::FONTS = HH::HOME + "/fonts"
@@ -23,7 +25,7 @@ case RUBY_PLATFORM when /win32/, /i386-mingw32/
   ENV['MYDOCUMENTS'] = HH.read_shell_folder('Personal')
   ENV['APPDATA'] = HH.read_shell_folder('AppData')
   ENV['DESKTOP'] = HH.read_shell_folder('Desktop')
-  HH::USER = 
+  HH::USER =
     begin
       HH.win_path(Win32::Registry::HKEY_CURRENT_USER.
                   open('Software\Hackety.org\Hackety Hack').
