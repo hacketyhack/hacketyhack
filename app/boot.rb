@@ -12,15 +12,9 @@ def HH.anonymous_binding
   bind
 end
 
-Shoes.setup do
-  gem "redcarpet ~> 2.0.0b5"
-end
-require 'redcarpet'
-
 require 'lib/all'
 require 'app/syntax/markup'
 
-require 'app/db/sequel'
 require 'app/ui/lessons'
 require 'app/ui/widgets'
 require 'app/ui/completion'
