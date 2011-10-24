@@ -6,10 +6,10 @@ module Upgrade
     include HH::API
 
     def check_latest_version &blk
-      root = version_rel = HH::API.root
+      root = HH::API.root
       return unless root
 
-      root.at("//a[@rel='/rels/current-application-version']")
+      version_rel = root.at("//a[@rel='/rels/current-application-version']")
       HH::API.get(version_rel.attributes['href']) do |response|
         body = JSON.parse(response.body)
         blk[body]
