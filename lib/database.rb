@@ -11,7 +11,7 @@ module HH
       @database.execute(sql)
 
       data.each do |key, value|
-        sql = %Q{INSERT OR REPLACE INTO '#{table}' (key,value) VALUES ('?', '?');}
+        sql = %Q{INSERT OR REPLACE INTO #{table} (key,value) VALUES (?, ?)}
         @database.execute(sql, key.to_s, value.to_s)
       end
     end
