@@ -235,7 +235,7 @@ class HH::SideTabs::Editor
             alert("To upload, first connect your account on hackety-hack.com by clicking Preferences near the bottom left of the window.")
           else
             hacker = Hacker.new :username => HH::PREFS['username'], :password => HH::PREFS['password']
-            hacker.save_program_to_the_cloud(script[:name].to_slug, @str) do |response|
+            hacker.save_program_to_the_cloud(script[:name], @str) do |response|
               if response.code == "200" || response.code == "302"
                 alert("Uploaded!")
               else
