@@ -4,11 +4,13 @@ class HH::SideTabs::Editor < HH::SideTab
   # common code between InsertionAction and DeletionAction
   # on_insert_text and on_delete_text should be called before any subclass
   # can be used
+  # TODO: weirdly generic... couldn't it do that itself?
   class InsertionDeletionCommand
 
     def self.on_insert_text &block
       @@insert_text = block
     end
+
     def self.on_delete_text &block
       @@delete_text = block
     end
@@ -17,9 +19,11 @@ class HH::SideTabs::Editor < HH::SideTab
     def initialize pos, str
       @position, @string = pos, str
     end
+
     def insert
       @@insert_text.call(@position, @string)
     end
+
     def delete
       @@delete_text.call(@position, @string.size)
     end
@@ -79,14 +83,14 @@ class HH::SideTabs::Editor < HH::SideTab
       @last_position = nil
     end
 
-    # _act was added for consistency with redo_act
+    # _command for consistency with redo_command
     def undo_command
       return if @stack_position == 0
       @stack_position -= 1;
       @command_stack[@stack_position].unexecute;
     end
 
-    # _act was added because redo is a keyword
+    # _command because redo is a keyword
     def redo_command
       return if @stack_position == @command_stack.size
       @command_stack[@stack_position].execute
@@ -110,6 +114,8 @@ class HH::SideTabs::Editor
   include HH::Markup
   include UndoRedo
 
+  UNNAMED_PROGRAM = "An unnamed program"
+
   def content
     draw_content
   end
@@ -117,7 +123,7 @@ class HH::SideTabs::Editor
   def load script
     if not @save_button.hidden
       # current script is unsaved
-      name = @script[:name] || "An unnamed program"
+      name = @script[:name] || UNNAMED_PROGRAM
       if not confirm("#{name} has not been saved, if you continue \n" +
           " all unsaved modifications will be lost")
         return false
@@ -130,7 +136,7 @@ class HH::SideTabs::Editor
   # asks confirmation and then saves (or not if save is)
   def save_if_confirmed
     if not @save_button.hidden
-      name = @script[:name] || "unnamed program"
+      name = @script[:name] || UNNAMED_PROGRAM
       question = "I'm going to save modifications to \"#{name}\". Is that okay?\n" +
         "Press OK if it is, and cancel if it's not."
       if confirm(question)
@@ -147,9 +153,12 @@ class HH::SideTabs::Editor
     name = script[:name] || "A New Program"
     @script = script
 
+    # basic setup
     reset_undo_redo
     InsertionDeletionCommand.on_insert_text {|pos, str|  insert_text(pos, str)}
     InsertionDeletionCommand.on_delete_text {|pos, len|  delete_text(pos, len)}
+
+    # top bar
     @editor = stack :margin_left => 10, :margin_top => 10, :width => 1.0, :height => 92 do
       @sname = subtitle name, :font => "Lacuna Regular", :size => 22,
         :margin => 0, :wrap => "trim"
@@ -159,6 +168,8 @@ class HH::SideTabs::Editor
         load({})
       end
     end
+
+    # main editor window
     stack :margin_left => 0, :width => 1.0, :height => -92 do
       background white(0.4), :width => 38
       @scroll =
@@ -170,6 +181,8 @@ class HH::SideTabs::Editor
           @t = para "", :font => "Liberation Mono", :size => 10, :stroke => "#662",
             :wrap => "trim", :margin_right => 28
           @t.cursor = 0
+
+          # some kind of cursor movement
           def @t.hit_sloppy(x, y)
             x -= 6
             c = hit(x, y)
@@ -179,7 +192,10 @@ class HH::SideTabs::Editor
               hit(48, y)
             end
           end
+
         end
+
+        # mouse movement and clicking in the editor window
         motion do |x, y|
           c = @t.hit_sloppy(x, y)
           if c
@@ -211,14 +227,15 @@ class HH::SideTabs::Editor
         end
         leave { self.cursor = :arrow }
       end
-    end
+    end # main window end
 
+    # bottom with save/copy/upload/run buttons
     stack :height => 40, :width => 182, :bottom => -3, :right => 0 do
-      
-      @copy_button = 
+      @copy_button =
         glossb "Copy", :width => 60, :top => 2, :left => 70 do
           save(nil)
         end
+
       @save_button =
         glossb "Save", :width => 60, :top => 2, :left => 70, :hidden => true do
           if save(script[:name])
@@ -229,6 +246,7 @@ class HH::SideTabs::Editor
             end
           end
         end
+
       @save_to_cloud_button =
         glossb "Upload", :width => 70, :top => 2, :left => 0 do
           if HH::PREFS['username'].nil?
@@ -244,11 +262,14 @@ class HH::SideTabs::Editor
             end
           end
         end
+
       glossb "Run", :width => 52, :top => 2, :left => 130 do
         eval(@str, HH.anonymous_binding)
       end
+
     end
 
+    # updating the time
     every 20 do
       if script[:mtime]
         @stale.text = "Last saved #{script[:mtime].since} ago."
@@ -256,12 +277,14 @@ class HH::SideTabs::Editor
     end
 
     def onkey(k)
-      case k when :shift_home, :shift_end, :shift_up, :shift_left, :shift_down, :shift_right
+      case k
+      when :shift_home, :shift_end, :shift_up, :shift_left, :shift_down, :shift_right
         @t.marker = @t.cursor unless @t.marker
       when :home, :end, :up, :left, :down, :right
         @t.marker = nil
       end
 
+      # keypress wilderness
       case k
       when String
         if k == "\n"
@@ -380,6 +403,7 @@ class HH::SideTabs::Editor
         msg = "You already have a program named '" + name + "'.\n"
       end
     end
+
     if name
       @script[:name] = name
       HH.save_script(@script[:name], @str)
@@ -391,7 +415,7 @@ class HH::SideTabs::Editor
       false
     end
   end
-  
+
   def update_text
     @t.replace *highlight(@str, @t.cursor)
     @ln.replace [*1..(@str.count("\n")+1)].join("\n")
@@ -454,3 +478,4 @@ class HH::SideTabs::Editor
     #update_text
   end
 end
+
