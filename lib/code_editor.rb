@@ -14,16 +14,23 @@ module HH::Editor
       reset_undo_redo
     end
 
-    def insert_text pos, text
+    # TODO: handle/inserts are awkward but somehow necessary for undo/redo to
+    # work, better figure out another way however
+    def handle_text_insertion pos, text
       add_command InsertionCommand.new(pos, text)
+    end
+
+    def insert_text pos, text
       @script.insert(pos, text)
     end
 
-    def delete_text pos, len
+    def handle_text_deletion pos, len
       text = @script[pos, len]
       return if text.empty? # happens if len == 0 or pos to big
       add_command DeletionCommand.new(pos, text)
+    end
 
+    def delete_text pos, len
       @script[pos, len] = "" # TODO use slice?
     end
 

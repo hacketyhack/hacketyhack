@@ -16,8 +16,8 @@ module HH::Editor
     end
 
     # action to insert/delete str to text at position pos
-    def initialize pos, str
-      @position, @string = pos, str
+    def initialize pos, text
+      @position, @string = pos, text
     end
 
     def insert

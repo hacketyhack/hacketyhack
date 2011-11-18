@@ -218,16 +218,21 @@ class HH::SideTabs::Editor < HH::SideTab
     end
   end
 
+  # TODO: handle/inserts are awkward but somehow necessary for undo/redo to
+  # work, better figure out another way however
+
   # called when the user wants to insert text
   def handle_text_insertion text
       pos, len = @t.highlight; # TODO: WTF ; ?
       handle_text_deletion(pos, len) if len > 0
 
+      @code_editor.handle_text_insertion pos, text
       insert_text pos, text
   end
 
   # called when the user wants to delete text
   def handle_text_deletion pos, len
+    @code_editor.handle_text_deletion pos, len
     delete_text pos, len
   end
 
