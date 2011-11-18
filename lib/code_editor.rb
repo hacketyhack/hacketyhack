@@ -40,6 +40,10 @@ module HH::Editor
       @last_saved = Time.now
     end
 
+    def run
+      eval(script, HH.anonymous_binding)
+    end
+
   end
 
 end

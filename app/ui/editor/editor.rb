@@ -1,6 +1,7 @@
 require_relative '../../../lib/code_editor'
 
 #TODO: If I get this far, check whether it works with green shoes
+#TODO: load name and last saved when script is loaded
 
 # the code editor tab contents
 # the logic behind it is handled in the CodeEditor class
@@ -42,132 +43,179 @@ class HH::SideTabs::Editor < HH::SideTab
     end
   end
 
-  def draw_content(script = {})
+  def setup_editor(script)
     @code_editor = HH::Editor::CodeEditor.new(script)
 
-    # basic setup
     # TODO: awkward and clumsy, is there a way to work around this?
     HH::Editor::InsertionDeletionCommand.on_insert_text {|pos, str|  insert_text(pos, str)}
     HH::Editor::InsertionDeletionCommand.on_delete_text {|pos, len|  delete_text(pos, len)}
+  end
 
-    # top bar
-    @editor = stack :margin_left => 10, :margin_top => 10, :width => 1.0, :height => 92 do
+  def top_bar
+    stack :margin_left => 10, :margin_top => 10, :width => 1.0, :height => 92 do
       @sname = subtitle name, :font => "Lacuna Regular", :size => 22,
         :margin => 0, :wrap => "trim"
-      @stale = para(@code_editor.last_saved ? "Last saved #{script[:mtime].since} ago." :
+      @stale = para(@code_editor.last_saved ? "Last saved #{@code_editor.last_saved.since} ago." :
         "Not yet saved.", :margin => 0, :stroke => "#39C")
       glossb "New Program", :top => 0, :right => 0, :width => 160 do
         load({})
       end
     end
+  end
 
-    # main editor window
-    stack :margin_left => 0, :width => 1.0, :height => -92 do
-      background white(0.4), :width => 38
-      @scroll =
-      flow :width => 1.0, :height => 1.0, :margin => 2, :scroll => true do
-        stack :width => 37, :margin_right => 6 do
-          @ln = para "1", :font => "Liberation Mono", :size => 10, :stroke => "#777", :align => "right"
-        end
-        stack :width => -37, :margin_left => 6, :margin_bottom => 60 do
-          @t = para "", :font => "Liberation Mono", :size => 10, :stroke => "#662",
-            :wrap => "trim", :margin_right => 28
-          @t.cursor = 0
-
-          # some kind of cursor movement
-          def @t.hit_sloppy(x, y)
-            x -= 6
-            c = hit(x, y)
-            if c
-              c + 1
-            elsif x <= 48
-              hit(48, y)
-            end
-          end
-
-        end
-
-        # mouse movement and clicking in the editor window
-        motion do |x, y|
-          c = @t.hit_sloppy(x, y)
-          if c
-            if self.cursor == :arrow
-              self.cursor = :text
-            end
-            if self.mouse[0] == 1 and @clicked
-              if @t.marker.nil?
-                @t.marker = c
-              else
-                @t.cursor = c
-              end
-            end
-          elsif self.cursor == :text
-            self.cursor = :arrow
-          end
-        end
-        release do
-          @clicked = false
-        end
-        click do |_, x, y|
-          c = @t.hit_sloppy(x, y)
-          if c
-            @clicked = true
-            @t.marker = nil
-            @t.cursor = c
-          end
-          update_text
-        end
-        leave { self.cursor = :arrow }
+  def define_hit_sloppy
+    # some kind of cursor movement
+    def @t.hit_sloppy(x, y)
+      x -= 6
+      c = hit(x, y)
+      if c
+        c + 1
+      elsif x <= 48
+        hit(48, y)
       end
-    end # main window end
+    end
+  end
 
-    # bottom with save/copy/upload/run buttons
-    stack :height => 40, :width => 182, :bottom => -3, :right => 0 do
-      @copy_button =
-        glossb "Copy", :width => 60, :top => 2, :left => 70 do
-          save(nil)
-        end
+  def line_numbering
+    stack :width => 37, :margin_right => 6 do
+      @line_numbers = para "1", :font => "Liberation Mono", :size => 10,
+                                :stroke => "#777", :align => "right"
+    end
+  end
 
-      @save_button =
-        glossb "Save", :width => 60, :top => 2, :left => 70, :hidden => true do
-          if save(script[:name])
-            timer 0.1 do
-              @save_button.hide
-              @copy_button.show
-              @save_to_cloud_button.show
-            end
-          end
-        end
-
-      @save_to_cloud_button =
-        glossb "Upload", :width => 70, :top => 2, :left => 0 do
-          if HH::PREFS['username'].nil?
-            alert("To upload, first connect your account on hackety-hack.com by clicking Preferences near the bottom left of the window.")
-          else
-            hacker = Hacker.new :username => HH::PREFS['username'], :password => HH::PREFS['password']
-            hacker.save_program_to_the_cloud(@code_editor.name, @code_editor.script) do |response|
-              if response.code == "200" || response.code == "302"
-                alert("Uploaded!")
-              else
-                alert("There was a problem, sorry!")
-              end
-            end
-          end
-        end
-
-      glossb "Run", :width => 52, :top => 2, :left => 130 do
-        eval(@code_editor.script, HH.anonymous_binding)
-      end
-
+  def editor_text
+    stack :width => -37, :margin_left => 6, :margin_bottom => 60 do
+      @t = para "", :font => "Liberation Mono", :size => 10, :stroke => "#662",
+        :wrap => "trim", :margin_right => 28
+      @t.cursor = 0
     end
 
-    # updating the time
+    define_hit_sloppy
+  end
+
+  def mouse_motion
+    motion do |x, y|
+      c = @t.hit_sloppy(x, y)
+      if c
+        if self.cursor == :arrow
+          self.cursor = :text
+        end
+        if self.mouse[0] == 1 and @clicked
+          if @t.marker.nil?
+            @t.marker = c
+          else
+            @t.cursor = c
+          end
+        end
+      elsif self.cursor == :text
+        self.cursor = :arrow
+      end
+    end
+  end
+
+  def mouse_release
+    release do
+      @clicked = false
+    end
+  end
+
+  def mouse_click
+    click do |_, x, y|
+      c = @t.hit_sloppy(x, y)
+      if c
+        @clicked = true
+        @t.marker = nil
+        @t.cursor = c
+      end
+      update_text
+    end
+  end
+
+  def mouse_leave
+    leave { self.cursor = :arrow }
+  end
+
+  def mouse_actions
+    mouse_motion
+    mouse_release
+    mouse_click
+    mouse_leave
+  end
+
+  def main_editor_window
+    stack :margin_left => 0, :width => 1.0, :height => -92 do
+      background white(0.4), :width => 38
+
+      @scroll =
+      flow :width => 1.0, :height => 1.0, :margin => 2, :scroll => true do
+        line_numbering
+        editor_text
+        mouse_actions
+      end
+    end
+  end
+
+  def copy_button
+    @copy_button = glossb "Copy", :width => 60, :top => 2, :left => 70 do
+      save(nil)
+    end
+  end
+
+  def save_button
+    @save_button =
+    glossb "Save", :width => 60, :top => 2, :left => 70, :hidden => true do
+      if save(@code_editor.name)
+        timer 0.1 do
+          @save_button.hide
+          @copy_button.show
+          @upload_button.show
+        end
+      end
+    end
+  end
+
+  def upload_button
+    @upload_button =
+    glossb "Upload", :width => 70, :top => 2, :left => 0 do
+      if HH::PREFS['username'].nil?
+        alert("To upload, first connect your account on hackety-hack.com by clicking Preferences near the bottom left of the window.")
+      else
+        hacker = Hacker.new :username => HH::PREFS['username'], :password => HH::PREFS['password']
+        hacker.save_program_to_the_cloud(@code_editor.name, @code_editor.script) do |response|
+          if response.code == "200" || response.code == "302"
+            alert("Uploaded!")
+          else
+            alert("There was a problem, sorry!")
+          end
+        end
+      end
+    end
+  end
+
+  def run_button
+    glossb "Run", :width => 52, :top => 2, :left => 130 do
+      @code_editor.run
+    end
+  end
+
+  def bottom_menu
+    stack :height => 40, :width => 182, :bottom => -3, :right => 0 do
+      copy_button
+      save_button
+      upload_button
+      run_button
+    end
+  end
+
+  def update_time
     every 20 do
-      if script[:mtime]
+      if @code_editor.last_saved
         @stale.text = "Last saved #{@code_editor.last_saved} ago."
       end
     end
+  end
 
+  def on_keypress
     keypress do |k|
       onkey(k)
       if @t.cursor_top < @scroll.scroll_top
@@ -175,11 +223,22 @@ class HH::SideTabs::Editor < HH::SideTab
       elsif @t.cursor_top + 92 > @scroll.scroll_top + @scroll.height
         @scroll.scroll_top = (@t.cursor_top + 92) - @scroll.height
       end
-
     end
+  end
 
-    # for samples do not allow to upload to cloud when just opened
-    @save_to_cloud_button.hide if script[:sample]
+  # do this somewhere else?
+  def hide_upload_for_samples(script)
+    @upload_button.hide if script[:sample]
+  end
+
+  def draw_content(script = {})
+    setup_editor(script)
+    top_bar
+    main_editor_window
+    bottom_menu
+    update_time
+    on_keypress
+    hide_upload_for_samples(script)
     update_text
   end
 
@@ -207,14 +266,14 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def update_text
     @t.replace *highlight(@code_editor.script, @t.cursor)
-    @ln.replace [*1..(@code_editor.script.count("\n")+1)].join("\n")
+    @line_numbers.replace [*1..(@code_editor.script.count("\n")+1)].join("\n")
   end
 
   def text_changed
     if @save_button.hidden
       @copy_button.hide
       @save_button.show
-      @save_to_cloud_button.hide
+      @upload_button.hide
     end
   end
 
