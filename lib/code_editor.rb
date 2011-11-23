@@ -6,11 +6,13 @@ module HH::Editor
   class CodeEditor
     include UndoRedo
 
-    attr_reader :script, :name, :last_saved
+    attr_reader :script, :name, :last_saved, :description
 
     def initialize script
       @script = script[:script] || ""
-      @name = script[:name] || "A New Program"
+      @name = script[:name]
+      @last_saved = script[:mtime]
+      @description = script[:desc]
       reset_undo_redo
     end
 

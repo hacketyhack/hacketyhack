@@ -1,7 +1,6 @@
 require_relative '../../../lib/code_editor'
 
 #TODO: If I get this far, check whether it works with green shoes
-#TODO: load name and last saved when script is loaded
 
 # the code editor tab contents
 # the logic behind it is handled in the CodeEditor class
@@ -16,9 +15,9 @@ class HH::SideTabs::Editor < HH::SideTab
   end
 
   def load script
-    unless @save_button.hidden
+    unless saved?
       # current script is unsaved
-      name = @code_editor.name
+      name = @code_editor.name || UNNAMED_PROGRAM
       unless confirm("#{name} has not been saved, if you continue \n" +
           " all unsaved modifications will be lost")
         return false
@@ -28,10 +27,14 @@ class HH::SideTabs::Editor < HH::SideTab
     true
   end
 
+  def saved?
+    @save_button.hidden
+  end
+
   # asks confirmation and then saves (or not if save is)
   def save_if_confirmed
-    unless @save_button.hidden
-      name = @code_editor.name # || UNNAMED_PROGRAM ? TODO
+    unless saved?
+      name = @code_editor.name || UNNAMED_PROGRAM
       question = "I'm going to save modifications to \"#{name}\". Is that okay?\n" +
         "Press OK if it is, and cancel if it's not."
       if confirm(question)
@@ -53,7 +56,7 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def top_bar
     stack :margin_left => 10, :margin_top => 10, :width => 1.0, :height => 92 do
-      @sname = subtitle name, :font => "Lacuna Regular", :size => 22,
+      @sname = subtitle @code_editor.name, :font => "Lacuna Regular", :size => 22,
         :margin => 0, :wrap => "trim"
       @stale = para(@code_editor.last_saved ? "Last saved #{@code_editor.last_saved.since} ago." :
         "Not yet saved.", :margin => 0, :stroke => "#39C")
@@ -270,7 +273,7 @@ class HH::SideTabs::Editor < HH::SideTab
   end
 
   def text_changed
-    if @save_button.hidden
+    if saved?
       @copy_button.hide
       @save_button.show
       @upload_button.hide
