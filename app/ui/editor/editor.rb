@@ -1,6 +1,7 @@
 require_relative '../../../lib/code_editor'
 
 #TODO: If I get this far, check whether it works with green shoes
+#TODO: Figure out hit_sloppy
 
 # the code editor tab contents
 # the logic behind it is handled in the CodeEditor class
@@ -237,9 +238,7 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def update_time
     every 20 do
-      if @code_editor.last_saved
-        @stale.text = "Last saved #{@code_editor.last_saved} ago."
-      end
+      @stale.text = "Last saved #{@code_editor.last_saved} ago." if @code_editor.last_saved
     end
   end
 
@@ -311,7 +310,6 @@ class HH::SideTabs::Editor < HH::SideTab
     @code_editor.delete_text pos, len
     @code_para.cursor = pos
     @code_para.cursor = :marker
-    #update_text
   end
 
   # find the indentation level at the current cursor or marker
@@ -323,7 +321,6 @@ class HH::SideTabs::Editor < HH::SideTab
     return 0 if pos.nil?
 
     pos += 1
-
     ind_size = 0
     while @code_editor.script[pos, 1] == ' '
       ind_size += 1
@@ -388,10 +385,8 @@ class HH::SideTabs::Editor < HH::SideTab
     when :control_v, :alt_v, :shift_insert
       handle_text_insertion(self.clipboard) if self.clipboard
     when :control_z
-      debug("undo!")
       @code_editor.undo_command
     when :control_y, :alt_Z, :shift_alt_z
-      debug "redo!"
       @code_editor.redo_command
     when :shift_home, :home
       nl = @code_editor.script.rindex("\n", @code_para.cursor - 1) || -1
@@ -426,10 +421,10 @@ class HH::SideTabs::Editor < HH::SideTab
     when :shift_left, :left
       @code_para.cursor -= 1 if @code_para.cursor > 0
     end
+
     if key
       text_changed
     end
-
     update_text
   end
 
