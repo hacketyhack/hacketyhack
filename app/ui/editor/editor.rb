@@ -16,7 +16,6 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def load script
     unless saved?
-      # current script is unsaved
       name = @code_editor.name || UNNAMED_PROGRAM
       unless confirm("#{name} has not been saved, if you continue \n" +
           " all unsaved modifications will be lost")
@@ -31,15 +30,18 @@ class HH::SideTabs::Editor < HH::SideTab
     @save_button.hidden
   end
 
+  def empty? string
+    string.nil? or string.empty?
+  end
+
   # saves the file, asks for a new name if a nil argument is passed
   def save name
     if name.nil?
       msg = ""
-      while true
+      while empty?(name) or HH.script_exists?(name)
         name = ask(msg + "Give your program a name.")
-        # TODO make more beautiful
-        break if name.nil? or not HH.script_exists?(name)
-        msg = "You already have a program named '" + name + "'.\n"
+        msg = "Come on give your program a name :-)\n" if empty?(name)
+        msg = "You already have a program named '" + name + "'.\n" if HH.script_exists?(name)
       end
     end
 
