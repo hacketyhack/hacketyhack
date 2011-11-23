@@ -31,10 +31,32 @@ class HH::SideTabs::Editor < HH::SideTab
     @save_button.hidden
   end
 
+  # saves the file, asks for a new name if a nil argument is passed
+  def save name
+    if name.nil?
+      msg = ""
+      while true
+        name = ask(msg + "Give your program a name.")
+        # TODO make more beautiful
+        break if name.nil? or not HH.script_exists?(name)
+        msg = "You already have a program named '" + name + "'.\n"
+      end
+    end
+
+    if name
+      @sname.text = name
+      @code_editor.save name
+      @stale.text = "Last saved #{@code_editor.last_saved.since} ago."
+      true
+    else
+      false
+    end
+  end
+
   # asks confirmation and then saves (or not if save is)
   def save_if_confirmed
     unless saved?
-      name = @code_editor.name || UNNAMED_PROGRAM
+      name = @code_editor.name
       question = "I'm going to save modifications to \"#{name}\". Is that okay?\n" +
         "Press OK if it is, and cancel if it's not."
       if confirm(question)
@@ -56,7 +78,8 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def top_bar
     stack :margin_left => 10, :margin_top => 10, :width => 1.0, :height => 92 do
-      @sname = subtitle @code_editor.name, :font => "Lacuna Regular", :size => 22,
+      progam_name = @code_editor.name || UNNAMED_PROGRAM
+      @sname = subtitle progam_name, :font => "Lacuna Regular", :size => 22,
         :margin => 0, :wrap => "trim"
       @stale = para(@code_editor.last_saved ? "Last saved #{@code_editor.last_saved.since} ago." :
         "Not yet saved.", :margin => 0, :stroke => "#39C")
@@ -68,7 +91,7 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def define_hit_sloppy
     # some kind of cursor movement
-    def @t.hit_sloppy(x, y)
+    def @code_para.hit_sloppy(x, y)
       x -= 6
       c = hit(x, y)
       if c
@@ -88,9 +111,9 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def editor_text
     stack :width => -37, :margin_left => 6, :margin_bottom => 60 do
-      @t = para "", :font => "Liberation Mono", :size => 10, :stroke => "#662",
+      @code_para = para "", :font => "Liberation Mono", :size => 10, :stroke => "#662",
         :wrap => "trim", :margin_right => 28
-      @t.cursor = 0
+      @code_para.cursor = 0
     end
 
     define_hit_sloppy
@@ -98,16 +121,16 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def mouse_motion
     motion do |x, y|
-      c = @t.hit_sloppy(x, y)
+      c = @code_para.hit_sloppy(x, y)
       if c
         if self.cursor == :arrow
           self.cursor = :text
         end
         if self.mouse[0] == 1 and @clicked
-          if @t.marker.nil?
-            @t.marker = c
+          if @code_para.marker.nil?
+            @code_para.marker = c
           else
-            @t.cursor = c
+            @code_para.cursor = c
           end
         end
       elsif self.cursor == :text
@@ -124,11 +147,11 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def mouse_click
     click do |_, x, y|
-      c = @t.hit_sloppy(x, y)
+      c = @code_para.hit_sloppy(x, y)
       if c
         @clicked = true
-        @t.marker = nil
-        @t.cursor = c
+        @code_para.marker = nil
+        @code_para.cursor = c
       end
       update_text
     end
@@ -221,10 +244,10 @@ class HH::SideTabs::Editor < HH::SideTab
   def on_keypress
     keypress do |k|
       onkey(k)
-      if @t.cursor_top < @scroll.scroll_top
-        @scroll.scroll_top = @t.cursor_top
-      elsif @t.cursor_top + 92 > @scroll.scroll_top + @scroll.height
-        @scroll.scroll_top = (@t.cursor_top + 92) - @scroll.height
+      if @code_para.cursor_top < @scroll.scroll_top
+        @scroll.scroll_top = @code_para.cursor_top
+      elsif @code_para.cursor_top + 92 > @scroll.scroll_top + @scroll.height
+        @scroll.scroll_top = (@code_para.cursor_top + 92) - @scroll.height
       end
     end
   end
@@ -245,30 +268,8 @@ class HH::SideTabs::Editor < HH::SideTab
     update_text
   end
 
-  # saves the file, asks for a new name if a nil argument is passed
-  def save name
-    if name.nil?
-      msg = ""
-      while true
-        name = ask(msg + "Give your program a name.")
-        # TODO make more beautiful
-        break if name.nil? or not HH.script_exists?(name)
-        msg = "You already have a program named '" + name + "'.\n"
-      end
-    end
-
-    if name
-      @sname.text = name
-      last_saved = @code_editor.save name
-      @stale.text = "Last saved #{last_saved.since} ago."
-      true
-    else
-      false
-    end
-  end
-
   def update_text
-    @t.replace *highlight(@code_editor.script, @t.cursor)
+    @code_para.replace *highlight(@code_editor.script, @code_para.cursor)
     @line_numbers.replace [*1..(@code_editor.script.count("\n")+1)].join("\n")
   end
 
@@ -285,7 +286,7 @@ class HH::SideTabs::Editor < HH::SideTab
 
   # called when the user wants to insert text
   def handle_text_insertion text
-      pos, len = @t.highlight; # TODO: WTF ; ?
+      pos, len = @code_para.highlight; # TODO: WTF ; ?
       handle_text_deletion(pos, len) if len > 0
 
       @code_editor.handle_text_insertion pos, text
@@ -300,14 +301,14 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def insert_text pos, text
     @code_editor.insert_text pos, text
-    @t.cursor = pos + text.size
-    @t.cursor = :marker # XXX ???
+    @code_para.cursor = pos + text.size
+    @code_para.cursor = :marker # XXX ???
   end
 
   def delete_text pos, len
     @code_editor.delete_text pos, len
-    @t.cursor = pos
-    @t.cursor = :marker
+    @code_para.cursor = pos
+    @code_para.cursor = :marker
     #update_text
   end
 
@@ -316,7 +317,7 @@ class HH::SideTabs::Editor < HH::SideTab
   # the result is the number of spaces
   def indentation_size
     # TODO marker
-    pos = @code_editor.script.rindex("\n", @t.cursor-1)
+    pos = @code_editor.script.rindex("\n", @code_para.cursor-1)
     return 0 if pos.nil?
 
     pos += 1
@@ -332,9 +333,9 @@ class HH::SideTabs::Editor < HH::SideTab
   def onkey(key)
     case key
     when :shift_home, :shift_end, :shift_up, :shift_left, :shift_down, :shift_right
-      @t.marker = @t.cursor unless @t.marker
+      @code_para.marker = @code_para.cursor unless @code_para.marker
     when :home, :end, :up, :left, :down, :right
-      @t.marker = nil
+      @code_para.marker = nil
     end
 
     # keypress wilderness
@@ -350,15 +351,15 @@ class HH::SideTabs::Editor < HH::SideTab
         handle_text_insertion(key)
       end
     when :backspace, :shift_backspace, :control_backspace
-      if @t.cursor > 0 and @t.marker.nil?
-        @t.marker = @t.cursor - 1 # make highlight length at least 1
+      if @code_para.cursor > 0 and @code_para.marker.nil?
+        @code_para.marker = @code_para.cursor - 1 # make highlight length at least 1
       end
-      sel = @t.highlight
+      sel = @code_para.highlight
       if sel[0] > 0 or sel[1] > 0
         handle_text_deletion(*sel)
       end
     when :delete
-      sel = @t.highlight
+      sel = @code_para.highlight
       sel[1] = 1 if sel[1] == 0
       handle_text_deletion(*sel)
     when :tab
@@ -366,11 +367,11 @@ class HH::SideTabs::Editor < HH::SideTab
 #      when :alt_q
 #        @action.clear { home }
     when :control_a, :alt_a
-      @t.marker = 0
-      @t.cursor = @code_editor.script.length
+      @code_para.marker = 0
+      @code_para.cursor = @code_editor.script.length
     when :control_x, :alt_x
-      if @t.marker
-        sel = @t.highlight
+      if @code_para.marker
+        sel = @code_para.highlight
         self.clipboard = @code_editor.script[*sel]
         if sel[1] == 0
           sel[1] = 1
@@ -379,8 +380,8 @@ class HH::SideTabs::Editor < HH::SideTab
         handle_text_deletion(*sel)
       end
     when :control_c, :alt_c, :control_insertadd_characte
-      if @t.marker
-        self.clipboard = @code_editor.script[*@t.highlight]
+      if @code_para.marker
+        self.clipboard = @code_editor.script[*@code_para.highlight]
       end
     when :control_v, :alt_v, :shift_insert
       handle_text_insertion(self.clipboard) if self.clipboard
@@ -391,37 +392,37 @@ class HH::SideTabs::Editor < HH::SideTab
       debug "redo!"
       @code_editor.redo_command
     when :shift_home, :home
-      nl = @code_editor.script.rindex("\n", @t.cursor - 1) || -1
-      @t.cursor = nl + 1
+      nl = @code_editor.script.rindex("\n", @code_para.cursor - 1) || -1
+      @code_para.cursor = nl + 1
     when :shift_end, :end
-      nl = @code_editor.script.index("\n", @t.cursor) || @code_editor.script.length
-      @t.cursor = nl
+      nl = @code_editor.script.index("\n", @code_para.cursor) || @code_editor.script.length
+      @code_para.cursor = nl
     when :shift_up, :up
-      if @t.cursor > 0
-        nl = @code_editor.script.rindex("\n", @t.cursor - 1)
+      if @code_para.cursor > 0
+        nl = @code_editor.script.rindex("\n", @code_para.cursor - 1)
         if nl
-          horz = @t.cursor - nl
+          horz = @code_para.cursor - nl
           upnl = @code_editor.script.rindex("\n", nl - 1) || -1
-          @t.cursor = upnl + horz
-          @t.cursor = nl if @t.cursor > nl
+          @code_para.cursor = upnl + horz
+          @code_para.cursor = nl if @code_para.cursor > nl
         end
       end
     when :shift_down, :down
-      nl = @code_editor.script.index("\n", @t.cursor)
+      nl = @code_editor.script.index("\n", @code_para.cursor)
       if nl
-        if @t.cursor > 0
-          horz = @t.cursor - (@code_editor.script.rindex("\n", @t.cursor - 1) || -1)
+        if @code_para.cursor > 0
+          horz = @code_para.cursor - (@code_editor.script.rindex("\n", @code_para.cursor - 1) || -1)
         else
           horz = 1
         end
         dnl = @code_editor.script.index("\n", nl + 1) || @code_editor.script.length
-        @t.cursor = nl + horz
-        @t.cursor = dnl if @t.cursor > dnl
+        @code_para.cursor = nl + horz
+        @code_para.cursor = dnl if @code_para.cursor > dnl
       end
     when :shift_right, :right
-      @t.cursor += 1 if @t.cursor < @code_editor.script.length
+      @code_para.cursor += 1 if @code_para.cursor < @code_editor.script.length
     when :shift_left, :left
-      @t.cursor -= 1 if @t.cursor > 0
+      @code_para.cursor -= 1 if @code_para.cursor > 0
     end
     if key
       text_changed
