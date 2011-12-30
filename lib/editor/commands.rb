@@ -1,10 +1,11 @@
-# the different commands insertion/deletion
+# the different commands for insertion/deletion
 
 module HH::Editor
   # common code between InsertionAction and DeletionAction
   # on_insert_text and on_delete_text should be called before any subclass
   # can be used
-  # TODO: weirdly generic... couldn't it do that itself?
+  # TODO: weirdly generic... isn't there a better solution?
+  # (it needs actions that are not defined in this class itself)
   class InsertionDeletionCommand
 
     def self.on_insert_text &block

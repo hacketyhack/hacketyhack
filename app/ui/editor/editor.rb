@@ -1,11 +1,11 @@
-require_relative '../../../lib/code_editor'
+require_relative '../../../lib/editor/code_editor'
 
 #TODO: If I get this far, check whether it works with green shoes
-#TODO: Figure out hit_sloppy
+#TODO: Really figure out hit_sloppy
 
 # the code editor tab contents
 # the logic behind it is handled in the CodeEditor class
-# this should be pure presentation
+# this /should/ be pure presentation
 class HH::SideTabs::Editor < HH::SideTab
   include HH::Markup
 
@@ -18,7 +18,7 @@ class HH::SideTabs::Editor < HH::SideTab
   def load script
     unless saved?
       name = @code_editor.name || UNNAMED_PROGRAM
-      unless confirm("#{name} has not been saved, if you continue \n" +
+      unless confirm("#{name} has not been saved, if you continue\n" +
           " all unsaved modifications will be lost")
         return false
       end
@@ -35,31 +35,41 @@ class HH::SideTabs::Editor < HH::SideTab
     string.nil? or string.empty?
   end
 
+  def choose_program_name
+    msg = ""
+    name = ""
+    while empty?(name) or HH.script_exists?(name)
+      name = ask(msg + "Give your program a name.")
+      msg = "Come on give your program a name :-)\n" if empty?(name)
+      msg = "You already have a program named '" + name + "'.\n" if HH.script_exists?(name)
+    end
+    name
+  end
+
+  def save_program name
+    @sname.text = name
+    @code_editor.save name
+    @stale.text = "Last saved #{@code_editor.last_saved.since} ago."
+  end
+
   # saves the file, asks for a new name if a nil argument is passed
   def save name
-    if name.nil?
-      msg = ""
-      while empty?(name) or HH.script_exists?(name)
-        name = ask(msg + "Give your program a name.")
-        msg = "Come on give your program a name :-)\n" if empty?(name)
-        msg = "You already have a program named '" + name + "'.\n" if HH.script_exists?(name)
-      end
-    end
+    debug "1:" + name if name
+    name = choose_program_name unless name
 
+    debug name if name
     if name
-      @sname.text = name
-      @code_editor.save name
-      @stale.text = "Last saved #{@code_editor.last_saved.since} ago."
+      save_program name
       true
     else
       false
     end
   end
 
-  # asks confirmation and then saves (or not if save is)
+  # asks confirmation and then saves (or not if cancel is pressed)
   def save_if_confirmed
     unless saved?
-      name = @code_editor.name
+      name = @code_editor.name || UNNAMED_PROGRAM
       question = "I'm going to save modifications to \"#{name}\". Is that okay?\n" +
         "Press OK if it is, and cancel if it's not."
       if confirm(question)
@@ -74,7 +84,7 @@ class HH::SideTabs::Editor < HH::SideTab
   def setup_editor(script)
     @code_editor = HH::Editor::CodeEditor.new(script)
 
-    # TODO: awkward and clumsy, is there a way to work around this?
+    # TODO: is there a way to work around this?
     HH::Editor::InsertionDeletionCommand.on_insert_text {|pos, str|  insert_text(pos, str)}
     HH::Editor::InsertionDeletionCommand.on_delete_text {|pos, len|  delete_text(pos, len)}
   end
@@ -114,14 +124,16 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def editor_text
     stack :width => -37, :margin_left => 6, :margin_bottom => 60 do
-      @code_para = para "", :font => "Liberation Mono", :size => 10, :stroke => "#662",
-        :wrap => "trim", :margin_right => 28
+      @code_para = para "", :font => "Liberation Mono", :size => 10,
+                            :stroke => "#662", :wrap => "trim",
+                            :margin_right => 28
       @code_para.cursor = 0
     end
 
     define_hit_sloppy
   end
 
+  # TODO long if jungle - but how to make it short/work around it
   def mouse_motion
     motion do |x, y|
       c = @code_para.hit_sloppy(x, y)
@@ -203,20 +215,25 @@ class HH::SideTabs::Editor < HH::SideTab
     end
   end
 
+  def upload_program
+    hacker = Hacker.new :username => HH::PREFS['username'], :password => HH::PREFS['password']
+    hacker.save_program_to_the_cloud(@code_editor.name, @code_editor.script) do |response|
+      if response.code == "200" || response.code == "302"
+        alert("Uploaded!")
+      else
+        alert("There was a problem, sorry!")
+      end
+    end
+  end
+
   def upload_button
     @upload_button =
     glossb "Upload", :width => 70, :top => 2, :left => 0 do
-      if HH::PREFS['username'].nil?
-        alert("To upload, first connect your account on hackety-hack.com by clicking Preferences near the bottom left of the window.")
+      if HH::PREFS['username']
+        upload_program
       else
-        hacker = Hacker.new :username => HH::PREFS['username'], :password => HH::PREFS['password']
-        hacker.save_program_to_the_cloud(@code_editor.name, @code_editor.script) do |response|
-          if response.code == "200" || response.code == "302"
-            alert("Uploaded!")
-          else
-            alert("There was a problem, sorry!")
-          end
-        end
+        alert("To upload, first connect your account on hackety-hack.com by \
+        clicking Preferences near the bottom left of the window.")
       end
     end
   end
@@ -239,17 +256,6 @@ class HH::SideTabs::Editor < HH::SideTab
   def update_time
     every 20 do
       @stale.text = "Last saved #{@code_editor.last_saved} ago." if @code_editor.last_saved
-    end
-  end
-
-  def on_keypress
-    keypress do |k|
-      onkey(k)
-      if @code_para.cursor_top < @scroll.scroll_top
-        @scroll.scroll_top = @code_para.cursor_top
-      elsif @code_para.cursor_top + 92 > @scroll.scroll_top + @scroll.height
-        @scroll.scroll_top = (@code_para.cursor_top + 92) - @scroll.height
-      end
     end
   end
 
@@ -287,7 +293,7 @@ class HH::SideTabs::Editor < HH::SideTab
 
   # called when the user wants to insert text
   def handle_text_insertion text
-      pos, len = @code_para.highlight; # TODO: WTF ; ?
+      pos, len = @code_para.highlight
       handle_text_deletion(pos, len) if len > 0
 
       @code_editor.handle_text_insertion pos, text
@@ -329,6 +335,19 @@ class HH::SideTabs::Editor < HH::SideTab
     ind_size
   end
 
+  def on_keypress
+    keypress do |k|
+      onkey(k)
+      if @code_para.cursor_top < @scroll.scroll_top
+        @scroll.scroll_top = @code_para.cursor_top
+      elsif @code_para.cursor_top + 92 > @scroll.scroll_top + @scroll.height
+        @scroll.scroll_top = (@code_para.cursor_top + 92) - @scroll.height
+      end
+    end
+  end
+
+  # TODO this delegates to @code_editor
+  #      wouldn't it probably be better for the editor to have his own case? hm
   def onkey(key)
     case key
     when :shift_home, :shift_end, :shift_up, :shift_left, :shift_down, :shift_right

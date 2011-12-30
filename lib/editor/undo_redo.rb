@@ -8,14 +8,12 @@ module HH::Editor
       @last_position = nil
     end
 
-    # _command for consistency with redo_command
     def undo_command
       return if @stack_position == 0
       @stack_position -= 1;
       @command_stack[@stack_position].unexecute;
     end
 
-    # _command because redo is a keyword
     def redo_command
       return if @stack_position == @command_stack.size
       @command_stack[@stack_position].execute
