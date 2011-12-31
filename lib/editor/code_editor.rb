@@ -1,6 +1,3 @@
-require_relative 'commands'
-require_relative 'undo_redo'
-
 module HH::Editor
 
   class CodeEditor

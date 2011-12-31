@@ -1,5 +1,3 @@
-require_relative '../../../lib/editor/code_editor'
-
 #TODO: If I get this far, check whether it works with green shoes
 #TODO: Really figure out hit_sloppy
 
