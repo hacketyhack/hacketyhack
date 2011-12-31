@@ -9,6 +9,22 @@ module Web
   [JSON_MIME_TYPES, XML_MIME_TYPES].each do |ary|
     ary.map! { |str| /^#{Regexp::quote(str)}/ }
   end
+  
+  # checking for an internet connection to deactivate functionality, requiring
+  # an internet connection when there is no connection or the API is down
+  def self.check_internet_connection
+    begin
+      HH::API.get "" do |response| return response.kind_of? Net::HTTPOK end
+    rescue
+      return false
+    end
+  end
+  
+  # caching the result so we don't have to do a new request for each check
+  def self.internet_connection?
+    @connection ||= check_internet_connection
+  end
+  
 end
 
 module Hpricot
