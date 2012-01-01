@@ -52,10 +52,8 @@ class HH::SideTabs::Editor < HH::SideTab
 
   # saves the file, asks for a new name if a nil argument is passed
   def save name
-    debug "1:" + name if name
     name = choose_program_name unless name
 
-    debug name if name
     if name
       save_program name
       true
