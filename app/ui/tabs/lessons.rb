@@ -10,16 +10,14 @@ class HH::SideTabs::Lessons < HH::SideTab
   # auxiliary function used by Kernel#lesson_set
   # stores the code of the DSL used to write the lessons
   def self.load_lesson name, blk
-    @@lessons << [@@difficulty, name, blk]
+    @@lessons << [name, blk]
   end
 
   # draws the lessons tab
   def content
     stack :margin => 10 do
-      title "Lessons", :font => "Phonetica"
+      title "Lessons"
       @@lessons = []
-      @@difficulty = "About Hackety"
-      para "So you want to learn some programming, eh? You've come to the right place!"
       Dir["#{HH::LESSONS}/*.rb"].each { |f| load f }
 
       %w[beginner intermediate advanced expert].each do |d|
