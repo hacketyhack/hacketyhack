@@ -26,7 +26,6 @@ class HH::SideTabs::Lessons < HH::SideTab
       end
 
       @@lessons.group_by{|i| i[0]}.each do |key, value|
-        para key.to_s
         value.each do |v|
           stack do
             britelink "icon-file.png", v[0] do
