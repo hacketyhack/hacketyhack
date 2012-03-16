@@ -29,8 +29,8 @@ class HH::SideTabs::Lessons < HH::SideTab
         para key.to_s
         value.each do |v|
           stack do
-            britelink "icon-file.png", v[1] do
-              HH::APP.start_lessons v[1], v[2]
+            britelink "icon-file.png", v[0] do
+              HH::APP.start_lessons v[0], v[1]
             end
           end
         end
