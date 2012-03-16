@@ -25,12 +25,10 @@ class HH::SideTabs::Lessons < HH::SideTab
         Dir["#{HH::LESSONS}/#{d}/*.rb"].each { |f| load f }
       end
 
-      @@lessons.group_by{|i| i[0]}.each do |key, value|
-        value.each do |v|
-          stack do
-            britelink "icon-file.png", v[0] do
-              HH::APP.start_lessons v[0], v[1]
-            end
+      @@lessons.sort_by{|lesson| lesson[0]}.each do |lesson|
+        stack do
+          britelink "icon-file.png", lesson[0] do
+            HH::APP.start_lessons lesson[0], lesson[1]
           end
         end
       end
