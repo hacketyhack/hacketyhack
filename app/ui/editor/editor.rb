@@ -251,7 +251,7 @@ class HH::SideTabs::Editor < HH::SideTab
 
   def update_time
     every 20 do
-      @stale.text = "Last saved #{@code_editor.last_saved} ago." if @code_editor.last_saved
+      @stale.text = "Last saved #{@code_editor.last_saved.since} ago." if @code_editor.last_saved
     end
   end
 
