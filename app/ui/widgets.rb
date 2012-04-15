@@ -93,8 +93,7 @@ class IconButton < Shoes::Widget
       slot = slot.parent
     end
 
-    @tooltip = slot.tooltip(@tooltip_text, x, y-20,
-          :fill => red, :stroke => white)
+    @tooltip = slot.tooltip(@tooltip_text, x, y-20, "#f00", :stroke => white)
   end
 
   def arrow_right
@@ -123,18 +122,28 @@ class IconButton < Shoes::Widget
 end
 
 module HH::Tooltip
-  def tooltip str, x, y, opts={}
-    f = nil
+  def tooltip str, x, y, bg="#f00", opts={}
+    s = nil
     #opts[:wrap] = "trim"
     slot = self
     app do
-    slot.append do
-    f = flow  :left => x, :top => y do
-      para str, opts
+      slot.append do
+        s = stack :left => x, :top => y do
+          bg = background bg, :curve => 6, :height => 26, :width => 40
+          p1 = nil
+          flow :width => 300 do
+            p1 = para str, opts
+          end
+          timer 0 do
+            bg.width = p1.width
+            if slot.width < s.left + bg.width
+              s.left -= s.left + bg.width - slot.width
+            end
+          end
+        end
+      end
     end
-    end
-    end
-    f
+    s
   end
 end
 

@@ -127,5 +127,8 @@ window :title => "Hackety Hack", :width => w, :height => h do
     end
   end
 
+  on_event :tab_opened, :Lessons do
+    @tour_notice.hide
+  end
   
 end
