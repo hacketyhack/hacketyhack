@@ -1,7 +1,3 @@
-module HH
-  USER = "~"
-end
-
 require_relative '../../lib/preferences'
 
 describe HH::Preferences do

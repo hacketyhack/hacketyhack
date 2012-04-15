@@ -7,20 +7,20 @@ module HH
     end
 
     def save(table, data)
-      sql = %Q{CREATE TABLE IF NOT EXISTS #{table} (key text, value text)}
+      sql = %Q{CREATE TABLE IF NOT EXISTS #{table} (key text UNIQUE, value text)}
       @database.execute(sql)
 
       data.each do |key, value|
-        sql = %Q{INSERT OR REPLACE INTO #{table} (key,value) VALUES (?, ?)}
-        @database.execute(sql, key.to_s, value.to_s)
+        sql = %Q{INSERT OR REPLACE INTO #{table} (key,value) VALUES ("#{key}", "#{value}")}
+        @database.execute(sql)
       end
     end
 
     def load(table)
-      sql = %Q{CREATE TABLE IF NOT EXISTS #{table} (key text, value text)}
+      sql = %Q{CREATE TABLE IF NOT EXISTS #{table} (key text UNIQUE, value text)}
       @database.execute(sql)
 
-      rows = @database.execute( "select * from ?", table.to_s)
+      rows = @database.execute("SELECT * FROM #{table}")
 
       {}.tap do |result|
         rows.each do |row|
