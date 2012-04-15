@@ -24,7 +24,7 @@ module HH
 
       {}.tap do |result|
         rows.each do |row|
-          result[row["key"].to_sym] = row["value"]
+          result[row[0].to_sym] = row[1]
         end
       end
     end

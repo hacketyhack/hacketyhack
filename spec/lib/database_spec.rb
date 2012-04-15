@@ -11,9 +11,9 @@ describe HH::Database do
 
   context ".load" do
     it "returns a proper hash" do
-      db = HH::Database.new(double(:execute => [{"key" => "key", "value" => "value"}]))
+      db = HH::Database.new(double(:execute => [ ["key1", "value1"], ["key2", "value2"] ]))
 
-      db.load("names").should  eql({:key => "value"})
+      db.load("names").should  eql({:key1 => "value1", :key2 => "value2"})
     end
   end
 end

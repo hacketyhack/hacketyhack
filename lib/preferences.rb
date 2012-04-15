@@ -11,6 +11,11 @@ module HH
     end
 
     def method_missing(meth, *args, &blk)
+      if meth == :[] || meth == :[]=
+        #convert hash key to symbol
+        args[0] = args[0].to_sym
+      end
+
       @target.send(meth, *args, &blk)
     end
 
