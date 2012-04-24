@@ -1,11 +1,5 @@
 require_relative '../../lib/database'
 
-# This is silly. Ideally we shouldn't need this, but our
-# require-ing is a total mess, so...
-module HH
-  USER = "~"
-end
-
 describe HH::Database do
   context ".save" do
     it "inserts on each new key" do
@@ -17,9 +11,9 @@ describe HH::Database do
 
   context ".load" do
     it "returns a proper hash" do
-      db = HH::Database.new(double(:execute => [{"key" => "key", "value" => "value"}]))
+      db = HH::Database.new(double(:execute => [ ["key1", "value1"], ["key2", "value2"] ]))
 
-      db.load("names").should  eql({:key => "value"})
+      db.load("names").should  eql({:key1 => "value1", :key2 => "value2"})
     end
   end
 end
