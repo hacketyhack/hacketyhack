@@ -1,3 +1,5 @@
 *~
 root/Home/*
 *.swp
+tags
+.DS_Store
