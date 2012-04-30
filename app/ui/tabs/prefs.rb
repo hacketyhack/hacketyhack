@@ -36,23 +36,38 @@ class HH::SideTabs::Prefs < HH::SideTab
     stack :margin => [10, 20, 0, 20], :width => 1.0, :height => 1.0 do
       subtitle "Your Preferences", :font => "Lacuna Regular", :margin => 0, :size => 22,
         :stroke => "#377"
-      if user
-        para "Hello, #{user}! ",
-      else
-        @question_stack = stack do
-          para "You can connect with your account on ",
-               link("hackety-hack.com", :click => "http://hackety-hack.com"),
-               " to do all kinds of fun stuff. Do you have one?"
-          button "Yes" do
-            @question_stack.toggle
-            @prefpane.toggle
-          end
 
-          button "No" do
-            @question_stack.toggle
-            @signup_stack.toggle
-          end
+      @logout_stack = stack do
+        para "Hello, #{user}! "
+        button "Log out", :width => 100 do
+          HH::PREFS['username'] = nil
+          HH::PREFS['password'] = nil
+          HH::save_prefs
+
+          @question_stack.show
+          @logout_stack.hide
         end
+      end
+
+      @question_stack = stack do
+        para "You can connect with your account on ",
+          link("hackety-hack.com", :click => "http://hackety-hack.com"),
+          " to do all kinds of fun stuff. Do you have one?"
+        button "Yes" do
+          @question_stack.toggle
+          @prefpane.toggle
+        end
+
+        button "No" do
+          @question_stack.toggle
+          @signup_stack.toggle
+        end
+      end
+
+      if user
+        @question_stack.hide
+      else
+        @logout_stack.hide
       end
 
       @prefpane = stack :margin => 20, :width => 400 do
@@ -72,6 +87,8 @@ class HH::SideTabs::Prefs < HH::SideTab
               HH.save_prefs
 
               alert("Saved, thanks!")
+              @prefpane.hide
+              @logout_stack.show
             else
               alert("Sorry, I couldn't authenticate you. Did you sign up for an account at http://hackety-hack.com/ ? Please double check what you've typed.")
             end
