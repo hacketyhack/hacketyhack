@@ -131,8 +131,8 @@ class HH::SideTabs::Prefs < HH::SideTab
 
       stack do
         flow do
-          @skip_intro = check {|me| HH::PREFS['skip_intro'] = me.checked? ? "true" : nil; HH::save_prefs }
-          @skip_intro.checked = !!HH::PREFS['skip_intro']
+          @skip_intro = check {|me| HH::PREFS['skip_intro'] = me.checked?; HH::save_prefs }
+          @skip_intro.checked = HH::PREFS['skip_intro']
           para "Skip intro"
         end
       end
