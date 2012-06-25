@@ -11,7 +11,7 @@ module HH
       @database.execute(sql)
 
       data.each do |key, value|
-        sql = if value.nil?
+        sql = if value.nil? || value == false
                 %Q{DELETE FROM #{table} WHERE key = "#{key}"}
               else
                 %Q{INSERT OR REPLACE INTO #{table} (key,value) VALUES ("#{key}", "#{value}")}
