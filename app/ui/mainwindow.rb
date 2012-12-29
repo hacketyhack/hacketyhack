@@ -69,7 +69,7 @@ window :title => "Hackety Hack", :width => w, :height => h do
 
   extend HH::HasSideTabs
   init_tabs @main_content
-  
+
   addtab :Home, :icon => "tab-home.png"
   addtab :Editor, :icon => "tab-new.png"
   addtab :Lessons, :icon => "tab-tour.png"
@@ -118,7 +118,7 @@ window :title => "Hackety Hack", :width => w, :height => h do
 
   # splash screen
   stack :top => 0, :left => 0, :width => 1.0, :height => 1.0 do
-    splash
+    splash unless HH::PREFS['skip_intro']
     if HH::PREFS['first_run'].nil?
       @tour_notice.toggle
       @tour_notice.click { @tour_notice.hide }
@@ -130,5 +130,5 @@ window :title => "Hackety Hack", :width => w, :height => h do
   on_event :tab_opened, :Lessons do
     @tour_notice.hide
   end
-  
+
 end
