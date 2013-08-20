@@ -1,5 +1,7 @@
 h1. Hackety Hack (for Mac OS X, Windows, and Linux)
 
+!https://travis-ci.org/hacketyhack/hacketyhack.png?branch=master!:https://travis-ci.org/hacketyhack/hacketyhack
+
  Hackety Hack is a programming starter kit. It's an editor
  with helpful coding tools and built-in messaging (so you can
  pass scripts to friends easily.)
