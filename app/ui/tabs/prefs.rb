@@ -31,6 +31,10 @@ class HH::SideTabs::Prefs < HH::SideTab
     background "#efefa0".."#c1d5c0", :height => 150, :bottom => 150
   end
 
+  def greet_user(user)
+    @greeting.text = "Hello, #{user}!"
+  end
+
   def content
     user = HH::PREFS['username']
     stack :margin => [10, 20, 0, 20], :width => 1.0, :height => 1.0 do
@@ -38,7 +42,9 @@ class HH::SideTabs::Prefs < HH::SideTab
         :stroke => "#377"
 
       @logout_stack = stack do
-        para "Hello, #{user}! "
+        @greeting = para ""
+        greet_user(user)
+
         button "Log out", :width => 100 do
           HH::PREFS['username'] = nil
           HH::PREFS['password'] = nil
@@ -87,6 +93,8 @@ class HH::SideTabs::Prefs < HH::SideTab
               HH.save_prefs
 
               alert("Saved, thanks!")
+              greet_user(@user.text)
+
               @prefpane.hide
               @logout_stack.show
             else
