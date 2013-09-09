@@ -6,6 +6,12 @@ h1. Hackety Hack (for Mac OS X, Windows, and Linux)
  with helpful coding tools and built-in messaging (so you can
  pass scripts to friends easily.)
 
+h2. Attention upstream issues!
+
+Hackty Hack highly depends on its upstream project shoes (which is what hacketyhack is written in). Right now shoes is undergoing a massiv rewrite with "shoes4":https://github.com/shoes/shoes4. One of the reasons for this rewrite are problems with the old shoes that sadly keep us from releasing a new version of Hackety Hack :'(
+
+So for this reason most people concentrate their effors on shoes4. If you want to help out (which is awesome, thank you!) that might also be a good option. Shoes4 is already quite far and many elements already work but Hackty Hack doesn't (yet). In the issues section here there also some tickets tagged with "shoes4 compatibility" you might also tackle those for a faster transition :-)
+
 h2. This is 1.0!
 
 All the major pieces are in place. Hooray! There are still some kinks to work out, though. Nobody's perfect! Please "file an Issue":http://github.com/hacketyhack/hacketyhack/issues if you find something.
